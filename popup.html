@@ -43,6 +43,12 @@ $(document).ready(
 	var saveButton;
 
 	function init() {
+		var port = chrome.extension.connect({name: "social-media-monitoring"});
+		port.onMessage.addListener(function(msg) {
+		  if (msg.update)
+			  msg.update
+		});
+		
 		var filtersObj = $("filters");
 		template = xpath('//div[@id="template"]/span', document);
 		inputTag = xpath('//input[@class="tag"]/input', template);
@@ -51,8 +57,6 @@ $(document).ready(
 		
 
 		//alert('inputTag:' + inputTag);
-
-
 		
 		queriessTextbox = $("custom-query");
 			

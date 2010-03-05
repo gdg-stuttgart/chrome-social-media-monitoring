@@ -3,19 +3,19 @@
 </head>
 <body>
 <script type="text/javascript">
-WEEKLY = 24 * 7;
-HOURLY = 1;
+var WEEKLY = 24 * 7;
+var HOURLY = 1;
 
-function processResult() {
-	console.log("processResults");
-	  var results = req.responseJSON.getElementsByTagName("results");
-	
-	  for (var i = 0, results; result = results[i]; i++) {
-	    var text = document.createElement("span");
-	    img.innerHTML = result.created_at
-	    document.body.appendChild(text);
-	  }
-}
+chrome.extension.onConnect.addListener(function(port) {
+	  console.assert(port.name == "social-media-monitoring");
+	  port.onMessage.addListener(function(msg) {
+	    if (msg.filterTagChanged) {
+			var filterTag = msg.filterTagChanged;
+			loadTweets(WEEKLY, filterTag);
+			loadTweets(HOURLY, filterTag);
+	    }
+	  });
+	});
 
 function setItem(key, value) {
 	try {
@@ -39,17 +39,35 @@ function getItem(key) {
 	  	value = null;
 }
 
-function loadTweets(period) {
-interval = period * 60 * 60 * 1000;
-	  var req = new XMLHttpRequest();
-	  req.open(
-	    "GET",
-	    "http://search.twitter.com/search.json?" + "q="+"earthquake",
+function loadTweets(period, filterTag) {
+	var req = new XMLHttpRequest();
+	req.open(
+		"GET",
+	    "http://search.twitter.com/search.json?" + "q="+escape(filterTag.id),
 	    true);
-	  req.onload = processResult;
-	  req.send(null);
+	req.onload = function() {
+		processResult(period);
+	};
+ 	req.send(null);
 }
-	  
+
+function processResult(period) {
+	console.log("processResults");
+	  var tweets = JSON.parse(req.responseText).results;
+	  var currTime = Date();
+	  var interval = period * 60 * 60 *1000;
+	  for (var i = 0, tweets < tweets.length; i++) {
+		var currDate = new Date(results.created_at);
+		var ts = currDate.getTime();
+
+		if
+		
+    	var text = document.createElement("span");
+	    img.innerHTML = result.created_at
+	    document.body.appendChild(text);
+	  }
+}
+
 </script>
 
 </body>
