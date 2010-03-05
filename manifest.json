@@ -17,7 +17,6 @@
  
   "permissions": [
     "tabs",
-    "http://*/*",
-    "http://api.flickr.com/"
+    "http://*/*"
   ]
 }
