@@ -1,8 +1,8 @@
 <html>
 <head>
-<title>Options</title>
+<title>Popup</title>
 
-<link rel="stylesheet" href="content.css" type="text/css" media="all"></link>
+<link rel="stylesheet" href="content.css" type="text/css" media="all"/>
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 
 
@@ -10,34 +10,50 @@
 
 
 $(document).ready(
-
-var bgPage
 	
 
 );
 
 </script>
 </head>
-<body onload="init()">
+<body onload="setTimeout(init,0);" style="widht: 300px;">
 
 <div class="section-header first">Your Queries</div>
 <p>add your search words</p>
 
-<input type="text" id="custom-query" class="query" oninput="markDirty()">
-<input type="text" id="custom-query" class="query" oninput="markDirty()">
-<input type="text" id="custom-query" class="query" oninput="markDirty()">
+<div class="filters">
+<div id="template"><span id="iconService"></span> <input
+	type="text" class="tag" oninput="markDirty()"> <input
+	type="text" class="avgWeek" disabled="disabled" value="0"> <input
+	type="text" class="avgDay" disabled="disabled" value="0"> <span
+	id="btnRemove"></span></div>
+</div>
+<span id="btnAdd"> add new
+</div>
+
+
 
 <div id="footer">
 <button id="save-button" style="font-weight: bold" onclick=save();>Save</button>
 <button onclick=init();>Cancel</button>
 </div>
 
-<script>
+<script><!--
 	var queriessTextbox;
 	var saveButton;
 
 	function init() {
+		var filtersObj = $("filters");
+		template = xpath('//div[@id="template"]/span', document);
+		inputTag = xpath('//input[@class="tag"]/input', template);
+		inputAvgWeek = xpath('//input[@class="avgWeek"]/input', template);
+		inputAvgDay	 = xpath('//input[@class="avgDay"]/input', template);
+		
 
+		//alert('inputTag:' + inputTag);
+
+
+		
 		queriessTextbox = $("custom-query");
 			
 		saveButton = $("save-button");
@@ -51,12 +67,21 @@ var bgPage
 			//TODO
 
 		});
+
+		// copy node and update
+		  //item = template.cloneNode(true);
+		  //timeline.appendChild(item);
 		
 	
 		
 		markClean();
 	}
 
+	// evaluate xpath
+	function xpath(path, node) {
+	  return document.evaluate(path, node).iterateNext();
+	}
+	
 	function save() {
 		var tagFilter = new Object();
 		tagFilter.id = "#hashtag";
@@ -80,6 +105,6 @@ var bgPage
 	function markClean() {
 		saveButton.disabled = true;
 	}
-</script>
+--></script>
 </body>
 </html>

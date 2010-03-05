@@ -45,3 +45,58 @@ body {
 #footer {
 	margin-top: 4em;
 }
+
+.filters {
+	width: 300px;
+	display: block;
+}
+
+.filter {
+	display: block;
+	white-space: nowrap;
+}
+
+.tag {
+	width: 160px;
+	display: inline;
+}
+
+#btnRemove {
+	background-image: url('icon_remove.png');
+	background-repeat: no-repeat;
+	width: 14px;
+	height: 14px;
+	display: block;
+}
+
+#btnAdd {
+	background-image: url('icon_add.png');
+	background-repeat: no-repeat;
+	height: 14px;
+	display: block;
+	padding-left: 10px;
+	width: 100px;
+	padding-left: 20px;
+}
+
+#iconService {
+	background-image: url('icon_service_twitter.png');
+	background-repeat: no-repeat;
+	height: 14px;
+	width: 14px;
+	display: block;
+}
+
+.avgWeek {
+	width: 30px;
+	display: inline;
+}
+
+.avgDay {
+	width: 30px;
+	display: inline;
+}
+
+#template{
+	display:block;
+}
