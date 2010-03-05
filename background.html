@@ -6,6 +6,15 @@
 var WEEKLY = 24 * 7;
 var HOURLY = 1;
 
+/**
+ * TODO: implement
+ *
+ * 	port.postMessage({filtereTagChanged: tagFilter});
+ *	port.postMessage({filtereTagDeleted: tagFilter});
+ *	port.postMessage({filtereTagAdded: tagFilter});
+ *
+ */
+ 
 chrome.extension.onConnect.addListener(function(port) {
 	  console.assert(port.name == "social-media-monitoring");
 	  port.onMessage.addListener(function(msg) {
