@@ -11,7 +11,7 @@
 
 $(document).ready(
 
-
+var bgPage
 	
 
 );
@@ -38,9 +38,9 @@ $(document).ready(
 
 	function init() {
 
-		queriessTextbox = document.getElementById("custom-query");
+		queriessTextbox = $("custom-query");
 			
-		saveButton = document.getElementById("save-button");
+		saveButton = $("save-button");
 
 		queriessTextbox.value = localStorage.queries || "";
 
@@ -51,14 +51,22 @@ $(document).ready(
 			//TODO
 
 		});
-
-
+		
+	
 		
 		markClean();
 	}
 
 	function save() {
-		localStorage.queries = queriessTextbox.value;
+		var tagFilter = new Object();
+		tagFilter.id = "#hashtag";
+		tagFilter.threshold = 0;
+		tagFilter.weeklyAvg = 0;
+		tagFilter.hourlyAvg = 0;
+				
+		var tagFilters = getItem("filters");
+				
+		setItem("filters", tagFilters.push(tagFilter));
 			
 		markClean();
 

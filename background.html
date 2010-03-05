@@ -3,26 +3,53 @@
 </head>
 <body>
 <script type="text/javascript">
-function showResult() {
-	console.log("ok2");
+WEEKLY = 24 * 7;
+HOURLY = 1;
 
+function processResult() {
+	console.log("processResults");
 	  var results = req.responseJSON.getElementsByTagName("results");
-
+	
 	  for (var i = 0, results; result = results[i]; i++) {
 	    var text = document.createElement("span");
 	    img.innerHTML = result.created_at
 	    document.body.appendChild(text);
 	  }
+}
+
+function setItem(key, value) {
+	try {
+		console.log('Set Item:' + key);
+		window.localStorage.removeItem(key);
+		window.localStorage.setItem(key, value);
+	}catch(e) {
+		console.log("Error writing item to localstorage for key: " + key + " value: " + value);
+		console.log(e);
 	}
+}
 
+function getItem(key) {
+	var value;
+	console.log('Get Item:' + key);
+	try {
+		value = window.localStorage.getItem(key);
+	}catch(e) {
+	console.log("Error getting item to localstorage for key:" + key);
+	 	 console.log(e);
+	  	value = null;
+}
 
+function loadTweets(period) {
+interval = period * 60 * 60 * 1000;
 	  var req = new XMLHttpRequest();
 	  req.open(
 	    "GET",
 	    "http://search.twitter.com/search.json?" + "q="+"earthquake",
 	    true);
-	  req.onload = showResult;
+	  req.onload = processResult;
 	  req.send(null);
+}
+	  
 </script>
 
 </body>
