@@ -50,23 +50,22 @@ body {
 </head>
 <body>
 
-<div id="header">
-<h1>SMM Options</h1>
-</div>
-
-<div class="section-header first">Custom Domain</div>
+<div class="section-header first">Custom Query</div>
 <p>To use Userpic Stealer, enter the domain here.</p>
 <input type="text" id="custom-domain" oninput="markDirty()">
 <em>(eg a/http://api.twitter.com/)</em>
 
+
+<input type="text" id="check-time" oninput="markDirty()">
+<em>(default 10 min)</em>
+
+
 <div id="footer">
-<button id="save-button" style="font-weight: bold" onclick=
-	save();
->Save</button>
-<button onclick=
-	init();
->Cancel</button>
+<button id="save-button" style="font-weight: bold" onclick=save();>Save</button>
+<button onclick=init();>Cancel</button>
 </div>
+
+<div id="debug"></div>
 
 <script>
 	var customDomainsTextbox;
@@ -82,7 +81,20 @@ body {
 		customDomainsTextbox.value = localStorage.customDomain || "";
 			
 		markClean();
+
+		debugInfo();
 	}
+
+	function debugInfo(){
+
+		debugDivObj = document.getElementById("debug");
+
+		debugDivObj.innerHTML = localStorage.queries;
+		
+
+		
+		}
+
 
 	function save() {
 		localStorage.customDomain = customDomainsTextbox.value;

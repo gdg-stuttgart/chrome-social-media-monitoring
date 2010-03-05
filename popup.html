@@ -1,38 +1,77 @@
-<style>
-body {
-  min-width:357px;
-  overflow-x:hidden;
-}
+<html>
+<head>
+<title>Options</title>
 
-img {
-  margin:5px;
-  border:2px solid black;
-  vertical-align:middle;
-  width:75px;
-  height:75px;
-}
-</style>
+<link rel="stylesheet" href="content.css" type="text/css" media="all"></link>
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+$(document).ready(
+
+
+	
+
+);
+
+</script>
+</head>
+<body onload="init()">
+
+<div class="section-header first">Your Queries</div>
+<p>add your search words</p>
+
+<input type="text" id="custom-query" class="query" oninput="markDirty()">
+<input type="text" id="custom-query" class="query" oninput="markDirty()">
+<input type="text" id="custom-query" class="query" oninput="markDirty()">
+
+<div id="footer">
+<button id="save-button" style="font-weight: bold" onclick=save();>Save</button>
+<button onclick=init();>Cancel</button>
+</div>
 
 <script>
+	var queriessTextbox;
+	var saveButton;
 
-function showResult() {
-  results=JSON.parse(req.responseText);
-  for (var i = 0; i<results.length; i++) {
-    result = results[i]
-    if (result)
-    var text = document.createElement("span");
-    img.innerHTML = result.created_at
-    document.body.appendChild(text);
-  }
-}
+	function init() {
 
-function tweetPerHour(tag, duration) {
-  var req = new XMLHttpRequest();
-  req.open(
-    "GET",
-    "http://search.twitter.com/search.json?" + "q="+tag,
-    true);
-  req.onload = showResult;
-  req.send(null);
-}
+		queriessTextbox = document.getElementById("custom-query");
+			
+		saveButton = document.getElementById("save-button");
+
+		queriessTextbox.value = localStorage.queries || "";
+
+		/*
+		  Iterate via textboxes
+		*/
+		$(".query").each(function(index){
+			//TODO
+
+		});
+
+
+		
+		markClean();
+	}
+
+	function save() {
+		localStorage.queries = queriessTextbox.value;
+			
+		markClean();
+
+		chrome.extension.getBackgroundPage().init();
+	}
+
+	function markDirty() {
+		saveButton.disabled = false;
+	}
+
+	function markClean() {
+		saveButton.disabled = true;
+	}
 </script>
+</body>
+</html>

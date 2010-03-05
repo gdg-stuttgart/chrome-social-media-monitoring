@@ -3,7 +3,26 @@
 </head>
 <body>
 <script type="text/javascript">
+function showResult() {
+	console.log("ok2");
 
+	  var results = req.responseJSON.getElementsByTagName("results");
+
+	  for (var i = 0, results; result = results[i]; i++) {
+	    var text = document.createElement("span");
+	    img.innerHTML = result.created_at
+	    document.body.appendChild(text);
+	  }
+	}
+
+
+	  var req = new XMLHttpRequest();
+	  req.open(
+	    "GET",
+	    "http://search.twitter.com/search.json?" + "q="+"earthquake",
+	    true);
+	  req.onload = showResult;
+	  req.send(null);
 </script>
 
 </body>
