@@ -16,23 +16,23 @@ img {
 <script>
 
 function showResult() {
-console.log("ok2");
-
-  var results = req.responseJSON.getElementsByTagName("results");
-
-  for (var i = 0, results; result = results[i]; i++) {
+  results=JSON.parse(req.responseText);
+  for (var i = 0; i<results.length; i++) {
+    result = results[i]
+    if (result)
     var text = document.createElement("span");
     img.innerHTML = result.created_at
     document.body.appendChild(text);
   }
 }
 
-
+function tweetPerHour(tag, duration) {
   var req = new XMLHttpRequest();
   req.open(
     "GET",
-    "http://search.twitter.com/search.json?" + "q="+"earthquake",
+    "http://search.twitter.com/search.json?" + "q="+tag,
     true);
   req.onload = showResult;
   req.send(null);
+}
 </script>
