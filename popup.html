@@ -2,34 +2,35 @@
 <head>
 <title>Popup</title>
 
-<link rel="stylesheet" href="content.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="content.css" type="text/css" media="all" />
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
-
 
 <script type="text/javascript">
 
+$(document).ready(function() {
+	$("#btnAdd").click(function() {
+		addFilter();
+		addRemoveButtonListeners();  
+	});
 
-$(document).ready(
-	
-
-);
+});
 
 </script>
 </head>
 <body onload="setTimeout(init,0);" style="widht: 300px;">
 
-<div class="section-header first">Your Queries</div>
+<div class="section-header first">Your Filters</div>
 <p>add your search words</p>
 
-<div class="filters">
-<div id="template"><span id="iconService"></span> <input
-	type="text" class="tag" oninput="markDirty()"> <input
+<div id="filters">
+<div id="template" class="filter"><span id="iconService"></span> <input
+	type="text" id="tag" class="tag" oninput="markDirty()"> <input
 	type="text" class="avgWeek" disabled="disabled" value="0"> <input
 	type="text" class="avgDay" disabled="disabled" value="0"> <span
 	id="btnRemove"></span></div>
+
 </div>
-<span id="btnAdd"> add new
-</div>
+<span id="btnAdd"> add new</span>
 
 
 
@@ -39,67 +40,149 @@ $(document).ready(
 </div>
 
 <script><!--
-	var queriessTextbox;
 	var saveButton;
+	var filterTags;
 
+	var filters, template, inputTag, inputAvgWeek, inputAvgDay;
+
+	
+	
+	var port = chrome.extension.connect({name: "social-media-monitoring"});
+	port.onMessage.addListener(function(msg) {
+	  if (msg.update) {
+		  filterTags = msg.update;
+	  }
+	});
+
+	/*
+		port.postMessage({filterTagChanged: tagFilter});
+		port.postMessage({filterTagDeleted: tagFilter});
+		port.postMessage({filterTagAdded: tagFilter});
+
+	*/
+	
 	function init() {
-		var port = chrome.extension.connect({name: "social-media-monitoring"});
-		port.onMessage.addListener(function(msg) {
-		  if (msg.update)
-			  msg.update
-		});
-		
-		var filtersObj = $("filters");
-		template = xpath('//div[@id="template"]/span', document);
-		inputTag = xpath('//input[@class="tag"]/input', template);
-		inputAvgWeek = xpath('//input[@class="avgWeek"]/input', template);
-		inputAvgDay	 = xpath('//input[@class="avgDay"]/input', template);
-		
-
-		//alert('inputTag:' + inputTag);
-		
-		queriessTextbox = $("custom-query");
-			
-		saveButton = $("save-button");
-
-		queriessTextbox.value = localStorage.queries || "";
 
 		/*
-		  Iterate via textboxes
+			XXX: remove populateDummyData - debugging
 		*/
-		$(".query").each(function(index){
-			//TODO
+		var tagFilters = getDummyData();
+
+		console.log('TODO: add communication with background.html\n port.postMessage({filterTagLoad: tagFilter})');
+			
+		saveButton = $("save-button");
+		
+
+		filters = document.getElementById('filters');
+		template = xpath('//div[@id="template"]', document);
+		inputTag = xpath('//input[@class="tag"]', template);
+		inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
+		inputAvgDay	 = xpath('//input[@class="avgDay"]', template);
+
+		for (var i in tagFilters) {
+			addFilter(tagFilters[i]);
+		}
+		addRemoveButtonListeners();
+
+	}
+
+	function addRemoveButtonListeners(){
+		$("span#btnRemove").click(function() {
+			
+			var filterDiv = $(this).parent('.filter').css('border','1px dotted #ff0000');
+
+			filterDiv.remove();
+
+			/*
+			 * TODO: add communication with background.html
+			 */
+			 console.log('TODO: add communication with background.html\n port.postMessage({filterTagDeleted: tagFilter})');
 
 		});
+	}
 
-		// copy node and update
-		  //item = template.cloneNode(true);
-		  //timeline.appendChild(item);
-		
-	
-		
-		markClean();
+	function addFilter(tagFilterObj){
+
+		if(tagFilterObj){		
+
+			inputTag.setAttribute('value',tagFilterObj.id);
+			inputAvgWeek.setAttribute('value',tagFilterObj.weeklyAvg);
+			inputAvgDay.setAttribute('value',tagFilterObj.hourlyAvg);
+			
+			// copy node and update
+			item = template.cloneNode(true);	  
+			item.setAttribute('id','f:' + tagFilterObj.id);
+			
+			filters.appendChild(item);
+		}else{
+			inputTag.setAttribute('value','');
+			inputAvgWeek.setAttribute('value','0');
+			inputAvgDay.setAttribute('value','0');
+			
+			// copy node and update
+			item = template.cloneNode(true);	  
+			item.setAttribute('id','f:new');
+			
+			filters.appendChild(item);
+
+			}
 	}
 
 	// evaluate xpath
 	function xpath(path, node) {
 	  return document.evaluate(path, node).iterateNext();
 	}
-	
+
 	function save() {
 		var tagFilter = new Object();
 		tagFilter.id = "#hashtag";
 		tagFilter.threshold = 0;
 		tagFilter.weeklyAvg = 0;
 		tagFilter.hourlyAvg = 0;
+		tagFilter.serviceId = 'twitter';
+		
 				
-		var tagFilters = getItem("filters");
-				
-		setItem("filters", tagFilters.push(tagFilter));
-			
 		markClean();
 
+		/*
+		 * TODO: add communication with background.html
+		 */
+		 console.log('TODO: add communication with background.html\n port.postMessage({filterTagAdded: tagFilter})');
+
+		
 		chrome.extension.getBackgroundPage().init();
+	}
+
+	function getDummyData(){
+		var tagFilters = new Array();
+
+		var tagFilter = new Object();
+		tagFilter.id = "#hashtag1";
+		tagFilter.threshold = 0;
+		tagFilter.weeklyAvg = 6;
+		tagFilter.hourlyAvg = 7;
+		tagFilter.serviceId = 'twitter';
+		
+		tagFilters.push(tagFilter);
+
+		tagFilter = new Object();
+		tagFilter.id = "#hashtag2";
+		tagFilter.threshold = 0;
+		tagFilter.weeklyAvg = 10;
+		tagFilter.hourlyAvg = 50;
+		tagFilter.serviceId = 'twitter';
+		tagFilters.push(tagFilter);
+
+		tagFilter = new Object();
+		tagFilter.id = "#hashtag3";
+		tagFilter.threshold = 0;
+		tagFilter.weeklyAvg = 30;
+		tagFilter.hourlyAvg = 50;
+		tagFilter.serviceId = 'twitter';
+		tagFilters.push(tagFilter);
+		
+		
+		return tagFilters;
 	}
 
 	function markDirty() {

@@ -67,6 +67,8 @@ body {
 	width: 14px;
 	height: 14px;
 	display: block;
+	float: right;
+	vertical-align: middle;
 }
 
 #btnAdd {
@@ -85,6 +87,8 @@ body {
 	height: 14px;
 	width: 14px;
 	display: block;
+	float: left;
+	vertical-align: middle;
 }
 
 .avgWeek {
@@ -98,5 +102,5 @@ body {
 }
 
 #template{
-	display:block;
+	display:none;
 }
