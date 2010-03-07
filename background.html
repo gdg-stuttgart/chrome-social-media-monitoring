@@ -91,7 +91,7 @@ function getQueryDate(period) {
 function processResult(period, filterTag) {
 	var tweets = JSON.parse(req.responseText).results;
 	tweetsPerHour = tweets.length / period;
-   	if(period === LONG_TERM_INTERVAL_IN_HOURS)
+   	if(period === LONG_TERM_INTERVAL_IN_HOURS){
 		filterTag.longTermTweetsPerHour = tweetsPerHour;
 	} else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
 		filterTag.shortTermTweetsPerHour = tweetsPerHour;
