@@ -6,25 +6,43 @@
 <script type="text/javascript" src="filter.js"></script>
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 var saveButton;
 var filterTags;
 
 var filters, template, inputTag, inputAvgWeek, inputAvgDay;
 
-
-
 var port = chrome.extension.connect({name: "social-media-monitoring"});
-port.onMessage.addListener(function(msg) {
-  if (msg.update) {
-	  filterTags = msg.update;
-	  console.log('onMessage[update]:' + filterTags);
-  }
-  if (msg.alert) {
-	  filterTags = msg.alert;
-	  console.log('onMessage[alert]:' + filterTags);
-  }
+
+chrome.extension.onConnect.addListener(function(port) {
+	  console.assert(port.name == "social-media-monitoring");
+	  port.onMessage.addListener(function(msg) {
+		console.log('onMessage:' + msg);
+		  if (msg.update) {
+			  filterTags = msg.update;
+			  console.log('onMessage[update]:' + filterTags);
+
+			/*
+			 * get right element from filter list
+			 */
+			  var tagObj = $('#f_' + filterTags.id + '');
+
+				 if (tagObj){
+					 $(tagObj).addClass('warn');
+					 $(' > input.avgWeek',tagObj).val(filterTags.shortTermTweetsPerHour);
+					 $(' > input.avgDay',tagObj).val(filterTags.longTermTweetsPerHour);
+				 }
+
+		  }
+		  if (msg.alert) {
+			  filterTags = msg.alert;
+			  console.log('onMessage[alert]:' + filterTags);
+		  }	  
+	    
+	  });
 });
+
+
 
 /*
 	port.postMessage({filterTagChanged: tagFilter});
@@ -65,7 +83,7 @@ function openResults() {
 }
 
 
-</script>
+--></script>
 </head>
 <body onload="setTimeout(init,0);" style="widht: 300px;">
 
@@ -105,7 +123,6 @@ function openResults() {
 	onclick="openResults();return false;">Show results</button>
 </div>
 
-
 <script type="text/javascript">
 	
 	function init() {
@@ -117,8 +134,8 @@ function openResults() {
 
 		console.log('TODO: add communication with background.html\n port.postMessage({filterTagLoad: tagFilter})');
 			
-		saveButton = $("save-button");
-		
+		saveButton = document.getElementById("save-button");
+		markClean();
 
 		filters = document.getElementById('filters');
 		template = xpath('//div[@id="template"]', document);
@@ -159,7 +176,7 @@ function openResults() {
 			
 			// copy node and update
 			item = template.cloneNode(true);	  
-			item.setAttribute('id','f:' + tagFilterObj.id);
+			item.setAttribute('id','f_' + tagFilterObj.id);
 			
 			filters.appendChild(item);
 		}else{
@@ -204,6 +221,7 @@ function openResults() {
 			tagFilter.shortTermTweetsPerHour = 0;
 			tagFilter.longTermTweetsPerHour = 0 ;
 			
+			$(this).attr('id','f_' + tagFilter.id );
 			
 			port.postMessage({filterTagChanged: tagFilter});
 			
