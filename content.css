@@ -8,15 +8,15 @@ body {
 }
 
 .link {
-      color: #68d;
-      cursor: pointer;
-      text-decoration: underline;
-    }
+	color: #68d;
+	cursor: pointer;
+	text-decoration: underline;
+}
 
 #header {
-      padding: 5px;
-      border-bottom: solid 1px #eee;
-    }
+	padding: 5px;
+	border-bottom: solid 1px #eee;
+}
 
 #header h1 {
 	font-size: 156%;
@@ -59,22 +59,25 @@ body {
 
 .filter {
 	display: block;
-	white-space: nowrap;
+	height: 28px;
 }
 
 .tag {
 	width: 160px;
 	display: inline;
+	float: left;
 }
 
 #btnRemove {
 	background-image: url('icon_remove.png');
 	background-repeat: no-repeat;
-	width: 14px;
-	height: 14px;
+	width: 16px;
+	height: 16px;
 	display: block;
-	float: right;
+	float: left;
 	vertical-align: middle;
+	margin-top: 6px;
+	margin-left: 10px;
 }
 
 #btnAdd {
@@ -85,44 +88,67 @@ body {
 	padding-left: 10px;
 	width: 100px;
 	padding-left: 20px;
+	cursor: pointer;
+	margin-top: 5px;
+	margin-left: 20px;
 }
 
 #iconService {
 	background-image: url('icon_service_twitter.png');
 	background-repeat: no-repeat;
-	height: 14px;
-	width: 14px;
+	height: 16px;
+	width: 16px;
 	display: block;
 	float: left;
 	vertical-align: middle;
+	margin-top: 5px;
+	margin-right: 2px;
 }
 
 .avgWeek {
 	width: 30px;
 	display: inline;
+	text-align: right;
+	float: left;
+	margin-left: 10px;
 }
 
 .avgDay {
 	width: 30px;
 	display: inline;
+	text-align: right;
+	float: left;
+	margin-left: 2px;
 }
 
-#template{
-	display:none;
+#template {
+	display: none;
 }
 
-.option_row{
-	clear:left;
-	padding:2.5em 1em 0
+.option_row {
+	clear: left;
+	padding: 2.5em 1em 0
 }
 
-.option_name{
-	float:left;
-	font-weight:bold;
-	margin-top:3px;
-	width:13em
+.option_name {
+	float: left;
+	font-weight: bold;
+	margin-top: 3px;
+	width: 13em
 }
 
-.option_picker{
-	float:left
+.option_picker {
+	float: left
+}
+
+.warn {
+	border: 1px dotted #ff0000;
+}
+
+.clear {
+	clear: both;
+	height: 1px;
+	margin-bottom: -1px;
+	font-size: 1px;
+	line-height: 1px;
 }

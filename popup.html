@@ -3,6 +3,7 @@
 <title>Popup</title>
 
 <link rel="stylesheet" href="content.css" type="text/css" media="all" />
+<script type="text/javascript" src="filter.js"></script>
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 
 <script type="text/javascript">
@@ -27,9 +28,11 @@ $(document).ready(function() {
 	type="text" id="tag" class="tag" oninput="markDirty()"> <input
 	type="text" class="avgWeek" disabled="disabled" value="0"> <input
 	type="text" class="avgDay" disabled="disabled" value="0"> <span
-	id="btnRemove"></span></div>
-
+	id="btnRemove"></span>
+	<span clas="clear"><!--  --></span>
+	</div>
 </div>
+<span clas="clear"><!--  --></span>
 <span id="btnAdd"> add new</span>
 
 
@@ -39,7 +42,7 @@ $(document).ready(function() {
 <button onclick=init();>Cancel</button>
 </div>
 
-<script><!--
+<script type="text/javascript">
 	var saveButton;
 	var filterTags;
 
@@ -51,9 +54,11 @@ $(document).ready(function() {
 	port.onMessage.addListener(function(msg) {
 	  if (msg.update) {
 		  filterTags = msg.update;
+		  console.log('onMessage[update]:' + filterTags);
 	  }
 	  if (msg.alert) {
 		  filterTags = msg.alert;
+		  console.log('onMessage[alert]:' + filterTags);
 	  }
 	});
 
@@ -69,7 +74,7 @@ $(document).ready(function() {
 		/*
 			XXX: remove populateDummyData - debugging
 		*/
-		var tagFilters = getDummyData();
+		//filterTags = getDummyData();
 
 		console.log('TODO: add communication with background.html\n port.postMessage({filterTagLoad: tagFilter})');
 			
@@ -82,11 +87,12 @@ $(document).ready(function() {
 		inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
 		inputAvgDay	 = xpath('//input[@class="avgDay"]', template);
 
-		for (var i in tagFilters) {
-			addFilter(tagFilters[i]);
+		if(filterTags){
+			for (var i in filterTags) {
+				addFilter(filterTags[i]);
+			}
+			addRemoveButtonListeners();
 		}
-		addRemoveButtonListeners();
-
 	}
 
 	function addRemoveButtonListeners(){
@@ -124,11 +130,11 @@ $(document).ready(function() {
 			
 			// copy node and update
 			item = template.cloneNode(true);	  
-			item.setAttribute('id','f:new');
+			item.setAttribute('id','f');
 			
 			filters.appendChild(item);
 
-			}
+		}
 	}
 
 	// evaluate xpath
@@ -137,51 +143,59 @@ $(document).ready(function() {
 	}
 
 	function save() {
-		var tagFilter = new Object();
-		tagFilter.id = "#hashtag";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 0;
-		tagFilter.hourlyAvg = 0;
-		tagFilter.serviceId = 'twitter';
+
 		
-				
-		markClean();
+		$('#f').each(function(i){
+
+			/*
+			 * validate search term
+			 */
+			 var tagObj = $(' > input#tag.tag',this);
+
+			 if (!tagObj.val()){
+				 $(tagObj).addClass('warn');
+				 /*
+				  * TODO: add warning message
+				  */
+				 return false;
+			 }
+
+			var tagFilter = new Object();
+			tagFilter.id = tagObj.val();
+			tagFilter.shortTermTweetsPerHour = 0;
+			tagFilter.longTermTweetsPerHour = 0 ;
+			
+			
+			port.postMessage({filterTagChanged: tagFilter});
+			
+			
+		});
+
+		//markClean();
 
 		/*
 		 * TODO: add communication with background.html
 		 */
-		 console.log('TODO: add communication with background.html\n port.postMessage({filterTagAdded: tagFilter})');
+		 //console.log('TODO: add communication with background.html\n port.postMessage({filterTagAdded: tagFilter})');
 
 		
-		chrome.extension.getBackgroundPage().init();
+		//chrome.extension.getBackgroundPage().init();
 	}
 
 	function getDummyData(){
 		var tagFilters = new Array();
 
-		var tagFilter = new Object();
-		tagFilter.id = "#hashtag1";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 6;
-		tagFilter.hourlyAvg = 7;
-		tagFilter.serviceId = 'twitter';
+		var tagFilter = new Filter();
+		tagFilter.setQuery("#hashtag1");
 		
 		tagFilters.push(tagFilter);
 
-		tagFilter = new Object();
-		tagFilter.id = "#hashtag2";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 10;
-		tagFilter.hourlyAvg = 50;
-		tagFilter.serviceId = 'twitter';
+		tagFilter = new Filter();
+		tagFilter.setQuery("#hashtag2");
 		tagFilters.push(tagFilter);
 
-		tagFilter = new Object();
-		tagFilter.id = "#hashtag3";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 30;
-		tagFilter.hourlyAvg = 50;
-		tagFilter.serviceId = 'twitter';
+		tagFilter = new Filter();
+		tagFilter.setQuery("#hashtag3");
 		tagFilters.push(tagFilter);
 		
 		
@@ -195,6 +209,7 @@ $(document).ready(function() {
 	function markClean() {
 		saveButton.disabled = true;
 	}
---></script>
+
+</script>
 </body>
 </html>

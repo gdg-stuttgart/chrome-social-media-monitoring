@@ -14,6 +14,7 @@ var SHORT_TERM_INTERVAL_IN_HOURS = 1;
  *	port.postMessage({filtereTagAdded: tagFilter});
  *
  */
+var port = chrome.extension.connect({name: "social-media-monitoring"});
  
 chrome.extension.onConnect.addListener(function(port) {
 	  console.assert(port.name == "social-media-monitoring");
@@ -59,26 +60,37 @@ function loadTweets(period, filterTag, latitude, longtitude, radius) {
 
 	var query = "q=" + escape(filterTag.id);
 
+	/*
+	 * XXX: sinceDay - define right date!
+	 */
+	 var sinceDate = new Date("March 05, 2010 09:30:00");
+	 
 	baseURL + query + since + geoLoc != "" ?  geoLoc : "";
 	var since =  "since="+ escape(sinceDate.getFullYear() + "-" + 
   			 sinceDate.getMonth() < 10 ? sinceDate.getMonth() : +"0" + sinceDate.getMonth() + "-" + 
    					 sinceDate.getDay() < 10 ? sinceDate.getDay() : +"0" + sinceDate.getDay());
 
 	var geoLoc = "";
-	if(latitude === undefined || longtitude === undefined || radius === undefined) {
-		var geoLoc = "geocode=" + escape(latitude + "," + longtitude + "," + radius);
+	if(latitude != undefined && longtitude != undefined && radius != undefined) {
+		geoLoc = "geocode=" + escape(latitude + "," + longtitude + "," + radius + "km");
 	}
 
-	var queryURL = baseURL + query + since + geoLoc != "" ?  geoLoc : "";
+	
+	var queryURL = baseURL + query + '&' + since + '&' + geoLoc;
 
+	console.log('getQuery:' + queryURL);
+	
 	var xhr = new XMLHttpRequest();
-	xhr.open(
-		"GET",
-	    baseURL,
-	    true);
+	xhr.open("GET", queryURL, true);
 	xhr.onreadystatechange = function() {
-		  if (xhr.readyState == 4)
-			processResult(period, filterTag);
+		  if (xhr.readyState == 4){
+			  var response = JSON.parse(xhr.responseText);
+			  if(response.error){
+				  throw new Error('failed to get tweets:' + responseText);
+			   }else{
+				processResult(period, filterTag, response);
+			  }
+		  }
 	};
 	xhr.send();
 }
@@ -89,17 +101,29 @@ function getQueryDate(period) {
 	return new Date(currentTime - timeIntervalInMS);
 }
 
-function processResult(period, filterTag) {
-	var tweets = JSON.parse(req.responseText).results;
+function processResult(period, filterTag, result) {
+	var tweets = result.results;
+
+	if(!tweets){
+		throw new Error('failed to get tweets:' + responseText);
+	}
+	
 	tweetsPerHour = tweets.length / period;
    	if(period === LONG_TERM_INTERVAL_IN_HOURS){
 		filterTag.longTermTweetsPerHour = tweetsPerHour;
 	} else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
 		filterTag.shortTermTweetsPerHour = tweetsPerHour;
 	}
-	
-	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour = tweetsPerHour) 
+
+	/*
+	 * TODO: check if this code line is right
+	 * 	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour = tweetsPerHour){
+     */
+
+	 if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour) {
+		filterTag.longTermTweetsPerHour = tweetsPerHour;
 		port.postMessage({alert:filterTag});
+	}
 
 	port.postMessage({update:filterTag});
 	setItem(filterTag.id, filterTag);
