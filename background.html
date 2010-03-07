@@ -51,6 +51,7 @@ function getItem(key) {
 	console.log("Error getting item to localstorage for key:" + key);
 	 	 console.log(e);
 	  	value = null;
+	}
 }
 
 function loadTweets(period, filterTag, latitude, longtitude, radius) {
@@ -108,8 +109,10 @@ function processResult(period, filterTag) {
 function locationDetected(position) {
 	  var latitude = position.coords.latitude;
 	  var longitude = position.coords.longitude;
-	  //port.postMessage({locationDetected:{latitude:position.coords.latitude,
+	  /*
+	  port.postMessage({locationDetected:{latitude:position.coords.latitude,
 		  								  longitude:position.coords.longitude}});	  
+		*/
 }
 
 function locationError(msg) {
@@ -117,7 +120,7 @@ function locationError(msg) {
   //port.postMessage({locationError:status});
 }
 
-function requestGeoLocation()
+function requestGeoLocation(){
 	if (navigator.geolocation) {
 	  navigator.geolocation.getCurrentPosition(locationDetected, locationError);
 	} else {
@@ -133,7 +136,7 @@ function geocodeLocation(adress, radius) {
 	    var geocode = JSON.parse(xhr.responseText);
 	    var coordinates = geocode.Placemark["Point"].coordinates;
 
-	    port.postMessage({geocoded: coordinates[0] + "," + coordinates[1] + "," + radius "km"};
+	    port.postMessage({geocoded: coordinates[0] + "," + coordinates[1] + "," + radius + "km"});
 	  }
 	}
 	xhr.send();
