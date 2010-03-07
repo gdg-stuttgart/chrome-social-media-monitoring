@@ -3,8 +3,8 @@
 </head>
 <body>
 <script type="text/javascript">
-var LONG_TERM = 24 * 7;
-var SHORT_TERM = 1;
+var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
+var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 
 /**
  * TODO: implement
@@ -20,8 +20,8 @@ chrome.extension.onConnect.addListener(function(port) {
 	  port.onMessage.addListener(function(msg) {
 	    if (msg.filterTagChanged) {
 			var filterTag = msg.filterTagChanged;
-			loadTweets(LONG_TERM, filterTag);
-			loadTweets(SHORT_TERM, filterTag);
+			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, filterTag);
+			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, filterTag);
 	    }
 	  });
 	});
@@ -48,11 +48,27 @@ function getItem(key) {
 	  	value = null;
 }
 
-function loadTweets(period, filterTag) {
+function loadTweets(period, filterTag, latitude, longtitude, radius) {
+	var baseURL = "http://search.twitter.com/search.json?";
+
+	var query = "q=" + escape(filterTag.id);
+
+	baseURL + query + since + geoLoc != "" ?  geoLoc : "";
+	var since =  "since="+ escape(sinceDate.getFullYear() + "-" + 
+  			 sinceDate.getMonth() < 10 ? sinceDate.getMonth() : +"0" + sinceDate.getMonth() + "-" + 
+   					 sinceDate.getDay() < 10 ? sinceDate.getDay() : +"0" + sinceDate.getDay());
+
+	var geoLoc = "";
+	if(latitude === undefined || longtitude === undefined || radius === undefined) {
+		var geoLoc = "geocode=" + escape(latitude + "," + longtitude + "," + radius);
+	}
+
+	var queryURL = baseURL + query + since + geoLoc != "" ?  geoLoc : "";
+
 	var req = new XMLHttpRequest();
 	req.open(
 		"GET",
-	    "http://search.twitter.com/search.json?" + "q="+escape(filterTag.id),
+	    baseURL,
 	    true);
 	req.onload = function() {
 		processResult(period, filterTag);
@@ -60,31 +76,32 @@ function loadTweets(period, filterTag) {
  	req.send(null);
 }
 
+function getQueryDate(period) {
+	var currentTime = new Date();
+	var timeIntervalInMS = period * 60 * 60 *1000;
+	return new Date(currentTime - timeIntervalInMS);
+}
+
 function processResult(period, filterTag) {
-	console.log("processResults");
-	  var tweets = JSON.parse(req.responseText).results;
-	  var currTime = new Date();
-	  var interval = period * 60 * 60 *1000;
-	  var diff = curTime - interval;
-	  var count=0;
-	  for (; count < tweets.length; count++) {
-		var currDate = new Date(results[count].created_at);
-		var ts = currDate.getTime();
-		if(diff > ts)
-			break;
-	  }
-      tweetsPerHour=count/period;		
-      if(period == LONG_TERM)
-          filterTag.longTermTweetsPerHour=tweetsPerHour;
-	  } else {
-		  filterTag.shortTermTweetsPerHour=tweetsPerHour;
-	  }
+	var tweets = JSON.parse(req.responseText).results;
+	tweetsPerHour = tweets.length / period;
+   	if(period === LONG_TERM_INTERVAL_IN_HOURS)
+		filterTag.longTermTweetsPerHour = tweetsPerHour;
+	} else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
+		filterTag.shortTermTweetsPerHour = tweetsPerHour;
+	}
+	
+	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour = tweetsPerHour) 
+		port.postMessage({alert:filterTag});
+
+	port.postMessage({update:filterTag});
+	setItem(filterTag.id, filterTag);
 }
 
 
 function locationDetected(position) {
-	  var latitue = position.coords.latitude;
-	  var longtitue = position.coords.longitude;
+	  var latitude = position.coords.latitude;
+	  var longitude = position.coords.longitude;
 	  //port.postMessage({locationDetected:{latitude:position.coords.latitude,
 		  								  longitude:position.coords.longitude}});	  
 }
@@ -94,7 +111,7 @@ function locationError(msg) {
   //port.postMessage({locationError:status});
 }
 
-function getGeoLocation()
+function requestGeoLocation()
 	if (navigator.geolocation) {
 	  navigator.geolocation.getCurrentPosition(locationDetected, locationError);
 	} else {
