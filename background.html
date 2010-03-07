@@ -20,6 +20,8 @@ chrome.extension.onConnect.addListener(function(port) {
 	  port.onMessage.addListener(function(msg) {
 	    if (msg.filterTagChanged) {
 			var filterTag = msg.filterTagChanged;
+			//TODO add Geo Location to call i'm not sure what's the best way to do that because we
+			// have a async request here...
 			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, filterTag);
 			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, filterTag);
 	    }
