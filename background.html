@@ -14,8 +14,6 @@ var SHORT_TERM_INTERVAL_IN_HOURS = 1;
  *	port.postMessage({filtereTagAdded: tagFilter});
  *
  */
-var port = chrome.extension.connect({name: "social-media-monitoring"});
- 
 chrome.extension.onConnect.addListener(function(port) {
 	  console.assert(port.name == "social-media-monitoring");
 	  port.onMessage.addListener(function(msg) {
@@ -60,18 +58,14 @@ function loadTweets(period, filterTag, latitude, longtitude, radius) {
 
 	var query = "q=" + escape(filterTag.id);
 
-	/*
-	 * XXX: sinceDay - define right date!
-	 */
-	 var sinceDate = new Date("March 05, 2010 09:30:00");
-	 
-	baseURL + query + since + geoLoc != "" ?  geoLoc : "";
+	//var sinceDate = new Date("March 05, 2010 09:30:00");
+	var sinceDate = getQueryDate(period);
 	var since =  "since="+ escape(sinceDate.getFullYear() + "-" + 
   			 sinceDate.getMonth() < 10 ? sinceDate.getMonth() : +"0" + sinceDate.getMonth() + "-" + 
    					 sinceDate.getDay() < 10 ? sinceDate.getDay() : +"0" + sinceDate.getDay());
 
 	var geoLoc = "";
-	if(latitude != undefined && longtitude != undefined && radius != undefined) {
+	if(latitude !== undefined && longtitude !== undefined && radius !== undefined) {
 		geoLoc = "geocode=" + escape(latitude + "," + longtitude + "," + radius + "km");
 	}
 
@@ -120,8 +114,7 @@ function processResult(period, filterTag, result) {
 	 * 	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour = tweetsPerHour){
      */
 
-	 if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour) {
-		filterTag.longTermTweetsPerHour = tweetsPerHour;
+	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour) {
 		port.postMessage({alert:filterTag});
 	}
 
@@ -167,8 +160,5 @@ function geocodeLocation(adress, radius) {
 }
 
 </script>
-
 </body>
 </html>
-
-
