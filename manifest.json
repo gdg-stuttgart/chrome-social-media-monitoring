@@ -1,7 +1,7 @@
 {
-  "name": "My First Extension",
-  "version": "1.0",
-  "description": "The first extension that I made.",
+  "name": "Social Media Monitoring",
+  "version": "0.1",
+  "description": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags.",
   "icons": { "19": "icon.png" },
   "browser_action": {
     "default_icon": "icon.png",

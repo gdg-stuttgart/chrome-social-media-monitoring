@@ -1,11 +1,29 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Options</title>
+<title>Social Media Monitoring Extension Options</title>
 <style>
-body {
-	font-family: helvetica, arial, sans-serif;
-	font-size: 80%;
-	margin: 10px;
+body{
+	background-color:#ebeff9;
+	font-family:helveticy, arial, sans-serif;
+	font-size:13px
+}
+
+#content{
+	background-color:#ffffff;
+	border-color:#b5c7de;
+	border-style:solid;
+	border-width:4px;
+	margin:40px auto 20px;
+	padding:12px;
+	width:600px;
+}
+
+#content h1{
+	color:#333333;
+	font-size:1.5em;
+	margin:0.7em 0 0;
+	text-align:center
 }
 
 #header {
@@ -43,42 +61,104 @@ body {
 	margin-left: 2px;
 }
 
-#footer {
-	margin-top: 4em;
+.option_row{
+	clear:left;
+	padding:2.5em 1em 0
+}
+
+.option_name{
+	float:left;
+	font-weight:bold;
+	margin-top:3px;
+	width:13em
+}
+
+.option_picker{
+	float:left
+}
+
+.buttons{
+	clear:left;
+	padding:2em 1em 0.7em
+}
+
+#save_status {
+	display:none;
+}
+
+.footer{
+	text-align:center;
+	argin-top:0.4em
 }
 </style>
 </head>
-<body>
-
-<div class="section-header first">Custom Query</div>
-<p>To use, enter the domain here.</p>
-<input type="text" id="custom-domain" oninput="markDirty()">
-<em>(eg a/http://api.twitter.com/)</em>
-
-
-<input type="text" id="check-time" oninput="markDirty()">
-<em>(default 10 min)</em>
-
-
-<div id="footer">
-<button id="save-button" style="font-weight: bold" onclick=save();>Save</button>
-<button onclick=init();>Cancel</button>
-</div>
-
-<div id="debug"></div>
+<body onload="_initOptionsPage();">
+    <div id="content">
+      <h1>
+        <img src='http://img706.imageshack.us/img706/5401/graphsocialmedia1.jpg' title="SM Monitoring" alt="SM Monitoring"><br>
+        Social Media Monitoring Extension
+      </h1>
+	  <div class="section-header first">Options</div>
+	  
+      <form name="options_form" action="">
+        <div class="option_row">
+          <div class="option_name">Update every:</div>
+          <div class="option_picker">
+            <select id="refresh-interval" onchange="markDirty()">
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+          </div>
+        </div>
+		
+		<div class="option_row">
+          <div class="option_name">Sound alert:</div>
+          <div class="option_picker">
+            <select id="sound-alert">
+              <option value="">None</option>
+              <option value="http://work.max99x.com/cuckoo.ogg">Cuckoo</option>
+              <option value="http://work.max99x.com/bell.ogg">Chime</option>
+              <option value="http://work.max99x.com/cuckoo.ogg">Cuckoo</option>
+            </select>
+          </div>
+		  <input type="button" value="Play" />
+        </div>
+		
+        <div class="option_row">
+          <div class="option_name">Icons:</div>
+          <div class="option_picker">
+            <input type="radio" name="icon_set" value="set1" /><img src="icons/set1/no_new.png" /><img src="icons/set1/new.png" /><br />
+            <input type="radio" name="icon_set" value="set2" /><img src="icons/set2/no_new.png" /><img src="icons/set2/new.png" /><br />
+            <input type="radio" name="icon_set" value="set3" /><img src="icons/set3/no_new.png" /><img src="icons/set3/new.png" /><br />
+          </div>
+        </div>
+		
+        <div class="buttons">
+          <button id="save_button" onclick="saveOptions();">Save</button>
+		  <!-- TODO: implemet Reset -->
+          <button id="reset_button" onclick="resetOptions();">Reset</button>
+          <span id="save_status">Options saved</span>
+        </div>
+      </form>	  
+    </div>
+	
+<!-- TODO: add extension link -->	
+<div class="footer"><a href="http://*/*">Social Media Monitoring Homepage</a></div>
 
 <script>
-	var customDomainsTextbox;
+	//var customDomainsTextbox;
 	var saveButton;
 
-	init();
+	
+	function _initOptionsPage() {
+		//customDomainsTextbox = document.getElementById("custom-domain");
+		saveButton = document.getElementById("save_button");
+		
 
-	function init() {
-		customDomainsTextbox = document.getElementById("custom-domain");
-			
-		saveButton = document.getElementById("save-button");
-
-		customDomainsTextbox.value = localStorage.customDomain || "";
+		//customDomainsTextbox.value = localStorage.customDomain || "";
 			
 		markClean();
 
@@ -89,20 +169,26 @@ body {
 
 		debugDivObj = document.getElementById("debug");
 
-		debugDivObj.innerHTML = localStorage.queries;
+		//debugDivObj.innerHTML = localStorage.filters;
 		
 
-		
-		}
+	}
 
-
-	function save() {
-		localStorage.customDomain = customDomainsTextbox.value;
+	function saveOptions() {
+		//localStorage.customDomain = customDomainsTextbox.value;
 			
 		markClean();
 
 		chrome.extension.getBackgroundPage().init();
+		return false;
 	}
+	
+	function resetOptions() {
+		
+		return false;
+	}
+	
+	
 
 	function markDirty() {
 		saveButton.disabled = false;
