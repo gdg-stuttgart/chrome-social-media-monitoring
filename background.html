@@ -81,6 +81,27 @@ function processResult(period, filterTag) {
 	  }
 }
 
+
+function locationDetected(position) {
+	  var latitue = position.coords.latitude;
+	  var longtitue = position.coords.longitude;
+	  //port.postMessage({locationDetected:{latitude:position.coords.latitude,
+		  								  longitude:position.coords.longitude}});	  
+}
+
+function locationError(msg) {
+  var status = typeof msg == 'string' ? msg : "failed";
+  //port.postMessage({locationError:status});
+}
+
+function getGeoLocation()
+	if (navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition(locationDetected, locationError);
+	} else {
+		locationError('Geo location not supported! Geolocation is currently only supported in the dev channels Try start chrome with arguments: --enable geolocation');
+	}
+}
+
 </script>
 
 </body>
