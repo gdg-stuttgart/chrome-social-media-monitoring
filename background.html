@@ -25,6 +25,9 @@ chrome.extension.onConnect.addListener(function(port) {
 			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, filterTag);
 			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, filterTag);
 	    }
+	    if (msg.geocode) {
+	    	geocodeLocation(msg.geocode.address, msg.geocode.radius);
+	    }
 	  });
 	});
 
@@ -67,15 +70,16 @@ function loadTweets(period, filterTag, latitude, longtitude, radius) {
 
 	var queryURL = baseURL + query + since + geoLoc != "" ?  geoLoc : "";
 
-	var req = new XMLHttpRequest();
-	req.open(
+	var xhr = new XMLHttpRequest();
+	xhr.open(
 		"GET",
 	    baseURL,
 	    true);
-	req.onload = function() {
-		processResult(period, filterTag);
+	xhr.onreadystatechange = function() {
+		  if (xhr.readyState == 4)
+			processResult(period, filterTag);
 	};
- 	req.send(null);
+	xhr.send();
 }
 
 function getQueryDate(period) {
@@ -119,6 +123,20 @@ function requestGeoLocation()
 	} else {
 		locationError('Geo location not supported! Geolocation is currently only supported in the dev channels Try start chrome with arguments: --enable geolocation');
 	}
+}
+
+function geocodeLocation(adress, radius) {
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", "http://maps.google.com/maps/geo?q=" + adress + "&output=json&sensor=false&key=your_api_key", true);
+	xhr.onreadystatechange = function() {
+	  if (xhr.readyState == 4) {
+	    var geocode = JSON.parse(xhr.responseText);
+	    var coordinates = geocode.Placemark["Point"].coordinates;
+
+	    port.postMessage({geocoded: coordinates[0] + "," + coordinates[1] + "," + radius "km"};
+	  }
+	}
+	xhr.send();
 }
 
 </script>
