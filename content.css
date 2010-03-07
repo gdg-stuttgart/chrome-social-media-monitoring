@@ -77,13 +77,14 @@ body {
 	float: left;
 	vertical-align: middle;
 	margin-top: 6px;
-	margin-left: 10px;
+	margin-left: 5px;
 }
 
 #btnAdd {
 	background-image: url('icon_add.png');
 	background-repeat: no-repeat;
-	height: 14px;
+	width: 16px;
+	height: 16px;
 	display: block;
 	padding-left: 10px;
 	width: 100px;

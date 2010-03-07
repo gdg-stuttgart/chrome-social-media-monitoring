@@ -102,6 +102,14 @@ body{
 	  
       <form name="options_form" action="">
         <div class="option_row">
+          <div class="option_name">Default On Click Behavior:</div>
+          <div class="option_picker">
+        <input type="radio" id="default" name="default" value="1"/><label for="default">Always show popup</label><br/>
+        <input type="radio" id="off" name="off" value="0"/><label for="off">Never show popup (Go straight to browser tabs when new search result(s) exist)</label>
+          </div>
+        </div>	  
+			  
+        <div class="option_row">
           <div class="option_name">Update every:</div>
           <div class="option_picker">
             <select id="refresh-interval" onchange="markDirty()">
@@ -109,7 +117,6 @@ body{
               <option value="10">10 minutes</option>
               <option value="15">15 minutes</option>
               <option value="30">30 minutes</option>
-              <option value="60">60 minutes</option>
             </select>
           </div>
         </div>
@@ -126,15 +133,17 @@ body{
           </div>
 		  <input type="button" value="Play" />
         </div>
-		
+
+<!--		
         <div class="option_row">
           <div class="option_name">Icons:</div>
           <div class="option_picker">
             <input type="radio" name="icon_set" value="set1" /><img src="icons/set1/no_new.png" /><img src="icons/set1/new.png" /><br />
             <input type="radio" name="icon_set" value="set2" /><img src="icons/set2/no_new.png" /><img src="icons/set2/new.png" /><br />
-            <input type="radio" name="icon_set" value="set3" /><img src="icons/set3/no_new.png" /><img src="icons/set3/new.png" /><br />
+            <input type="radio" name="icon_set" value="set3" /><img src="icons/set3/no_new.png" /><img src="icons/set3/new.png" />
           </div>
         </div>
+-->
 		
         <div class="buttons">
           <button id="save_button" onclick="saveOptions();">Save</button>
