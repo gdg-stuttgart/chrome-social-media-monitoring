@@ -1,5 +1,6 @@
 <?php
 $apiKey = "ABQIAAAA262XGKpE7AH_he_c_NwvhBTGKx-cvzVP972eZqujeomI3RDpChT1ZVK_GoLqL7fyKCZhQOHgNmJSMQ";
+//TODO add regEX check for input validation...
 $address = $_GET["loc"];
  
 $url = "http://maps.google.com/maps/geo?q=".urlencode($address)."&amp;output=json&amp;sensor=false&amp;key=y".$apiKey;

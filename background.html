@@ -149,9 +149,9 @@ function requestGeoLocation(){
 	}
 }
 
-function geocodeLocation(adress, radius) {
+function geocodeLocation(address, radius) {
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://maps.google.com/maps/geo?q=" + adress + "&output=json&sensor=false&key=your_api_key", true);
+	xhr.open("GET", "http://www.ilimitado.de/labs/chrome/extensions/social-monitor/geocoder.php?loc=" + address, true);
 	xhr.onreadystatechange = function() {
 	  if (xhr.readyState == 4) {
 	    var geocode = JSON.parse(xhr.responseText);
