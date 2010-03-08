@@ -37,8 +37,20 @@ chrome.extension.onConnect.addListener(function(port) {
 		  if (msg.alert) {
 			  filterTags = msg.alert;
 			  console.log('onMessage[alert]:' + filterTags);
-		  }	  
-	    
+		  }	
+		  if (msg.filterTagResponse) {
+			  filterTags = msg.filterTagResponse;
+			  console.log('onMessage[filterTagResponse]:' + filterTags);
+		  }
+		  if (msg.locationDetected) {
+			  var currentLatitude = msg.loactionDetected.latitude;
+			  var currentLongitude = msg.loactionDetected.longitude;
+			  console.log('onMessage[locationDetected]');
+		  }
+		  if (msg.locationError) {
+			  var errorMsg = locationError;
+			  console.log('onMessage[locationError]');
+		  }
 	  });
 });
 
@@ -132,11 +144,11 @@ function openResults() {
 		*/
 		//filterTags = getDummyData();
 
-		console.log('TODO: add communication with background.html\n port.postMessage({filterTagLoad: tagFilter})');
+		console.log('TODO: add communication with background.html\n port.postMessage({filterTagGet: tagFilter})');
 			
 		saveButton = document.getElementById("save-button");
 		markClean();
-
+		
 		filters = document.getElementById('filters');
 		template = xpath('//div[@id="template"]', document);
 		inputTag = xpath('//input[@class="tag"]', template);

@@ -6,58 +6,36 @@
 var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
 var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 
-/**
- * TODO: implement
- *
- * 	port.postMessage({filtereTagChanged: tagFilter});
- *	port.postMessage({filtereTagDeleted: tagFilter});
- *	port.postMessage({filtereTagAdded: tagFilter});
- *
- */
+var baseURL = "http://search.twitter.com/search.json?";
+
 chrome.extension.onConnect.addListener(function(port) {
-	  console.assert(port.name == "social-media-monitoring");
-	  port.onMessage.addListener(function(msg) {
+	console.assert(port.name == "social-media-monitoring");
+	port.onMessage.addListener(function(msg) {
 		console.log('onMessage:' + msg);
 		  
-	    if (msg.filterTagChanged) {
+		if (msg.filterTagChanged) {
 			var filterTag = msg.filterTagChanged;
-			//TODO add Geo Location to call i'm not sure what's the best way to do that because we
-			// have a async request here...
 			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, filterTag);
 			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, filterTag);
-	    }
-	    if (msg.geocode) {
-	    	geocodeLocation(msg.geocode.address, msg.geocode.radius);
-	    }
-	  });
+		}
+	    
+		if (msg.filterTagDeleted) {
+		  	removeItem(msg.filterTagChanged.id);
+		}
+		if (msg.filterTagRequest) {
+		  	var requestedfilterTag = getItem(msg.filterTagChanged.id);
+		  	port.postMessage({filterTagResponse:requestedfilterTag});
+		}
+		if (msg.geocode) {
+		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
+		}
+		if (msg.requestGeolocation) {
+		  	requestGeoLocation();
+		}
 	});
-
-function setItem(key, value) {
-	try {
-		console.log('Set Item:' + key);
-		window.localStorage.removeItem(key);
-		window.localStorage.setItem(key, value);
-	}catch(e) {
-		console.log("Error writing item to localstorage for key: " + key + " value: " + value);
-		console.log(e);
-	}
-}
-
-function getItem(key) {
-	var value;
-	console.log('Get Item:' + key);
-	try {
-		value = window.localStorage.getItem(key);
-	}catch(e) {
-	console.log("Error getting item to localstorage for key:" + key);
-	 	 console.log(e);
-	  	value = null;
-	}
-}
+});
 
 function loadTweets(period, filterTag, latitude, longtitude, radius) {
-	var baseURL = "http://search.twitter.com/search.json?";
-
 	var query = "q=" + escape(filterTag.id);
 
 	//var sinceDate = new Date("March 05, 2010 09:30:00");
@@ -67,6 +45,7 @@ function loadTweets(period, filterTag, latitude, longtitude, radius) {
    					 sinceDate.getDay() < 10 ? sinceDate.getDay() : +"0" + sinceDate.getDay());
 
 	var geoLoc = "";
+
 	if(latitude !== undefined && longtitude !== undefined && radius !== undefined) {
 		geoLoc = "geocode=" + escape(latitude + "," + longtitude + "," + radius + "km");
 	}
@@ -74,7 +53,7 @@ function loadTweets(period, filterTag, latitude, longtitude, radius) {
 	
 	var queryURL = baseURL + query + '&' + since + '&' + geoLoc;
 
-	console.log('getQuery:' + queryURL);
+	console.log('XHRQueryURL:' + queryURL);
 	
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", queryURL, true);
@@ -113,7 +92,7 @@ function processResult(period, filterTag, result) {
 		filterTag.shortTermTweetsPerHour = tweetsPerHour;
 	}
 
-	/*
+   	/*
 	 * TODO: check if this code line is right
 	 * 	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour = tweetsPerHour){
      */
@@ -130,15 +109,13 @@ function processResult(period, filterTag, result) {
 function locationDetected(position) {
 	  var latitude = position.coords.latitude;
 	  var longitude = position.coords.longitude;
-	  /*
 	  port.postMessage({locationDetected:{latitude:position.coords.latitude,
 		  								  longitude:position.coords.longitude}});	  
-		*/
 }
 
 function locationError(msg) {
   var status = typeof msg == 'string' ? msg : "failed";
-  //port.postMessage({locationError:status});
+  port.postMessage({locationError:status});
 }
 
 function requestGeoLocation(){
@@ -163,6 +140,38 @@ function geocodeLocation(address, radius) {
 	xhr.send();
 }
 
+function setItem(key, value) {
+	try {
+		console.log('Set Item:' + key);
+		window.localStorage.removeItem(key);
+		window.localStorage.setItem(key, value);
+	}catch(e) {
+		console.log("Error writing item to localstorage for key: " + key + " value: " + value);
+		console.log(e);
+	}
+}
+
+function getItem(key) {
+	var value;
+	console.log('Get Item:' + key);
+	try {
+		value = window.localStorage.getItem(key);
+	}catch(e) {
+	console.log("Error getting item to localstorage for key:" + key);
+	 	 console.log(e);
+	  	value = null;
+	}
+}
+
+function removeItem(key) {
+	try {
+		console.log('Remove Item:' + key);
+		window.localStorage.removeItem(key);
+	}catch(e) {
+		console.log("Error removing item to localstorage for key: " + key);
+		console.log(e);
+	}
+}
 </script>
 </body>
 </html>
