@@ -5,6 +5,8 @@ function Filter() {
 	this.longTermTweetsPerHour = 0;
 	this.serviceId = 'twitter';
 	this.geo = null;
+	this.searchQuery = "http://search.twitter.com/search.json?&q=" + this.query;
+
 }
 
 Filter.prototype.setQuery = function(query){

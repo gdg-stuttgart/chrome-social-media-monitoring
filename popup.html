@@ -3,10 +3,13 @@
 <title>Popup</title>
 
 <link rel="stylesheet" href="content.css" type="text/css" media="all" />
+<script type="text/javascript" src="filter_manager.js"></script>
 <script type="text/javascript" src="filter.js"></script>
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 
-<script type="text/javascript"><!--
+<script type="text/javascript">
+var filterManager = new FilterManager();
+
 var saveButton;
 var filterTags;
 
@@ -37,24 +40,10 @@ chrome.extension.onConnect.addListener(function(port) {
 		  if (msg.alert) {
 			  filterTags = msg.alert;
 			  console.log('onMessage[alert]:' + filterTags);
-		  }	
-		  if (msg.filterTagResponse) {
-			  filterTags = msg.filterTagResponse;
-			  console.log('onMessage[filterTagResponse]:' + filterTags);
-		  }
-		  if (msg.locationDetected) {
-			  var currentLatitude = msg.loactionDetected.latitude;
-			  var currentLongitude = msg.loactionDetected.longitude;
-			  console.log('onMessage[locationDetected]');
-		  }
-		  if (msg.locationError) {
-			  var errorMsg = locationError;
-			  console.log('onMessage[locationError]');
-		  }
+		  }	  
+	    
 	  });
 });
-
-
 
 /*
 	port.postMessage({filterTagChanged: tagFilter});
@@ -65,14 +54,15 @@ chrome.extension.onConnect.addListener(function(port) {
 
 $(document).ready(function() {
 	$("#btnAdd").click(function() {
-		addFilter();
+		addFilterHTML();
 		addRemoveButtonListeners();  
 	});
 
 });
 
 function openResults() {
-	var tagFilters = getDummyDataOld();
+	var tagFilters = filterManager.loadFilters();
+	
 	if (true) {
 		chrome.windows.create({url: tagFilters[0].searchQuery});
 		chrome.windows.getLastFocused(function (window) {
@@ -95,7 +85,7 @@ function openResults() {
 }
 
 
---></script>
+</script>
 </head>
 <body onload="setTimeout(init,0);" style="widht: 300px;">
 
@@ -104,12 +94,10 @@ function openResults() {
 
 <div id="filters">
 <div id="template" class="filter"><span id="iconService"></span> <input
-	type="text" id="tag" class="tag" oninput="markDirty()"> <input
+	type="text" id="tag" class="tag" oninput="markDirty();"> <input
 	type="text" class="avgWeek" disabled="disabled" value="0"> <input
 	type="text" class="avgDay" disabled="disabled" value="0"> <span
-	id="btnRemove"></span>
-	<span class="clear"><!--  --></span>
-	</div>
+	id="btnRemove"></span> <span class="clear"><!--  --></span></div>
 </div>
 <span class="clear"><!--  --></span>
 <span id="btnAdd"> add new</span>
@@ -117,8 +105,8 @@ function openResults() {
 
 
 <div id="footer">
-<button id="save-button" style="font-weight: bold" onclick=save();>Save</button>
-<button onclick=init();>Cancel</button>
+<button id="save-button" style="font-weight: bold" onclick="save();">Save</button>
+<button onclick="init();">Cancel</button>
 </div>
 
 <form id="options_form">
@@ -129,6 +117,7 @@ function openResults() {
 	<option value="open_in_current_window">the current window</option>
 </select></div>
 </div>
+</form>
 
 <div id="footer">
 <button id="save-button" style="font-weight: bold"
@@ -136,19 +125,23 @@ function openResults() {
 </div>
 
 <script type="text/javascript">
-	
+
 	function init() {
 
 		/*
 			XXX: remove populateDummyData - debugging
 		*/
 		//filterTags = getDummyData();
+		//var filterTags = JSON.parse(localStorage['filters']);
 
-		console.log('TODO: add communication with background.html\n port.postMessage({filterTagGet: tagFilter})');
+		var filterTags = filterManager.loadFilters();
+	
+
+		console.log('TODO: add communication with background.html\n port.postMessage({filterTagLoad: tagFilter})');
 			
 		saveButton = document.getElementById("save-button");
 		markClean();
-		
+
 		filters = document.getElementById('filters');
 		template = xpath('//div[@id="template"]', document);
 		inputTag = xpath('//input[@class="tag"]', template);
@@ -157,7 +150,7 @@ function openResults() {
 
 		if(filterTags){
 			for (var i in filterTags) {
-				addFilter(filterTags[i]);
+				addFilterHTML(filterTags[i]);
 			}
 			addRemoveButtonListeners();
 		}
@@ -168,8 +161,20 @@ function openResults() {
 			
 			var filterDiv = $(this).parent('.filter').css('border','1px dotted #ff0000');
 
-			filterDiv.remove();
 
+			/*
+			 * remove from local storage
+			 * TODO: change harcoded values
+			 */
+			var strDivId = filterDiv.attr('id');
+			strDivId = strDivId.substring(2);
+			filterManager.removeFilterByKey('twitter' + '_' + strDivId);
+
+			/*
+			 * remove from HTML
+			 */
+			filterDiv.remove();
+					
 			/*
 			 * TODO: add communication with background.html
 			 */
@@ -178,20 +183,22 @@ function openResults() {
 		});
 	}
 
-	function addFilter(tagFilterObj){
+	function addFilterHTML(tagFilterObj){
 
 		if(tagFilterObj){		
 
-			inputTag.setAttribute('value',tagFilterObj.id);
-			inputAvgWeek.setAttribute('value',tagFilterObj.weeklyAvg);
-			inputAvgDay.setAttribute('value',tagFilterObj.hourlyAvg);
+			inputTag.setAttribute('value',tagFilterObj.query);
+			inputAvgWeek.setAttribute('value',tagFilterObj.shortTermTweetsPerHour);
+			inputAvgDay.setAttribute('value',tagFilterObj.longTermTweetsPerHour);
 			
 			// copy node and update
 			item = template.cloneNode(true);	  
-			item.setAttribute('id','f_' + tagFilterObj.id);
+			item.setAttribute('id','f_' + tagFilterObj.query);
 			
 			filters.appendChild(item);
+			
 		}else{
+
 			inputTag.setAttribute('value','');
 			inputAvgWeek.setAttribute('value','0');
 			inputAvgDay.setAttribute('value','0');
@@ -199,12 +206,12 @@ function openResults() {
 			// copy node and update
 			item = template.cloneNode(true);	  
 			item.setAttribute('id','f');
-			
+
 			filters.appendChild(item);
 
 		}
 	}
-
+	
 	// evaluate xpath
 	function xpath(path, node) {
 	  return document.evaluate(path, node).iterateNext();
@@ -228,13 +235,14 @@ function openResults() {
 				 return false;
 			 }
 
-			var tagFilter = new Object();
-			tagFilter.id = tagObj.val();
+			var tagFilter = new Filter();
+			tagFilter.query = tagObj.val();
 			tagFilter.shortTermTweetsPerHour = 0;
 			tagFilter.longTermTweetsPerHour = 0 ;
 			
 			$(this).attr('id','f_' + tagFilter.id );
 			
+			filterManager.setFilter(tagFilter);
 			port.postMessage({filterTagChanged: tagFilter});
 			
 			
@@ -250,7 +258,7 @@ function openResults() {
 		
 		//chrome.extension.getBackgroundPage().init();
 	}
-
+/*
 	function getDummyData(){
 		var tagFilters = new Array();
 
@@ -273,42 +281,8 @@ function openResults() {
 		
 		return tagFilters;
 	}
+	*/
 	
-	function getDummyDataOld(){
-		var tagFilters = new Array();
-
-		var tagFilter = new Object();
-		tagFilter.id = "#hashtag1";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 6;
-		tagFilter.hourlyAvg = 7;
-		tagFilter.serviceId = 'twitter';
-		tagFilter.searchQuery = "http://search.twitter.com/search.json?&q=" + tagFilter.id;
-		
-		tagFilters.push(tagFilter);
-
-		tagFilter = new Object();
-		tagFilter.id = "#hashtag2";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 10;
-		tagFilter.hourlyAvg = 50;
-		tagFilter.serviceId = 'twitter';
-		tagFilter.searchQuery = "http://search.twitter.com/search.json?&q=" + tagFilter.id;
-
-		tagFilters.push(tagFilter);
-
-		tagFilter = new Object();
-		tagFilter.id = "#hashtag3";
-		tagFilter.threshold = 0;
-		tagFilter.weeklyAvg = 30;
-		tagFilter.hourlyAvg = 50;
-		tagFilter.serviceId = 'twitter';
-		tagFilter.searchQuery = "http://search.twitter.com/search.json?&q=" + tagFilter.id;
-
-		tagFilters.push(tagFilter);
-				
-		return tagFilters;
-	}
 
 	function markDirty() {
 		saveButton.disabled = false;

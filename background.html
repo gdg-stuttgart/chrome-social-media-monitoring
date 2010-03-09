@@ -1,5 +1,7 @@
 <html>
 <head>
+<script type="text/javascript" src="filter_manager.js"></script>
+<script type="text/javascript" src="filter.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -7,6 +9,7 @@ var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
 var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 
 var baseURL = "http://search.twitter.com/search.json?";
+var filterManager = new FilterManager();
 
 chrome.extension.onConnect.addListener(function(port) {
 	console.assert(port.name == "social-media-monitoring");
@@ -35,8 +38,9 @@ chrome.extension.onConnect.addListener(function(port) {
 	});
 });
 
+
 function loadTweets(period, filterTag, latitude, longtitude, radius) {
-	var query = "q=" + escape(filterTag.id);
+	var query = "q=" + escape(filterTag.query);
 
 	//var sinceDate = new Date("March 05, 2010 09:30:00");
 	var sinceDate = getQueryDate(period);
@@ -102,7 +106,8 @@ function processResult(period, filterTag, result) {
 	}
 
 	port.postMessage({update:filterTag});
-	setItem(filterTag.id, filterTag);
+	//setItem(filterTag.id, filterTag);
+	filterManager.setFilter(filterTag);
 }
 
 
