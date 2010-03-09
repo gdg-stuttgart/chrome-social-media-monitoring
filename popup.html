@@ -41,16 +41,8 @@ chrome.extension.onConnect.addListener(function(port) {
 			  filterTags = msg.alert;
 			  console.log('onMessage[alert]:' + filterTags);
 		  }	  
-	    
 	  });
 });
-
-/*
-	port.postMessage({filterTagChanged: tagFilter});
-	port.postMessage({filterTagDeleted: tagFilter});
-	port.postMessage({filterTagAdded: tagFilter});
-
-*/
 
 $(document).ready(function() {
 	$("#btnAdd").click(function() {

@@ -21,14 +21,6 @@ chrome.extension.onConnect.addListener(function(port) {
 			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, filterTag);
 			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, filterTag);
 		}
-	    
-		if (msg.filterTagDeleted) {
-		  	removeItem(msg.filterTagChanged.id);
-		}
-		if (msg.filterTagRequest) {
-		  	var requestedfilterTag = getItem(msg.filterTagChanged.id);
-		  	port.postMessage({filterTagResponse:requestedfilterTag});
-		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
 		}
@@ -106,7 +98,6 @@ function processResult(period, filterTag, result) {
 	}
 
 	port.postMessage({update:filterTag});
-	//setItem(filterTag.id, filterTag);
 	filterManager.setFilter(filterTag);
 }
 
@@ -143,39 +134,6 @@ function geocodeLocation(address, radius) {
 	  }
 	}
 	xhr.send();
-}
-
-function setItem(key, value) {
-	try {
-		console.log('Set Item:' + key);
-		window.localStorage.removeItem(key);
-		window.localStorage.setItem(key, value);
-	}catch(e) {
-		console.log("Error writing item to localstorage for key: " + key + " value: " + value);
-		console.log(e);
-	}
-}
-
-function getItem(key) {
-	var value;
-	console.log('Get Item:' + key);
-	try {
-		value = window.localStorage.getItem(key);
-	}catch(e) {
-	console.log("Error getting item to localstorage for key:" + key);
-	 	 console.log(e);
-	  	value = null;
-	}
-}
-
-function removeItem(key) {
-	try {
-		console.log('Remove Item:' + key);
-		window.localStorage.removeItem(key);
-	}catch(e) {
-		console.log("Error removing item to localstorage for key: " + key);
-		console.log(e);
-	}
 }
 </script>
 </body>
