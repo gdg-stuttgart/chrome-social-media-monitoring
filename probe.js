@@ -4,8 +4,10 @@ function Probe() {
 	this.shortTermTweetsPerHour = 0;
 	this.longTermTweetsPerHour = 0;
 	this.serviceId = 'twitter';
-	this.geo = null;
 	this.searchQuery = "http://search.twitter.com/search.json?&q=" + this.query;
+	this.latitude = undefined;
+	this.longitude = undefined;
+	this.radius = undefined;
 
 }
 
