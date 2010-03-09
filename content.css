@@ -52,12 +52,12 @@ body {
 	margin-top: 4em;
 }
 
-#filters {
+#probes {
 	width: 300px;
 	display: block;
 }
 
-.filter {
+.probe {
 	display: block;
 	height: 28px;
 }

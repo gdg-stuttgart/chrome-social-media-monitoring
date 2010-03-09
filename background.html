@@ -1,7 +1,7 @@
 <html>
 <head>
-<script type="text/javascript" src="filter_manager.js"></script>
-<script type="text/javascript" src="filter.js"></script>
+<script type="text/javascript" src="probe_manager.js"></script>
+<script type="text/javascript" src="probe.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -9,17 +9,17 @@ var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
 var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 
 var baseURL = "http://search.twitter.com/search.json?";
-var filterManager = new FilterManager();
+var probeManager = new ProbeManager();
 
 chrome.extension.onConnect.addListener(function(port) {
 	console.assert(port.name == "social-media-monitoring");
 	port.onMessage.addListener(function(msg) {
 		console.log('onMessage:' + msg);
 		  
-		if (msg.filterTagChanged) {
-			var filterTag = msg.filterTagChanged;
-			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, filterTag);
-			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, filterTag);
+		if (msg.probeTagChanged) {
+			var probeTag = msg.probeTagChanged;
+			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, probeTag);
+			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -31,8 +31,8 @@ chrome.extension.onConnect.addListener(function(port) {
 });
 
 
-function loadTweets(period, filterTag, latitude, longtitude, radius) {
-	var query = "q=" + escape(filterTag.query);
+function loadTweets(period, probeTag, latitude, longtitude, radius) {
+	var query = "q=" + escape(probeTag.query);
 
 	//var sinceDate = new Date("March 05, 2010 09:30:00");
 	var sinceDate = getQueryDate(period);
@@ -59,7 +59,7 @@ function loadTweets(period, filterTag, latitude, longtitude, radius) {
 			  if(response.error){
 				  throw new Error('failed to get tweets:' + responseText);
 			   }else{
-				processResult(period, filterTag, response);
+				processResult(period, probeTag, response);
 			  }
 		  }
 	};
@@ -72,7 +72,7 @@ function getQueryDate(period) {
 	return new Date(currentTime - timeIntervalInMS);
 }
 
-function processResult(period, filterTag, result) {
+function processResult(period, probeTag, result) {
 	var port = chrome.extension.connect({name: "social-media-monitoring"});
 
 	var tweets = result.results;
@@ -83,22 +83,22 @@ function processResult(period, filterTag, result) {
 	
 	tweetsPerHour = tweets.length / period;
    	if(period === LONG_TERM_INTERVAL_IN_HOURS){
-		filterTag.longTermTweetsPerHour = tweetsPerHour;
+		probeTag.longTermTweetsPerHour = tweetsPerHour;
 	} else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
-		filterTag.shortTermTweetsPerHour = tweetsPerHour;
+		probeTag.shortTermTweetsPerHour = tweetsPerHour;
 	}
 
    	/*
 	 * TODO: check if this code line is right
-	 * 	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour = tweetsPerHour){
+	 * 	if(probeTag.shortTermTweetsPerHour > probeTag.longTermTweetsPerHour = tweetsPerHour){
      */
 
-	if(filterTag.shortTermTweetsPerHour > filterTag.longTermTweetsPerHour) {
-		port.postMessage({alert:filterTag});
+	if(probeTag.shortTermTweetsPerHour > probeTag.longTermTweetsPerHour) {
+		port.postMessage({alert:probeTag});
 	}
 
-	port.postMessage({update:filterTag});
-	filterManager.setFilter(filterTag);
+	port.postMessage({update:probeTag});
+	probeManager.setProbe(probeTag);
 }
 
 

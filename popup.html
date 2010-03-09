@@ -3,17 +3,17 @@
 <title>Popup</title>
 
 <link rel="stylesheet" href="content.css" type="text/css" media="all" />
-<script type="text/javascript" src="filter_manager.js"></script>
-<script type="text/javascript" src="filter.js"></script>
+<script type="text/javascript" src="probe_manager.js"></script>
+<script type="text/javascript" src="probe.js"></script>
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 
 <script type="text/javascript">
-var filterManager = new FilterManager();
+var probeManager = new ProbeManager();
 
 var saveButton;
-var filterTags;
+var probeTags;
 
-var filters, template, inputTag, inputAvgWeek, inputAvgDay;
+var probes, template, inputTag, inputAvgWeek, inputAvgDay;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 
@@ -22,54 +22,54 @@ chrome.extension.onConnect.addListener(function(port) {
 	  port.onMessage.addListener(function(msg) {
 		console.log('onMessage:' + msg);
 		  if (msg.update) {
-			  filterTags = msg.update;
-			  console.log('onMessage[update]:' + filterTags);
+			  probeTags = msg.update;
+			  console.log('onMessage[update]:' + probeTags);
 
 			/*
-			 * get right element from filter list
+			 * get right element from probe list
 			 */
-			  var tagObj = $('#f_' + filterTags.id + '');
+			  var tagObj = $('#f_' + probeTags.query + '');
 
 				 if (tagObj){
 					 $(tagObj).addClass('warn');
-					 $(' > input.avgWeek',tagObj).val(filterTags.shortTermTweetsPerHour);
-					 $(' > input.avgDay',tagObj).val(filterTags.longTermTweetsPerHour);
+					 $(' > input.avgWeek',tagObj).val(probeTags.shortTermTweetsPerHour);
+					 $(' > input.avgDay',tagObj).val(probeTags.longTermTweetsPerHour);
 				 }
 
 		  }
 		  if (msg.alert) {
-			  filterTags = msg.alert;
-			  console.log('onMessage[alert]:' + filterTags);
+			  probeTags = msg.alert;
+			  console.log('onMessage[alert]:' + probeTags);
 		  }	  
 	  });
 });
 
 $(document).ready(function() {
 	$("#btnAdd").click(function() {
-		addFilterHTML();
+		addProbeHTML();
 		addRemoveButtonListeners();  
 	});
 
 });
 
 function openResults() {
-	var tagFilters = filterManager.loadFilters();
+	var tagProbes = probeManager.loadProbes();
 	
 	if (true) {
-		chrome.windows.create({url: tagFilters[0].searchQuery});
+		chrome.windows.create({url: tagProbes[0].searchQuery});
 		chrome.windows.getLastFocused(function (window) {
 		
-			for (var j in tagFilters) {
+			for (var j in tagProbes) {
 				if (j > 0) {
-					chrome.tabs.create({url: tagFilters[j].searchQuery, windowId: window.windowId});
+					chrome.tabs.create({url: tagProbes[j].searchQuery, windowId: window.windowId});
 				}
 			}
 		
 		});
 	} else {	
 	
-		for (var i in tagFilters) {
-			chrome.tabs.create({url: tagFilters[i].searchQuery});
+		for (var i in tagProbes) {
+			chrome.tabs.create({url: tagProbes[i].searchQuery});
 		}
 	
 	}
@@ -81,11 +81,11 @@ function openResults() {
 </head>
 <body onload="setTimeout(init,0);" style="widht: 300px;">
 
-<div class="section-header first">Your Filters</div>
+<div class="section-header first">Your Probes</div>
 <p>add your search words</p>
 
-<div id="filters">
-<div id="template" class="filter"><span id="iconService"></span> <input
+<div id="probes">
+<div id="template" class="probe"><span id="iconService"></span> <input
 	type="text" id="tag" class="tag" oninput="markDirty();"> <input
 	type="text" class="avgWeek" disabled="disabled" value="0"> <input
 	type="text" class="avgDay" disabled="disabled" value="0"> <span
@@ -123,26 +123,26 @@ function openResults() {
 		/*
 			XXX: remove populateDummyData - debugging
 		*/
-		//filterTags = getDummyData();
-		//var filterTags = JSON.parse(localStorage['filters']);
+		//probeTags = getDummyData();
+		//var probeTags = JSON.parse(localStorage['probes']);
 
-		var filterTags = filterManager.loadFilters();
+		var probeTags = probeManager.loadProbes();
 	
 
-		console.log('TODO: add communication with background.html\n port.postMessage({filterTagLoad: tagFilter})');
+		console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
 			
 		saveButton = document.getElementById("save-button");
 		markClean();
 
-		filters = document.getElementById('filters');
+		probes = document.getElementById('probes');
 		template = xpath('//div[@id="template"]', document);
 		inputTag = xpath('//input[@class="tag"]', template);
 		inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
 		inputAvgDay	 = xpath('//input[@class="avgDay"]', template);
 
-		if(filterTags){
-			for (var i in filterTags) {
-				addFilterHTML(filterTags[i]);
+		if(probeTags){
+			for (var i in probeTags) {
+				addProbeHTML(probeTags[i]);
 			}
 			addRemoveButtonListeners();
 		}
@@ -151,43 +151,43 @@ function openResults() {
 	function addRemoveButtonListeners(){
 		$("span#btnRemove").click(function() {
 			
-			var filterDiv = $(this).parent('.filter').css('border','1px dotted #ff0000');
+			var probeDiv = $(this).parent('.probe').css('border','1px dotted #ff0000');
 
 
 			/*
 			 * remove from local storage
 			 * TODO: change harcoded values
 			 */
-			var strDivId = filterDiv.attr('id');
+			var strDivId = probeDiv.attr('id');
 			strDivId = strDivId.substring(2);
-			filterManager.removeFilterByKey('twitter' + '_' + strDivId);
+			probeManager.removeProbeByKey('twitter' + '_' + strDivId);
 
 			/*
 			 * remove from HTML
 			 */
-			filterDiv.remove();
+			probeDiv.remove();
 					
 			/*
 			 * TODO: add communication with background.html
 			 */
-			 console.log('TODO: add communication with background.html\n port.postMessage({filterTagDeleted: tagFilter})');
+			 console.log('TODO: add communication with background.html\n port.postMessage({probeTagDeleted: tagProbe})');
 
 		});
 	}
 
-	function addFilterHTML(tagFilterObj){
+	function addProbeHTML(tagProbeObj){
 
-		if(tagFilterObj){		
+		if(tagProbeObj){		
 
-			inputTag.setAttribute('value',tagFilterObj.query);
-			inputAvgWeek.setAttribute('value',tagFilterObj.shortTermTweetsPerHour);
-			inputAvgDay.setAttribute('value',tagFilterObj.longTermTweetsPerHour);
+			inputTag.setAttribute('value',tagProbeObj.query);
+			inputAvgWeek.setAttribute('value',tagProbeObj.shortTermTweetsPerHour);
+			inputAvgDay.setAttribute('value',tagProbeObj.longTermTweetsPerHour);
 			
 			// copy node and update
 			item = template.cloneNode(true);	  
-			item.setAttribute('id','f_' + tagFilterObj.query);
+			item.setAttribute('id','f_' + tagProbeObj.query);
 			
-			filters.appendChild(item);
+			probes.appendChild(item);
 			
 		}else{
 
@@ -199,7 +199,7 @@ function openResults() {
 			item = template.cloneNode(true);	  
 			item.setAttribute('id','f');
 
-			filters.appendChild(item);
+			probes.appendChild(item);
 
 		}
 	}
@@ -227,15 +227,15 @@ function openResults() {
 				 return false;
 			 }
 
-			var tagFilter = new Filter();
-			tagFilter.query = tagObj.val();
-			tagFilter.shortTermTweetsPerHour = 0;
-			tagFilter.longTermTweetsPerHour = 0 ;
+			var tagProbe = new Probe();
+			tagProbe.query = tagObj.val();
+			tagProbe.shortTermTweetsPerHour = 0;
+			tagProbe.longTermTweetsPerHour = 0 ;
 			
-			$(this).attr('id','f_' + tagFilter.id );
+			$(this).attr('id','f_' + tagProbe.query );
 			
-			filterManager.setFilter(tagFilter);
-			port.postMessage({filterTagChanged: tagFilter});
+			probeManager.setProbe(tagProbe);
+			port.postMessage({probeTagChanged: tagProbe});
 			
 			
 		});
@@ -245,33 +245,33 @@ function openResults() {
 		/*
 		 * TODO: add communication with background.html
 		 */
-		 //console.log('TODO: add communication with background.html\n port.postMessage({filterTagAdded: tagFilter})');
+		 //console.log('TODO: add communication with background.html\n port.postMessage({probeTagAdded: tagProbe})');
 
 		
 		//chrome.extension.getBackgroundPage().init();
 	}
 /*
 	function getDummyData(){
-		var tagFilters = new Array();
+		var tagProbes = new Array();
 
-		var tagFilter = new Filter();
-		tagFilter.setQuery("#hashtag1");
-		tagFilter.searchQuery = "http://search.twitter.com/search.json?&q=" + tagFilter.id;
+		var tagProbe = new Probe();
+		tagProbe.setQuery("#hashtag1");
+		tagProbe.searchQuery = "http://search.twitter.com/search.json?&q=" + tagProbe.query;
 		
-		tagFilters.push(tagFilter);
+		tagProbes.push(tagProbe);
 
-		tagFilter = new Filter();
-		tagFilter.setQuery("#hashtag2");
-		tagFilter.searchQuery = "http://search.twitter.com/search.json?&q=" + tagFilter.id;
-		tagFilters.push(tagFilter);
+		tagProbe = new Probe();
+		tagProbe.setQuery("#hashtag2");
+		tagProbe.searchQuery = "http://search.twitter.com/search.json?&q=" + tagProbe.query;
+		tagProbes.push(tagProbe);
 
-		tagFilter = new Filter();
-		tagFilter.setQuery("#hashtag3");
-		tagFilter.searchQuery = "http://search.twitter.com/search.json?&q=" + tagFilter.id;
-		tagFilters.push(tagFilter);
+		tagProbe = new Probe();
+		tagProbe.setQuery("#hashtag3");
+		tagProbe.searchQuery = "http://search.twitter.com/search.json?&q=" + tagProbe.query;
+		tagProbes.push(tagProbe);
 		
 		
-		return tagFilters;
+		return tagProbes;
 	}
 	*/
 	

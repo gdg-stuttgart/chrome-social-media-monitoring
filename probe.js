@@ -1,4 +1,4 @@
-function Filter() {
+function Probe() {
 	this.query = "";
 	this.threshold = 0;
 	this.shortTermTweetsPerHour = 0;
@@ -9,10 +9,10 @@ function Filter() {
 
 }
 
-Filter.prototype.setQuery = function(query){
+Probe.prototype.setQuery = function(query){
 	this.query = query;
 }
 
-Filter.prototype.getQuery = function(){
+Probe.prototype.getQuery = function(){
 	return this.query;
 }
