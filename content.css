@@ -67,6 +67,17 @@ body {
 	display: inline;
 	float: left;
 }
+.span_tag {
+	width: 160px;
+	float: left;
+	height:24px;
+	display:inline-block; 
+	vertical-align:middle;
+}
+
+.hd {
+	display: none;
+}
 
 #btnRemove {
 	background-image: url('icon_remove.png');
@@ -78,6 +89,10 @@ body {
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;
+}
+
+#btnRemove.hd {
+	display: none;
 }
 
 #btnAdd {
@@ -144,6 +159,9 @@ body {
 
 .warn {
 	border: 1px dotted #ff0000;
+}
+.selected{
+	background-color: #ffff99;
 }
 
 .clear {
