@@ -1,21 +1,21 @@
 function QueryURL(baseURL, probeTag) {
-	this.baseURL = baseURL;
-	this.query = probeTag.query;
+	this._baseURL = baseURL;
+	this._query = probeTag.query;
 	this.timeIntervalInMS = undefined;
-	this.latitude = probeTag.latitude;
-	this.longtitude = probeTag.longtitude;
-	this.radius = probeTag.radius;
+	this._latitude = probeTag.latitude;
+	this._longtitude = probeTag.longtitude;
+	this._radius = probeTag.radius;
 }
 
 QueryURL.prototype.getURL = function getURL() {
 	if(period !== undefined)
 		since =  'since='+ this.getSinceDate();
 	
-	if(this.latitude !== undefined && this.longtitude !== undefined && radius !== undefined)
-		geoLoc = 'geocode=' + latitude + ',' + longtitude + ',' + radius + 'km';
+	if(this._latitude !== undefined && this._longtitude !== undefined && this._radius !== undefined)
+		geoLoc = 'geocode=' + this._latitude + ',' + this._longtitude + ',' + this._radius + 'km';
 
-	var queryURL = baseURL + escape(this.query !== undefined ? + this.query : throw "Error: query must be defined!"; 
-									this.since !== undefined ? '&' + this.since : '' + 
+	var queryURL = this._baseURL + escape(this._query !== undefined ? + this._query : throw "Error: query must be defined!"; 
+									since !== undefined ? '&' + since : '' + 
 									geoLoc !== undefined ? '&' + geoLoc : '');
 
 	console.log('XHRQueryURL:' + queryURL);

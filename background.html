@@ -2,6 +2,7 @@
 <head>
 <script type="text/javascript" src="probe_manager.js"></script>
 <script type="text/javascript" src="probe.js"></script>
+<script type="text/javascript" src="queryURL.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -9,7 +10,7 @@ var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
 var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 var HOURS_TO_MS = 60 * 60 *1000;
 
-var baseURL = "http://search.twitter.com/search.json?";
+var baseURLs = {twitter: "http://search.twitter.com/search.json?"};
 var probeManager = new ProbeManager();
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
@@ -21,9 +22,9 @@ chrome.extension.onConnect.addListener(function(port) {
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
 
-			twitterQuery = new QueryURL(baseURL, probeTag)
-			twitterQuery.timeIntervalInMS = LONG_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
-			loadTweets(twitterQuery, probeTag);
+			query = new QueryURL(baseURLs.twitter, probeTag)
+			query.timeIntervalInMS = LONG_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
+			loadData(query.getURL, probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -34,44 +35,44 @@ chrome.extension.onConnect.addListener(function(port) {
 	});
 });
 
-function loadTweets(queryURL) {
+function loadData(queryURL, probeTag) {
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", queryURL, true);
 	xhr.onreadystatechange = function() {
 		  if (xhr.readyState == 4){
 			  var response = JSON.parse(xhr.responseText);
 			  if(response.error){
-				  throw new Error('failed to get tweets:' + responseText);
+				  throw new Error('Failed to load tweets:' + responseText);
 			   }else{
-				processResult(queryURL.period, probeTag, response);
+				processData(probeTag, response);
 			  }
 		  }
 	};
 	xhr.send();
 }
 
-function processTweets(period, probeTag, response) {
-	var tweets = response.results;
-	console.log('Received Tweets: ' + tweets);
-	console.log("Long term tweet Count :" + tweets.length);
-	probeTag.longTermTweetsPerHour = tweets.length / LONG_TERM_INTERVAL_IN_HOURS;
+function processData(probeTag, response) {
+	var data = response.results;
+	console.log('Received Tweets: ' + data);
+	console.log("Long term tweet Count :" + data.length);
+	probeTag.longTermTweetsPerHour = data.length / LONG_TERM_INTERVAL_IN_HOURS;
 
 	//calculateShortTerm
-	var tweetCount = 0;
-	$.each(tweets, function() { 
-		var currTime = new Date();
+	var itemCount = 0;
+	$.each(data, function() { 
+		var now = new Date();
 		var intervalLength = SHORT_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
-		var sinceDateTS = currTime.getTime() - intervalLength;
-		var tweetDate = new Date(this.created_at);
+		var sinceDate = now.getTime() - intervalLength;
+		var creationDate = new Date(this.created_at);
 
-		if(sinceDateTS < tweetDate.getTime()) 
+		if(sinceDate < creationDate.getTime()) 
 			break;
 
-		tweetCount++;
+		itemCount++;
 	});
 
-	console.log("Short term tweet Count :" + tweetCount);
-	probeTag.shortTermTweetsPerHour = tweetCount / SHORT_TERM_INTERVAL_IN_HOURS;
+	console.log("Short term tweet Count :" + itemCount);
+	probeTag.shortTermTweetsPerHour = itemCount / SHORT_TERM_INTERVAL_IN_HOURS;
 
 	if(probeTag.shortTermTweetsPerHour > probeTag.longTermTweetsPerHour) {
 		port.postMessage({alert:probeTag});
