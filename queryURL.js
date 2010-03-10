@@ -11,21 +11,24 @@ function QueryURL(baseURL, probeTag) {
 QueryURL.prototype.getURL = function getURL() {
 	var since = '';
 	if(this.timeIntervalInMS !== undefined)
-		since =  'since='+ this.getSinceDate();
+		since =  'since='+ escape(this.getSinceDate());
 	
-	var geoloc = '';
+	var geoLoc = '';
 	if(this._latitude !== undefined && this._longtitude !== undefined && this._radius !== undefined)
-		geoLoc = 'geocode=' + this._latitude + ',' + this._longtitude + ',' + this._radius + 'km';
+		geoLoc = 'geocode=' + escape(this._latitude + ',' + this._longtitude + ',' + this._radius + 'km');
 	
 	console.log('baseURL:' + this._baseURL);
-	console.log('query:' + this._query !== undefined ? + this._query : '');
+	console.log('query:' + this._query !== undefined ? this._query : '');
 	console.log('since:' + since !== '' ? '&' + since : since);
 	console.log('geoLoc:' + geoLoc !== '' ? '&' + geoLoc : geoLoc);
-	var queryURL = this._baseURL + escape(this._query !== undefined ? + '' + this._query : '' + 
-									since !== '' ? '&' + since : since + 
-									geoLoc !== '' ? '&' + geoLoc : geoLoc);
-
+	
+	var urlQuery = this._query !== undefined ? 'q=' + this._query : '';
+	var urlSince = since !== '' ? '&' + since : since;
+	var urlGeoLoc = geoLoc !== '' ? '&' + geoLoc : geoLoc;
+	
+	queryURL = this._baseURL + urlQuery + urlSince + urlGeoLoc;
 	console.log('XHRQueryURL:' + queryURL);
+	return queryURL;
 };
 
 QueryURL.prototype.getSinceDate = function _getSinceDate() {

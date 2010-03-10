@@ -8,17 +8,16 @@
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 
 <script type="text/javascript">
-var extension = chrome.extension;
-var probeManager = extension.getBackgroundPage().getProbeManager();
+var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
 
 var saveButton;
 var probeTags;
 
 var probes, template, inputTag, spanTag, inputAvgWeek, inputAvgDay;
 
-var port = extension.connect({name: "social-media-monitoring"});
+var port = chrome.extension.connect({name: "social-media-monitoring"});
 
-	  extension.onConnect.addListener(function(port) {
+chrome.extension.onConnect.addListener(function(port) {
 	  console.assert(port.name == "social-media-monitoring");
 	  port.onMessage.addListener(function(msg) {
 		console.log('onMessage:' + msg);
