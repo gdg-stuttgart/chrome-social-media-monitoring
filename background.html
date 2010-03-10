@@ -19,8 +19,14 @@ chrome.extension.onConnect.addListener(function(port) {
 		  
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
-			loadTweets(LONG_TERM_INTERVAL_IN_HOURS, probeTag);
-			loadTweets(SHORT_TERM_INTERVAL_IN_HOURS, probeTag);
+
+			twitterLTQuery = new QueryURL(baseURL, probeTag)
+			twitterLTQuery.period = LONG_TERM_INTERVAL_IN_HOURS;
+			loadTweets(twitterLTQuery, probeTag);
+
+			twitterSTQuery = new QueryURL(baseURL, probeTag)
+			twitterSTQuery.period = SHORT_TERM_INTERVAL_IN_HOURS;
+			loadTweets(twitterSTQuery, probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -31,27 +37,7 @@ chrome.extension.onConnect.addListener(function(port) {
 	});
 });
 
-
-function loadTweets(period, probeTag, latitude, longtitude, radius) {
-	var query = "q=" + escape(probeTag.query);
-
-	//var sinceDate = new Date("March 05, 2010 09:30:00");
-	var sinceDate = getQueryDate(period);
-	var since =  "since="+ escape(sinceDate.getFullYear() + "-" + 
-  			 sinceDate.getMonth() < 10 ? sinceDate.getMonth() : +"0" + sinceDate.getMonth() + "-" + 
-   					 sinceDate.getDay() < 10 ? sinceDate.getDay() : +"0" + sinceDate.getDay());
-
-	var geoLoc = "";
-
-	if(latitude !== undefined && longtitude !== undefined && radius !== undefined) {
-		geoLoc = "geocode=" + escape(latitude + "," + longtitude + "," + radius + "km");
-	}
-
-	
-	var queryURL = baseURL + query + '&' + since + '&' + geoLoc;
-
-	console.log('XHRQueryURL:' + queryURL);
-	
+function loadTweets(queryURL) {
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", queryURL, true);
 	xhr.onreadystatechange = function() {
@@ -60,37 +46,38 @@ function loadTweets(period, probeTag, latitude, longtitude, radius) {
 			  if(response.error){
 				  throw new Error('failed to get tweets:' + responseText);
 			   }else{
-				processResult(period, probeTag, response);
+				processResult(queryURL.period, probeTag, response);
 			  }
 		  }
 	};
 	xhr.send();
 }
 
-function getQueryDate(period) {
-	var currentTime = new Date();
-	var timeIntervalInMS = period * 60 * 60 *1000;
-	return new Date(currentTime - timeIntervalInMS);
-}
+function processTweets(period, probeTag, response) {
+	var tweetCount = 0;
+	var tweets = response.results;
+	console.log('Received Tweets: ' + tweets);
 
-function processResult(period, probeTag, result) {
-	var tweets = result.results;
+	if(period === LONG_TERM_INTERVAL_IN_HOURS){
+   		tweetCount = tweets.length;
+   		console.log("tweet Count :" + tweetCount);
+		probeTag.longTermTweetsPerHour = tweetCount;
+	} 
+	else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
+		$.each(tweets, function() { 
+			var currTime = new Date();
+			var intervalLength = period * 60 * 60 *1000;
+			var sinceDateTS = currTime.getTime() - intervalLength;
+			var tweetDate = new Date(this.created_at);
 
-	if(!tweets){
-		throw new Error('failed to get tweets:' + responseText);
+			if(sinceDateTS < tweetDate.getTime()) 
+				break;
+
+			tweetCount++;
+		});
+
+		probeTag.shortTermTweetsPerHour = tweetCount;
 	}
-	
-	tweetsPerHour = tweets.length / period;
-   	if(period === LONG_TERM_INTERVAL_IN_HOURS){
-		probeTag.longTermTweetsPerHour = tweetsPerHour;
-	} else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
-		probeTag.shortTermTweetsPerHour = tweetsPerHour;
-	}
-
-   	/*
-	 * TODO: check if this code line is right
-	 * 	if(probeTag.shortTermTweetsPerHour > probeTag.longTermTweetsPerHour = tweetsPerHour){
-     */
 
 	if(probeTag.shortTermTweetsPerHour > probeTag.longTermTweetsPerHour) {
 		port.postMessage({alert:probeTag});
