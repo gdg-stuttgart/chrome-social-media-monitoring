@@ -14,7 +14,7 @@ QueryURL.prototype.getURL = function getURL() {
 	if(this._latitude !== undefined && this._longtitude !== undefined && this._radius !== undefined)
 		geoLoc = 'geocode=' + this._latitude + ',' + this._longtitude + ',' + this._radius + 'km';
 
-	var queryURL = this._baseURL + escape(this._query !== undefined ? + this._query : throw "Error: query must be defined!"; 
+	var queryURL = this._baseURL + escape(this._query !== undefined ? + this._query : ''; 
 									since !== undefined ? '&' + since : '' + 
 									geoLoc !== undefined ? '&' + geoLoc : '');
 
