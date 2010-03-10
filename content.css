@@ -7,6 +7,12 @@ body {
 	margin: 10px;
 }
 
+.popup {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 80%;
+	margin: 0px;
+}
+
 .link {
 	color: #68d;
 	cursor: pointer;
@@ -67,12 +73,13 @@ body {
 	display: inline;
 	float: left;
 }
+
 .span_tag {
 	width: 160px;
 	float: left;
-	height:24px;
-	display:inline-block; 
-	vertical-align:middle;
+	height: 24px;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .hd {
@@ -172,7 +179,8 @@ body {
 .warn {
 	border: 1px dotted #ff0000;
 }
-.selected{
+
+.selected {
 	background-color: #ffff99;
 }
 
@@ -182,4 +190,17 @@ body {
 	margin-bottom: -1px;
 	font-size: 1px;
 	line-height: 1px;
+	margin: 0px;
 }
+
+#options {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	z-index: 10;
+	background-color: white;
+	display:none;
+}
+
