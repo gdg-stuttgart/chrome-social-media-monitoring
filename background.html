@@ -7,6 +7,7 @@
 <script type="text/javascript">
 var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
 var SHORT_TERM_INTERVAL_IN_HOURS = 1;
+var HOURS_TO_MS = 60 * 60 *1000;
 
 var baseURL = "http://search.twitter.com/search.json?";
 var probeManager = new ProbeManager();
@@ -20,13 +21,9 @@ chrome.extension.onConnect.addListener(function(port) {
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
 
-			twitterLTQuery = new QueryURL(baseURL, probeTag)
-			twitterLTQuery.period = LONG_TERM_INTERVAL_IN_HOURS;
-			loadTweets(twitterLTQuery, probeTag);
-
-			twitterSTQuery = new QueryURL(baseURL, probeTag)
-			twitterSTQuery.period = SHORT_TERM_INTERVAL_IN_HOURS;
-			loadTweets(twitterSTQuery, probeTag);
+			twitterQuery = new QueryURL(baseURL, probeTag)
+			twitterQuery.timeIntervalInMS = LONG_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
+			loadTweets(twitterQuery, probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -54,30 +51,27 @@ function loadTweets(queryURL) {
 }
 
 function processTweets(period, probeTag, response) {
-	var tweetCount = 0;
 	var tweets = response.results;
 	console.log('Received Tweets: ' + tweets);
+	console.log("Long term tweet Count :" + tweets.length);
+	probeTag.longTermTweetsPerHour = tweets.length / LONG_TERM_INTERVAL_IN_HOURS;
 
-	if(period === LONG_TERM_INTERVAL_IN_HOURS){
-   		tweetCount = tweets.length;
-   		console.log("tweet Count :" + tweetCount);
-		probeTag.longTermTweetsPerHour = tweetCount;
-	} 
-	else if((period === SHORT_TERM_INTERVAL_IN_HOURS)) {
-		$.each(tweets, function() { 
-			var currTime = new Date();
-			var intervalLength = period * 60 * 60 *1000;
-			var sinceDateTS = currTime.getTime() - intervalLength;
-			var tweetDate = new Date(this.created_at);
+	//calculateShortTerm
+	var tweetCount = 0;
+	$.each(tweets, function() { 
+		var currTime = new Date();
+		var intervalLength = SHORT_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
+		var sinceDateTS = currTime.getTime() - intervalLength;
+		var tweetDate = new Date(this.created_at);
 
-			if(sinceDateTS < tweetDate.getTime()) 
-				break;
+		if(sinceDateTS < tweetDate.getTime()) 
+			break;
 
-			tweetCount++;
-		});
+		tweetCount++;
+	});
 
-		probeTag.shortTermTweetsPerHour = tweetCount;
-	}
+	console.log("Short term tweet Count :" + tweetCount);
+	probeTag.shortTermTweetsPerHour = tweetCount / SHORT_TERM_INTERVAL_IN_HOURS;
 
 	if(probeTag.shortTermTweetsPerHour > probeTag.longTermTweetsPerHour) {
 		port.postMessage({alert:probeTag});

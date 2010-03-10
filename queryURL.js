@@ -1,7 +1,7 @@
 function QueryURL(baseURL, probeTag) {
 	this.baseURL = baseURL;
 	this.query = probeTag.query;
-	this.period = undefined;
+	this.timeIntervalInMS = undefined;
 	this.latitude = probeTag.latitude;
 	this.longtitude = probeTag.longtitude;
 	this.radius = probeTag.radius;
@@ -23,9 +23,8 @@ QueryURL.prototype.getURL = function getURL() {
 
 QueryURL.prototype.getSinceDate = function _getSinceDate() {
 	var currentTime = new Date();
-	var timeIntervalInMS = period * 60 * 60 *1000;
-	console.log('currentTS: '+ currentTime.getTime() + ', Interval length: ' + timeIntervalInMS);
-	var sinceDate = new Date(currentTime.getTime() - timeIntervalInMS);
+	console.log('currentTS: '+ currentTime.getTime() + ', Interval length: ' + this.timeIntervalInMS);
+	var sinceDate = new Date(currentTime.getTime() - this.timeIntervalInMS);
 	console.log('sinceTS: ' + sinceDate.getTime());
 	var sinceYear = sinceDate.getFullYear();
 	var sinceMonth = sinceDate.getMonth() >= 10 ? sinceDate.getMonth() : '0' + sinceDate.getMonth();
