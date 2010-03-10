@@ -11,10 +11,11 @@ var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 var baseURL = "http://search.twitter.com/search.json?";
 var probeManager = new ProbeManager();
 
+var port = chrome.extension.connect({name: "social-media-monitoring"});
 chrome.extension.onConnect.addListener(function(port) {
 	console.assert(port.name == "social-media-monitoring");
 	port.onMessage.addListener(function(msg) {
-		console.log('onMessage:' + msg);
+		console.log('BackgroundPage, onMessage:' + msg);
 		  
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
@@ -73,8 +74,6 @@ function getQueryDate(period) {
 }
 
 function processResult(period, probeTag, result) {
-	var port = chrome.extension.connect({name: "social-media-monitoring"});
-
 	var tweets = result.results;
 
 	if(!tweets){
