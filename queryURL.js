@@ -1,5 +1,6 @@
 function QueryURL(baseURL, probeTag) {
 	this._baseURL = baseURL;
+	this._probe = probeTag;
 	this._query = probeTag.query;
 	this.timeIntervalInMS = undefined;
 	this._latitude = probeTag.latitude;
@@ -8,15 +9,21 @@ function QueryURL(baseURL, probeTag) {
 }
 
 QueryURL.prototype.getURL = function getURL() {
-	if(period !== undefined)
+	var since = '';
+	if(this.timeIntervalInMS !== undefined)
 		since =  'since='+ this.getSinceDate();
 	
+	var geoloc = '';
 	if(this._latitude !== undefined && this._longtitude !== undefined && this._radius !== undefined)
 		geoLoc = 'geocode=' + this._latitude + ',' + this._longtitude + ',' + this._radius + 'km';
-
-	var queryURL = this._baseURL + escape(this._query !== undefined ? + this._query : ''; 
-									since !== undefined ? '&' + since : '' + 
-									geoLoc !== undefined ? '&' + geoLoc : '');
+	
+	console.log('baseURL:' + this._baseURL);
+	console.log('query:' + this._query !== undefined ? + this._query : '');
+	console.log('since:' + since !== '' ? '&' + since : since);
+	console.log('geoLoc:' + geoLoc !== '' ? '&' + geoLoc : geoLoc);
+	var queryURL = this._baseURL + escape(this._query !== undefined ? + '' + this._query : '' + 
+									since !== '' ? '&' + since : since + 
+									geoLoc !== '' ? '&' + geoLoc : geoLoc);
 
 	console.log('XHRQueryURL:' + queryURL);
 };

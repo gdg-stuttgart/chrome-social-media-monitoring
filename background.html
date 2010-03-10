@@ -22,9 +22,9 @@ chrome.extension.onConnect.addListener(function(port) {
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
 
-			query = new QueryURL(baseURLs.twitter, probeTag)
+			var query = new QueryURL(baseURLs.twitter, probeTag)
 			query.timeIntervalInMS = LONG_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
-			loadData(query.getURL, probeTag);
+			loadData(query.getURL(), probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -36,6 +36,7 @@ chrome.extension.onConnect.addListener(function(port) {
 });
 
 function loadData(queryURL, probeTag) {
+	console.log('queryURL' + queryURL);
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", queryURL, true);
 	xhr.onreadystatechange = function() {
