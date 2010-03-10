@@ -109,6 +109,18 @@ body {
 	margin-left: 20px;
 }
 
+#btnOptions {
+	background-image: url('icon_options.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: left;
+	vertical-align: middle;
+	margin-top: 6px;
+	margin-left: 5px;
+}
+
 #iconService {
 	background-image: url('icon_service_twitter.png');
 	background-repeat: no-repeat;

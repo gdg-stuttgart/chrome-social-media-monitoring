@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Popup</title>
+<title>Social Media Monitoring : Popup</title>
 
 <link rel="stylesheet" href="content.css" type="text/css" media="all" />
 <script type="text/javascript" src="probe_manager.js"></script>
@@ -86,6 +86,17 @@ function openResults() {
 </head>
 <body onload="setTimeout(init,0);" style="widht: 300px;">
 
+<div id="header">
+	<img src="logo_popup.png" title="Social Media Monitoring" alt="Social Media Monitoring" />
+    <span class="link" onclick="refresh()">Refresh</span>
+    |
+    <span class="link" onclick="goToUrl('options.html');">Options</span>
+	|
+    <span class="link" onclick="window.close()">Close</span>
+  </div>
+
+
+
 <div class="section-header first">Your Probes</div>
 <p>add your search words</p>
 
@@ -97,14 +108,14 @@ function openResults() {
 <input type="text" class="avgWeek" disabled="disabled" value="0">
 <input type="text" class="avgDay" disabled="disabled" value="0">
 
-<span id="btnRemove"></span> <span class="clear"><!--  --></span></div>
+<span id="btnRemove"></span> <span id="btnOptions"></span> <span class="clear"><!--  --></span></div>
 </div>
 <span class="clear"><!--  --></span>
 <span id="btnAdd"> add new</span>
 
 
 
-<div id="footer">
+<div id="footer" style="display:none;">
 <button id="save-button" style="font-weight: bold" onclick="save();">Save</button>
 <button onclick="init();">Cancel</button>
 </div>
@@ -185,16 +196,15 @@ function openResults() {
 
 	    $(".probe").click(function () {
 	    	       $(".probe").removeClass("selected");
-	    	    	  
-	    	        $(this).addClass("selected");
+	    	       $(this).addClass("selected");
 	    	      }
 	    ).mouseover( function () {
-			 $(' > #btnRemove',this).removeClass("hd");
+			 //$(' > #btnRemove',this).removeClass("hd");
 			 $(this).addClass("selected");
 			    
 			}
 		).mouseout( function () {
-			$(' > #btnRemove',this).addClass("hd");
+			//$(' > #btnRemove',this).addClass("hd");
 		    $(this).removeClass("selected");
 		    	 
 		    }
@@ -330,6 +340,23 @@ function openResults() {
 		saveButton.disabled = true;
 	}
 
+  function refresh() {
+      startRequest(false);
+      document.getElementById('module').src = 'about:blank';
+      setIframeUrl();
+    }	
+	
+function goToUrl(url) {
+  chrome.tabs.getAllInWindow(undefined, function(tabs) {
+    for (var i = 0, tab; tab = tabs[i]; i++) {
+      if (tab.url && (tab.url == url)) {
+        chrome.tabs.update(tab.id, {selected: true});
+        return;
+      }
+    }
+    chrome.tabs.create({url: url});
+  });
+}	
 </script>
 </body>
 </html>
