@@ -31,7 +31,7 @@ ProbeManager.prototype.setProbe = function(probe) {
 			console.log('No probes found add create new probes array');
 		}
 
-		probes[probe.serviceId + '_' + probe.query] = probe;
+		probes[probe.serviceId + '_' + probe.query.replace( " ", "_" )] = probe;
 
 		localStorage['probes'] = JSON.stringify(probes);
 

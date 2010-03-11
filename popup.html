@@ -2,7 +2,7 @@
 <head>
 <title>Social Media Monitoring : Popup</title>
 
-<link rel="stylesheet" href="content.css" type="text/css" media="all" />
+<link rel="stylesheet" href="css/content.css" type="text/css" media="all" />
 <script type="text/javascript" src="probe_manager.js"></script>
 <script type="text/javascript" src="probe.js"></script>
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
@@ -90,7 +90,7 @@ function openResults() {
   @import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
 </style>
 </head>
-<body onload="setTimeout(init,0);" class="popup" scrolling="no">
+<body onload="setTimeout(init,0);" class="popup">
 
 <div id="options">
 
@@ -115,6 +115,209 @@ function openResults() {
 <script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js" type="text/javascript"></script> 
     
 <script type="text/javascript">
+function init() {
+
+	/*
+		XXX: remove populateDummyData - debugging
+	*/
+	//probeTags = getDummyData();
+	//var probeTags = JSON.parse(localStorage['probes']);
+
+	var probeTags = probeManager.loadProbes();
+
+
+	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
+		
+	saveButton = document.getElementById("save-button");
+	markClean();
+
+	probes = document.getElementById('probes');
+	template = xpath('//div[@id="template"]', document);
+	spanTag  = xpath('//span[@id="tag"]', template);
+	inputTag = xpath('//input[@id="tag_input"]', template);
+	inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
+	inputAvgDay	 = xpath('//input[@class="avgDay"]', template);
+
+	if(probeTags){
+		for (var i in probeTags) {
+			addProbeHTML(probeTags[i]);
+		}
+		addRemoveButtonListeners();
+	}
+}
+
+function addRemoveButtonListeners(){
+	$("span#btnRemove").click(function() {
+		
+		var probeDiv = $(this).parent('.probe').css('border','1px dotted #ff0000');
+
+
+		/*
+		 * remove from local storage
+		 * TODO: change harcoded values
+		 */
+		var strDivId = probeDiv.attr('id');
+		strDivId = strDivId.substring(2);
+		probeManager.removeProbeByKey('twitter' + '_' + strDivId);
+
+		/*
+		 * remove from HTML
+		 */
+		probeDiv.remove();
+				
+		/*
+		 * TODO: add communication with background.html
+		 */
+		 console.log('TODO: add communication with background.html\n port.postMessage({probeTagDeleted: tagProbe})');
+
+	});
+	/*
+	 * show options
+	 */
+	$("span#btnOptions").click(function() {
+		initializeMap();
+		$("div#options").css('display','block');
+	});
+
+    $(".probe").click(function () {
+    	       $(".probe").removeClass("selected");
+    	       $(this).addClass("selected");
+    	      }
+    ).mouseover( function () {
+		 //$(' > #btnRemove',this).removeClass("hd");
+		 $(this).addClass("selected");
+		    
+		}
+	).mouseout( function () {
+		//$(' > #btnRemove',this).addClass("hd");
+	    $(this).removeClass("selected");
+	    	 
+	    }
+	);
+
+    $("input#tag_input").keypress(function (e) {  
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
+			save();
+        	return false;  
+        } else {  
+            return true;  
+        }  
+    });  
+	
+    
+}
+
+function addProbeHTML(tagProbeObj){
+
+	if(tagProbeObj){		
+
+		spanTag.innerHTML = tagProbeObj.query;
+		
+		spanTag.setAttribute('class','span_tag');			
+		inputTag.setAttribute('class','tag hd');
+		
+		inputTag.setAttribute('value',tagProbeObj.query);
+		inputAvgWeek.setAttribute('value',tagProbeObj.shortTermTweetsPerHour);
+		inputAvgDay.setAttribute('value',tagProbeObj.longTermTweetsPerHour);
+		
+		// copy node and update
+		item = template.cloneNode(true);	  
+		item.setAttribute('id','f_' + tagProbeObj.query);
+		
+		probes.appendChild(item);
+		
+	}else{
+
+		spanTag.setAttribute('class','span_tag hd');
+		spanTag.innerHTML = '';		
+		inputTag.setAttribute('class','tag');
+			
+		inputTag.setAttribute('value','');
+		inputAvgWeek.setAttribute('value','0');
+		inputAvgDay.setAttribute('value','0');
+		
+		// copy node and update
+		item = template.cloneNode(true);	  
+		item.setAttribute('id','f');
+
+		probes.appendChild(item);
+
+	}
+}
+
+// evaluate xpath
+function xpath(path, node) {
+  return document.evaluate(path, node).iterateNext();
+}
+
+function save() {
+
+	
+	$('#f').each(function(i){
+
+		/*
+		 * validate search term
+		 */
+		 var tagObj = $(' > input#tag_input.tag',this);
+
+		 if (!tagObj.val()){
+			 $(tagObj).addClass('warn');
+			 /*
+			  * TODO: add warning message
+			  */
+			 return false;
+		 }
+
+		var tagProbe = new Probe();
+		tagProbe.query = tagObj.val();
+		tagProbe.shortTermTweetsPerHour = 0;
+		tagProbe.longTermTweetsPerHour = 0 ;
+		
+		$(this).attr('id','f_' + tagProbe.query );
+		
+		probeManager.setProbe(tagProbe);
+		$(this).addClass('loader');
+		port.postMessage({probeTagChanged: tagProbe});
+		
+	});
+
+	//markClean();
+
+	/*
+	 * TODO: add communication with background.html
+	 */
+	 //console.log('TODO: add communication with background.html\n port.postMessage({probeTagAdded: tagProbe})');
+
+	
+	//chrome.extension.getBackgroundPage().init();
+}
+
+function markDirty() {
+	saveButton.disabled = false;
+}
+
+function markClean() {
+	saveButton.disabled = true;
+}
+
+function refresh() {
+  startRequest(false);
+  document.getElementById('module').src = 'about:blank';
+  setIframeUrl();
+}	
+
+function goToUrl(url) {
+chrome.tabs.getAllInWindow(undefined, function(tabs) {
+for (var i = 0, tab; tab = tabs[i]; i++) {
+  if (tab.url && (tab.url == url)) {
+    chrome.tabs.update(tab.id, {selected: true});
+    return;
+  }
+}
+chrome.tabs.create({url: url});
+});
+}	
+
 
 function back(){
 	$("div#options").css('display','none');
@@ -143,11 +346,7 @@ function initializeMap() {
 <div id="header">
 	<img src="img/logo_popup.png" title="Social Media Monitoring" alt="Social Media Monitoring" />
 	<div style="position:absolute; top:15px; right: 15px">
-    <span class="link" onclick="refresh()">Refresh</span>
-    |
-    <span class="link" onclick="goToUrl('options.html');">Options</span>
-	|
-    <span class="link" onclick="window.close()">Close</span>
+    <span class="link" onclick="refresh()">Refresh</span> | <span class="link" onclick="goToUrl('options.html');">Options</span> |<span class="link" onclick="window.close()">Close</span>
 	</div>
 </div>
 
@@ -156,7 +355,7 @@ function initializeMap() {
 <div id="probes">
 <div id="template" class="probe"><span id="iconService"></span>
 <span id="tag" class="span_tag hd"><!--  --></span>
-<input type="text" id="tag_input" class="tag" oninput="markDirty();">
+<input type="text" id="tag_input" class="tag" maxlength="30" oninput="markDirty();">
 
 <input type="text" class="avgWeek" disabled="disabled" value="0">
 <input type="text" class="avgDay" disabled="disabled" value="0">
@@ -172,7 +371,6 @@ function initializeMap() {
 <!--<button id="save-button" style="font-weight: bold" onclick="save();">Save</button>
 <button onclick="init();">Cancel</button>-->
 
-<div>
 <!-- <span class="option_name">Search results in</span>
 <span class="option_picker">
 	<select id="open_results">
@@ -185,224 +383,16 @@ function initializeMap() {
 
 
 <div class="option_row">
-          <div class="option_name">Search results in</div>
-          <div class="option_picker">
-            <select id="open_results">
-			<option value="open_in_new_window">a new window</option>
-			<option value="open_in_current_window">the current window</option>
-			</select>
-          <input id="save-button" type="button" value="Show" onclick="openResults();" />
-		  </div>
-        </div>
-
-
+	<div class="option_name">Search results in</div>
+	<div class="option_picker">
+	<select id="open_results">
+		<option value="open_in_new_window">a new window</option>
+		<option value="open_in_current_window">the current window</option>
+	</select>
+	<input id="save-button" type="button" value="Show" onclick="openResults();" />
+	</div>
+</div>
 </div>
 
-
-<script type="text/javascript">
-
-	function init() {
-
-		/*
-			XXX: remove populateDummyData - debugging
-		*/
-		//probeTags = getDummyData();
-		//var probeTags = JSON.parse(localStorage['probes']);
-
-		var probeTags = probeManager.loadProbes();
-	
-
-		console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
-			
-		saveButton = document.getElementById("save-button");
-		markClean();
-
-		probes = document.getElementById('probes');
-		template = xpath('//div[@id="template"]', document);
-		spanTag  = xpath('//span[@id="tag"]', template);
-		inputTag = xpath('//input[@id="tag_input"]', template);
-		inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
-		inputAvgDay	 = xpath('//input[@class="avgDay"]', template);
-
-		if(probeTags){
-			for (var i in probeTags) {
-				addProbeHTML(probeTags[i]);
-			}
-			addRemoveButtonListeners();
-		}
-	}
-
-	function addRemoveButtonListeners(){
-		$("span#btnRemove").click(function() {
-			
-			var probeDiv = $(this).parent('.probe').css('border','1px dotted #ff0000');
-
-
-			/*
-			 * remove from local storage
-			 * TODO: change harcoded values
-			 */
-			var strDivId = probeDiv.attr('id');
-			strDivId = strDivId.substring(2);
-			probeManager.removeProbeByKey('twitter' + '_' + strDivId);
-
-			/*
-			 * remove from HTML
-			 */
-			probeDiv.remove();
-					
-			/*
-			 * TODO: add communication with background.html
-			 */
-			 console.log('TODO: add communication with background.html\n port.postMessage({probeTagDeleted: tagProbe})');
-
-		});
-		/*
-		 * show options
-		 */
-		$("span#btnOptions").click(function() {
-			initializeMap();
-			$("div#options").css('display','block');
-		});
-
-	    $(".probe").click(function () {
-	    	       $(".probe").removeClass("selected");
-	    	       $(this).addClass("selected");
-	    	      }
-	    ).mouseover( function () {
-			 //$(' > #btnRemove',this).removeClass("hd");
-			 $(this).addClass("selected");
-			    
-			}
-		).mouseout( function () {
-			//$(' > #btnRemove',this).addClass("hd");
-		    $(this).removeClass("selected");
-		    	 
-		    }
-		);
-
-	    $("input#tag_input").keypress(function (e) {  
-	        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
-				save();
-	        	return false;  
-	        } else {  
-	            return true;  
-	        }  
-	    });  
-		
-	    
-	}
-
-	function addProbeHTML(tagProbeObj){
-
-		if(tagProbeObj){		
-
-			spanTag.innerHTML = tagProbeObj.query;
-			
-			spanTag.setAttribute('class','span_tag');			
-			inputTag.setAttribute('class','tag hd');
-			
-			inputTag.setAttribute('value',tagProbeObj.query);
-			inputAvgWeek.setAttribute('value',tagProbeObj.shortTermTweetsPerHour);
-			inputAvgDay.setAttribute('value',tagProbeObj.longTermTweetsPerHour);
-			
-			// copy node and update
-			item = template.cloneNode(true);	  
-			item.setAttribute('id','f_' + tagProbeObj.query);
-			
-			probes.appendChild(item);
-			
-		}else{
-
-			spanTag.setAttribute('class','span_tag hd');
-			spanTag.innerHTML = '';		
-			inputTag.setAttribute('class','tag');
-				
-			inputTag.setAttribute('value','');
-			inputAvgWeek.setAttribute('value','0');
-			inputAvgDay.setAttribute('value','0');
-			
-			// copy node and update
-			item = template.cloneNode(true);	  
-			item.setAttribute('id','f');
-
-			probes.appendChild(item);
-
-		}
-	}
-	
-	// evaluate xpath
-	function xpath(path, node) {
-	  return document.evaluate(path, node).iterateNext();
-	}
-
-	function save() {
-
-		
-		$('#f').each(function(i){
-
-			/*
-			 * validate search term
-			 */
-			 var tagObj = $(' > input#tag_input.tag',this);
-
-			 if (!tagObj.val()){
-				 $(tagObj).addClass('warn');
-				 /*
-				  * TODO: add warning message
-				  */
-				 return false;
-			 }
-
-			var tagProbe = new Probe();
-			tagProbe.query = tagObj.val();
-			tagProbe.shortTermTweetsPerHour = 0;
-			tagProbe.longTermTweetsPerHour = 0 ;
-			
-			$(this).attr('id','f_' + tagProbe.query );
-			
-			probeManager.setProbe(tagProbe);
-			$(this).addClass('loader');
-			port.postMessage({probeTagChanged: tagProbe});
-			
-		});
-
-		//markClean();
-
-		/*
-		 * TODO: add communication with background.html
-		 */
-		 //console.log('TODO: add communication with background.html\n port.postMessage({probeTagAdded: tagProbe})');
-
-		
-		//chrome.extension.getBackgroundPage().init();
-	}
-
-	function markDirty() {
-		saveButton.disabled = false;
-	}
-
-	function markClean() {
-		saveButton.disabled = true;
-	}
-
-  function refresh() {
-      startRequest(false);
-      document.getElementById('module').src = 'about:blank';
-      setIframeUrl();
-    }	
-	
-function goToUrl(url) {
-  chrome.tabs.getAllInWindow(undefined, function(tabs) {
-    for (var i = 0, tab; tab = tabs[i]; i++) {
-      if (tab.url && (tab.url == url)) {
-        chrome.tabs.update(tab.id, {selected: true});
-        return;
-      }
-    }
-    chrome.tabs.create({url: url});
-  });
-}	
-</script>
 </body>
 </html>
