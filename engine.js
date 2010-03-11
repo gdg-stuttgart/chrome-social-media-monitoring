@@ -18,6 +18,12 @@ var settings = {
 	},
 	set timeout(val) {
 		localStorage['timeout'] = val;
+	},
+	get soundAlert() {
+        return localStorage['sound_alert'];
+	},
+	set soundAlert(val) {
+		localStorage['sound_alert'] = val;
 	}
 }
 

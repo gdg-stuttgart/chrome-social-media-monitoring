@@ -11,8 +11,13 @@ var bkg = chrome.extension.getBackgroundPage();
 
 //Saves options to localStorage.
 function save_options() {
-	bkg.settings.pollInterval = parseInt($('#refresh').val()) * 60000;
+	bkg.settings.pollInterval = parseInt($('#refresh-interval').val()) * 60000;
 	bkg.settings.timeout = 1000 * 15;
+
+	bkg.settings.soundAlert = $('#sound-alert').val();
+	
+	
+	
 	refresh_extension();
 
 	$('#save_status').fadeIn('fast');
@@ -23,10 +28,29 @@ function save_options() {
 function refresh_extension() {
 	bkg.refresh(); 
 }
+
+function playSound(){
+	var urlSound = $('#sound-alert').val();
+
+	if(urlSound){
+		pingSound = document.createElement('audio');
+	    pingSound.setAttribute('src', urlSound);
+	    pingSound.setAttribute('id', 'ping');
+	    pingSound.load();
+	    pingSound.play();
+	}
+}
 /*
  * TODO: populate options interface 
  */
- 
+//Restores select box state to saved value from localStorage.
+ $(function() {
+
+	 $('#refresh-interval').val(bkg.settings.pollInterval / 60000);
+	 $('#sound-alert').val(bkg.settings.soundAlert);
+
+	 
+ });
  
 </script>
         
@@ -41,8 +65,8 @@ function refresh_extension() {
         <div class="option_row">
           <div class="option_name">Default On Click Behavior:</div>
           <div class="option_picker">
-        <input type="radio" id="default" name="default" value="1"/><label for="default">Always show popup</label><br/>
-        <input type="radio" id="off" name="off" value="0"/><label for="off">Never show popup (Go straight to browser tabs when new search result(s) exist)</label>
+        <input type="radio" id="default" name="defaut_click" value="1" checked="checked"/><label for="default">Always show popup</label><br/>
+        <input type="radio" id="off" name="defaut_click" value="0"/><label for="off">Never show popup (Go straight to browser tabs when new search result(s) exist)</label>
           </div>
         </div>	  
 			  
@@ -50,10 +74,13 @@ function refresh_extension() {
           <div class="option_name">Update every:</div>
           <div class="option_picker">
             <select id="refresh-interval" name="refresh" onchange="markDirty()">
-              <option value="5">5 minutes</option>
-              <option value="10">10 minutes</option>
-              <option value="15">15 minutes</option>
-              <option value="30">30 minutes</option>
+                <option value="5">5 minutes</option>
+                <option value="10">10 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="20">20 minutes</option>
+                <option value="25">25 minutes</option>
+                <option value="30" selected="selected">30 minutes</option>
+                <option value="60">60 minutes</option>
             </select>
           </div>
         </div>
@@ -61,14 +88,14 @@ function refresh_extension() {
 		<div class="option_row">
           <div class="option_name">Sound alert:</div>
           <div class="option_picker">
-            <select id="sound-alert">
+            <select id="sound-alert"  onchange="markDirty();">
               <option value="">None</option>
               <option value="http://work.max99x.com/cuckoo.ogg">Cuckoo</option>
               <option value="http://work.max99x.com/bell.ogg">Chime</option>
               <option value="http://work.max99x.com/cuckoo.ogg">Cuckoo</option>
             </select>
           </div>
-		  <input type="button" value="Play" />
+		  <input type="button" value="Play" onclick="playSound();" />
         </div>
 
         <div class="buttons">
@@ -89,41 +116,20 @@ function refresh_extension() {
 
 	
 	function _initOptionsPage() {
-		//customDomainsTextbox = document.getElementById("custom-domain");
 		saveButton = document.getElementById("save_button");
-		
-
-		//customDomainsTextbox.value = localStorage.customDomain || "";
-			
 		markClean();
-
-		debugInfo();
-	}
-
-	function debugInfo(){
-
-		debugDivObj = document.getElementById("debug");
-
-		//debugDivObj.innerHTML = localStorage.probes;
-		
-
 	}
 
 	function saveOptions() {
-		//localStorage.customDomain = customDomainsTextbox.value;
-			
 		markClean();
 
-		chrome.extension.getBackgroundPage().init();
+		save_options();
 		return false;
 	}
 	
 	function resetOptions() {
-		
 		return false;
 	}
-	
-	
 
 	function markDirty() {
 		saveButton.disabled = false;
