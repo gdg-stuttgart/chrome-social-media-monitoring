@@ -5,12 +5,12 @@
 <link rel="stylesheet" href="css/content.css" type="text/css" media="all" />
 <script type="text/javascript" src="probe_manager.js"></script>
 <script type="text/javascript" src="probe.js"></script>
-<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="lib/3rdparty/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="lib/3rdparty/jquery.effects.core.min.js"></script>
 
 <script type="text/javascript">
 var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
 
-var saveButton;
 var probeTags;
 
 var probes, template, inputTag, spanTag, inputAvgWeek, inputAvgDay;
@@ -53,8 +53,36 @@ chrome.extension.onConnect.addListener(function(port) {
 
 $(document).ready(function() {
 	$("#btnAdd").click(function() {
-		addProbeHTML();
-		addRemoveButtonListeners();  
+
+		/*
+		 * check if probe is filled
+		 */
+		var ignore = false;
+		$('#f').each(function(i){
+
+			 var tagObj = $(' > input#tag_input.tag',this);
+			 var probeValue = tagObj.val();
+			 console.log('probeValue:' + probeValue);
+			 if (!probeValue){
+				 $(tagObj).animate({backgroundColor: "#f4aeae"}, "fast").animate({backgroundColor: "#fffff"}, "fast");
+				 ignore = true;
+				 return false;
+			 }
+			 
+			 if($(tagObj).is(':visible')){
+				 $(tagObj).animate({backgroundColor: "#f4aeae"}, "fast").animate({backgroundColor: "#fffff"}, "fast");
+				 ignore = true;
+				 return false;
+			 }
+
+			 
+			 
+		});
+
+		if(!ignore){
+			addProbeHTML();
+			addRemoveButtonListeners();
+		}  
 	});
 
 });
@@ -62,7 +90,7 @@ $(document).ready(function() {
 function openResults() {
 	var tagProbes = probeManager.loadProbes();
 	
-	if (true) {
+	if (false) {
 		chrome.windows.create({url: tagProbes[0].searchQuery});
 		chrome.windows.getLastFocused(function (window) {
 		
@@ -128,9 +156,6 @@ function init() {
 
 	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
 		
-	saveButton = document.getElementById("save-button");
-	markClean();
-
 	probes = document.getElementById('probes');
 	template = xpath('//div[@id="template"]', document);
 	spanTag  = xpath('//span[@id="tag"]', template);
@@ -292,14 +317,6 @@ function save() {
 	//chrome.extension.getBackgroundPage().init();
 }
 
-function markDirty() {
-	saveButton.disabled = false;
-}
-
-function markClean() {
-	saveButton.disabled = true;
-}
-
 function refresh() {
   startRequest(false);
   document.getElementById('module').src = 'about:blank';
@@ -346,7 +363,7 @@ function initializeMap() {
 <div id="header">
 	<img src="img/logo_popup.png" title="Social Media Monitoring" alt="Social Media Monitoring" />
 	<div style="position:absolute; top:15px; right: 15px">
-    <span class="link" onclick="refresh()">Refresh</span> | <span class="link" onclick="goToUrl('options.html');">Options</span> |<span class="link" onclick="window.close()">Close</span>
+    <span class="link" onclick="refresh()">Refresh</span> | <span class="link" onclick="goToUrl('options.html');">Options</span> | <span class="link" onclick="window.close()">Close</span>
 	</div>
 </div>
 
@@ -355,7 +372,7 @@ function initializeMap() {
 <div id="probes">
 <div id="template" class="probe"><span id="iconService"></span>
 <span id="tag" class="span_tag hd"><!--  --></span>
-<input type="text" id="tag_input" class="tag" maxlength="30" oninput="markDirty();">
+<input type="text" id="tag_input" class="tag" maxlength="30">
 
 <input type="text" class="avgWeek" disabled="disabled" value="0">
 <input type="text" class="avgDay" disabled="disabled" value="0">
@@ -368,28 +385,15 @@ function initializeMap() {
 
 <div id="footer">
 <span id="btnAdd"> add new</span>
-<!--<button id="save-button" style="font-weight: bold" onclick="save();">Save</button>
-<button onclick="init();">Cancel</button>-->
 
-<!-- <span class="option_name">Search results in</span>
-<span class="option_picker">
-	<select id="open_results">
-	<option value="open_in_new_window">a new window</option>
-	<option value="open_in_current_window">the current window</option>
-	</select>
-<button id="save-button" style="font-weight: bold; float: right;margin-right:5px;"
-	onclick="openResults();return false;">Show</button></span>
-</div> -->
-
-
-<div class="option_row">
+<div class="option_row" style="padding-top:5px;">
 	<div class="option_name">Search results in</div>
 	<div class="option_picker">
 	<select id="open_results">
 		<option value="open_in_new_window">a new window</option>
 		<option value="open_in_current_window">the current window</option>
 	</select>
-	<input id="save-button" type="button" value="Show" onclick="openResults();" />
+	<input id="show-button" type="button" value="Show" onclick="openResults();" />
 	</div>
 </div>
 </div>

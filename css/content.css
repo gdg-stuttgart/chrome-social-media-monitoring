@@ -8,8 +8,8 @@ body {
 }
 
 .popup {
-	width: 320px;
-	min-height: 300px;
+	width: 400px;
+	min-height: 400px;
 	font-family: helvetica, arial, sans-serif;
 	font-size: 80%;
 	margin: 0px;
@@ -64,34 +64,42 @@ body {
 }
 
 #footer {
+	position: absolute;
 	border-top: solid 1px #eee;
 	margin-top: 4px;
 	bottom: 0px;
+	left: 5px;
 }
 
 #probes {
-	width: 300px;
+	width: 380px;
 	display: block;
 }
 
 .probe {
 	display: block;
 	height: 28px;
-	padding:2px;
+	padding: 2px;
 }
 
 .tag {
-	width: 160px;
+	width: 200px;
 	display: inline;
 	float: left;
+	padding: 3px;
+	margin-top: 2px;
+	margin-right: 6px;
 }
 
 .span_tag {
-	width: 160px;
+	width: 200px;
 	float: left;
 	height: 24px;
 	display: inline-block;
 	vertical-align: middle;
+	padding: 3px;
+	margin-top: 2px;
+	cursor: pointer;
 }
 
 .hd {
@@ -108,6 +116,7 @@ body {
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;
+	cursor: pointer;
 }
 
 #btnRemove.hd {
@@ -138,6 +147,7 @@ body {
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;
+	cursor: pointer;
 }
 
 #iconService {
@@ -148,8 +158,8 @@ body {
 	display: block;
 	float: left;
 	vertical-align: middle;
-	margin-top: 5px;
-	margin-right: 2px;
+	margin: 5px;
+	cursor: pointer;
 }
 
 .avgWeek {
@@ -217,8 +227,8 @@ body {
 }
 
 .loader {
-	background-image: url('img/loader_bar.gif');
+	background-image: url('../img/loader_bar.gif');
 	background-repeat: repeat;
-	opacity:0.4;
-	filter:alpha(opacity=40);
+	opacity: 0.4;
+	filter: alpha(opacity =   40);
 }
