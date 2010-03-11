@@ -1,0 +1,29 @@
+{
+   "ext_name": {
+      "message": "Social Media Monitoring"
+   },
+   "ext_description": {
+      "message": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags."
+   },
+   "default_title": {
+      "message": "Social Media Monitoring"
+   },
+   "close": {
+      "message": "Close"
+   },
+   "loading": {
+      "message": "Give it a second. It's going to space!"
+   },
+   "locale": {
+      "message": "en"
+   },
+   "no_title": {
+      "message": "No Title"
+   },
+   "sorry_no_content": {
+      "message": "Sorry, nothing to see here."
+   },
+   "options":{
+   	"message": "Options"
+   }
+}

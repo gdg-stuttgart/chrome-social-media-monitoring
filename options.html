@@ -49,6 +49,13 @@ function playSound(){
 	 $('#refresh-interval').val(bkg.settings.pollInterval / 60000);
 	 $('#sound-alert').val(bkg.settings.soundAlert);
 
+	 /*
+	  * set  internatiolizaded values
+	  */
+
+	  $('#title').html(chrome.i18n.getMessage('options'));
+	  
+
 	 
  });
  
@@ -59,7 +66,7 @@ function playSound(){
     <div id="content">
       <h1>
         <img src="img/logo_smmonitoring.png" title="SM Monitoring" alt="Social Media Monitoring"></h1>
-	  <div class="section-header first">Options</div>
+	  <div id="title" class="section-header first">Options</div>
 	  
       <form name="options_form" action="">
         <div class="option_row">

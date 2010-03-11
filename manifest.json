@@ -1,14 +1,16 @@
 {
-  "name": "Social Media Monitoring",
+  "name": "__MSG_ext_name__",
   "version": "0.1",
-  "description": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags.",
+  "description": "__MSG_ext_description__",
   "icons": { "19": "img/icon.png", "48": "img/icon_48x48.png" },
   "browser_action": {
     "default_icon": "img/icon.png",
+    "default_title": "__MSG_default_title__",
     "popup": "popup.html"
   },
   "background_page": "background.html",
   "options_page": "options.html",
+  "default_locale": "en",
   "content_scripts": [
     { "matches": ["http://*/*"], 
       "js": ["probe.js","probe_manager.js", "content_script.js", "jquery-1.4.2.min.js"],
