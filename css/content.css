@@ -39,7 +39,7 @@ body {
 	padding-bottom: 43px;
 	padding-left: 75px;
 	padding-top: 40px;
-	background: url(img/icon_128.png) no-repeat;
+	background: url('../img/icon_128.png') no-repeat;
 	background-size: 67px;
 	background-position: 1px 18px;
 }
@@ -99,7 +99,7 @@ body {
 }
 
 #btnRemove {
-	background-image: url('img/icon_remove.png');
+	background-image: url('../img/icon_remove.png');
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -115,7 +115,7 @@ body {
 }
 
 #btnAdd {
-	background-image: url('img/icon_add.png');
+	background-image: url('../img/icon_add.png');
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -129,7 +129,7 @@ body {
 }
 
 #btnOptions {
-	background-image: url('img/icon_options.png');
+	background-image: url('../img/icon_options.png');
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -141,7 +141,7 @@ body {
 }
 
 #iconService {
-	background-image: url('img/icon_service_twitter.png');
+	background-image: url('../img/icon_service_twitter.png');
 	background-repeat: no-repeat;
 	height: 16px;
 	width: 16px;
