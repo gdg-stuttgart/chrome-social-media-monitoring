@@ -4,7 +4,7 @@
 <title>Social Media Monitoring Extension Options</title>
 <link rel="shortcut icon" HREF="img/icon_16.png"> 
 <link rel="stylesheet" type="text/css" href="css/options.css">
-<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="lib/3rdparty/jquery-1.4.2.min.js"></script>
 
 <script type="text/javascript"> 
 var bkg = chrome.extension.getBackgroundPage();
@@ -108,7 +108,7 @@ function playSound(){
         <div class="buttons">
           <button id="save_button" onclick="saveOptions();">Save</button>
 		  <!-- TODO: implemet Reset -->
-          <button id="reset_button" onclick="resetOptions();">Reset</button>
+          <button id="reset_button" onclick="resetOptions();return false;">Reset</button>
           <span id="save_status">Options saved</span>
         </div>
       </form>	  
@@ -135,6 +135,9 @@ function playSound(){
 	}
 	
 	function resetOptions() {
+		 $('#refresh-interval').val("30");
+		 $('#sound-alert').val("");
+		 saveOptions();
 		return false;
 	}
 

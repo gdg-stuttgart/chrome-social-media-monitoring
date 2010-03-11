@@ -28,7 +28,7 @@ chrome.extension.onConnect.addListener(function(port) {
 			/*
 			 * get right element from probe list
 			 */
-			  var tagObj = $('#f_' + probeTags.query + '');
+			  var tagObj = $('#f_' + probeTags.query.replace(" ","_") + '');
 
 				 if (tagObj){
 
@@ -247,7 +247,7 @@ function addProbeHTML(tagProbeObj){
 		
 		// copy node and update
 		item = template.cloneNode(true);	  
-		item.setAttribute('id','f_' + tagProbeObj.query);
+		item.setAttribute('id','f_' + tagProbeObj.query.replace(" ","_"));
 		
 		probes.appendChild(item);
 		
@@ -266,6 +266,9 @@ function addProbeHTML(tagProbeObj){
 		item.setAttribute('id','f');
 
 		probes.appendChild(item);
+
+		$("#f.probe > input#tag_input.tag").focus();
+		
 
 	}
 }
@@ -298,7 +301,7 @@ function save() {
 		tagProbe.shortTermTweetsPerHour = 0;
 		tagProbe.longTermTweetsPerHour = 0 ;
 		
-		$(this).attr('id','f_' + tagProbe.query );
+		$(this).attr('id','f_' + tagProbe.query.replace(" ","_") );
 		
 		probeManager.setProbe(tagProbe);
 		$(this).addClass('loader');
