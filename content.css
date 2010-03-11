@@ -8,6 +8,8 @@ body {
 }
 
 .popup {
+	width: 320px;
+	min-height: 300px;
 	font-family: helvetica, arial, sans-serif;
 	font-size: 80%;
 	margin: 0px;
@@ -37,7 +39,7 @@ body {
 	padding-bottom: 43px;
 	padding-left: 75px;
 	padding-top: 40px;
-	background: url(icon_128.png) no-repeat;
+	background: url(img/icon_128.png) no-repeat;
 	background-size: 67px;
 	background-position: 1px 18px;
 }
@@ -96,7 +98,7 @@ body {
 }
 
 #btnRemove {
-	background-image: url('icon_remove.png');
+	background-image: url('img/icon_remove.png');
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -112,7 +114,7 @@ body {
 }
 
 #btnAdd {
-	background-image: url('icon_add.png');
+	background-image: url('img/icon_add.png');
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -126,7 +128,7 @@ body {
 }
 
 #btnOptions {
-	background-image: url('icon_options.png');
+	background-image: url('img/icon_options.png');
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -138,7 +140,7 @@ body {
 }
 
 #iconService {
-	background-image: url('icon_service_twitter.png');
+	background-image: url('img/icon_service_twitter.png');
 	background-repeat: no-repeat;
 	height: 16px;
 	width: 16px;

@@ -90,13 +90,11 @@ function openResults() {
   @import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
 </style>
 </head>
-<body onload="setTimeout(init,0);" class="popup">
-
-
+<body onload="setTimeout(init,0);" class="popup" scrolling="no">
 
 <div id="options">
 
-<a href="#" id="back" onclick="back();">back</a>
+<a href="#" id="back" onclick="back();">Go back to the list</a>
 
 <div id="geolocform">
 	<form>
@@ -143,17 +141,18 @@ function initializeMap() {
 </div>
 
 <div id="header">
-	<img src="logo_popup.png" title="Social Media Monitoring" alt="Social Media Monitoring" />
+	<img src="img/logo_popup.png" title="Social Media Monitoring" alt="Social Media Monitoring" />
+	<div style="position:absolute; top:15px; right: 15px">
     <span class="link" onclick="refresh()">Refresh</span>
     |
     <span class="link" onclick="goToUrl('options.html');">Options</span>
 	|
     <span class="link" onclick="window.close()">Close</span>
+	</div>
 </div>
 
 
-<div id="config">
-<div class="section-header first">Your Probes</div>
+<div id="config" style="margin-top: 15px">
 <div id="probes">
 <div id="template" class="probe"><span id="iconService"></span>
 <span id="tag" class="span_tag hd"><!--  --></span>
