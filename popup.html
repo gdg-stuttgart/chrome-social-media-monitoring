@@ -32,7 +32,9 @@ chrome.extension.onConnect.addListener(function(port) {
 
 				 if (tagObj){
 
-					 $(tagObj).addClass('warn');
+					 //$(tagObj).addClass('warn');
+					 $(tagObj).removeClass('loader');
+					 
 					 $(' > span#tag',tagObj).html($(' > input#tag_input',tagObj).val());
 					 
 					 $(' > span#tag',tagObj).removeClass('hd');
@@ -83,13 +85,14 @@ function openResults() {
 
 
 </script>
-</head>
-<body onload="setTimeout(init,0);" class="popup">
-
 <style type="text/css">
   @import url("http://www.google.com/uds/css/gsearch.css");
   @import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
 </style>
+</head>
+<body onload="setTimeout(init,0);" class="popup">
+
+
 
 <div id="options">
 
@@ -149,9 +152,8 @@ function initializeMap() {
 </div>
 
 
+<div id="config">
 <div class="section-header first">Your Probes</div>
-<p>add your search words</p>
-
 <div id="probes">
 <div id="template" class="probe"><span id="iconService"></span>
 <span id="tag" class="span_tag hd"><!--  --></span>
@@ -163,28 +165,27 @@ function initializeMap() {
 <span id="btnRemove"></span> <span id="btnOptions"></span> <span class="clear"><!--  --></span></div>
 </div>
 <span class="clear"><!--  --></span>
-<span id="btnAdd"> add new</span>
-
-
-
-<div id="footer" style="display:none;">
-<button id="save-button" style="font-weight: bold" onclick="save();">Save</button>
-<button onclick="init();">Cancel</button>
 </div>
+<span class="clear"><!--  --></span>
 
-<form id="options_form">
-<div class="option_row">
+
+<div id="footer">
+<span id="btnAdd"> add new</span>
+<!--<button id="save-button" style="font-weight: bold" onclick="save();">Save</button>
+<button onclick="init();">Cancel</button>-->
+
+<div>
 <div class="option_name">Open search results in</div>
 <div class="option_picker"><select id="open_results">
 	<option value="open_in_new_window">a new window</option>
 	<option value="open_in_current_window">the current window</option>
 </select></div>
-</div>
-</form>
 
-<div id="footer">
-<button id="save-button" style="font-weight: bold"
+<button id="save-button" style="font-weight: bold; float: right;margin-right:5px;"
 	onclick="openResults();return false;">Show results</button>
+</div>
+
+
 </div>
 
 
@@ -351,6 +352,7 @@ function initializeMap() {
 			$(this).attr('id','f_' + tagProbe.query );
 			
 			probeManager.setProbe(tagProbe);
+			$(this).addClass('loader');
 			port.postMessage({probeTagChanged: tagProbe});
 			
 		});
