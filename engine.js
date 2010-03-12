@@ -53,8 +53,6 @@ var settings = {
 		}
 		return false;
 	}
-
-	
 }
 
 function pluginInit() {

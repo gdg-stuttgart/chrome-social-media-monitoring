@@ -55,7 +55,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 					console.log('New result Number: ' + resultNumber);
 					$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
 				   	 	if(data.results.length != 0) {
-				   	 		processLongTermTweets(data);
+				   	 		processLongTermTweets(data, probeTag, resultNumber);
 						}
 						else {
 							console.log("Not enough tweets...");						
@@ -63,17 +63,17 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 					});
 				}
 				else {
-					processLongTermTweets(data);
+					processLongTermTweets(data, probeTag, resultNumber);
 				}
 			});
 		}
 		else {
-			processLongTermTweets(data);
+			processLongTermTweets(data, probeTag, resultNumber);
 		}
 	});	
 }
 
-function processLongTermTweets(data) {
+function processLongTermTweets(data, probeTag, resultNumber) {
 	timeString = data.results[0].created_at;
 	console.log('Time String: ' + timeString);
 	probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
@@ -84,7 +84,7 @@ function processLongTermTweets(data) {
 function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 	
 	$.getJSON(queryURL + '&rpp=100&page=1', function(data) {
-		if(data.results != undefined && data.results.length > 0) {
+		if(data.results.length > 0) {
 			var tweetDate = new Date();
 			var fiveMinAgo = tweetDate.getTime() - (60000 * 5);
 			
@@ -101,43 +101,42 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			}
 			
 			var numberOfTweetsWithinOneMinute = index / 5;
-			if(numberOfTweetsWithinOneMinute >= 100) {
-				probeTag.shortTermTweetsPerHour = '>100';
-				localPort.postMessage({update:probeTag});
+			if(numberOfTweetsWithinOneMinute >= 20) {
+				probeTag.shortTermTweetsPerHour = '>20';
 				localPort.postMessage({alert:probeTag});
 				console.log('Number of current Tweets: >= 100 Tweets/min');
 				console.log('Alert >= 100 Tweets/Min');
 			}
 			else if (numberOfTweetsWithinOneMinute === 0) {
 				console.log('No Short term tweets in one minute');
-				var watchLastTweets = Math.floor(data.results.length / 10);
+				var watchLastTweets = Math.floor(data.results.length / 8);
 				console.log('Try calculating current tweets per Minute with the last ' + watchLastTweets + 'Tweets');
 				var timeString = data.results[watchLastTweets].created_at;
 				var tweetsPerMinute = calculateTweetsPerMinute(timeString, watchLastTweets);
 				console.log('Calculated Tweets: ' + tweetsPerMinute + '100 Tweets/min');
-				if(tweetsPerMinute > probeTag.longTermTweetsPerHour) {
-					probeTag.shortTermTweetsPerHour = tweetsPerMinute;
-					localPort.postMessage({update:probeTag});
-					localPort.postMessage({alert:probeTag});
-					console.log('Alert >=' + tweetsPerMinute + 'Tweets/Min');
-				}
+
+				updateCurrentTweetsPerMinute(tweetsPerMinute, probeTag);
 			}
 			else {
-				if(numberOfTweetsWithinOneMinute > probeTag.longTermTweetsPerHour) {
-					probeTag.shortTermTweetsPerHour = numberOfTweetsWithinOneMinute;
-					localPort.postMessage({update:probeTag});
-					localPort.postMessage({alert:probeTag});
-					console.log('Number of current Tweets:' + numberOfTweetsWithinOneMinute + 'Tweets/min');
-					console.log('Alert >=' + tweetsPerMinute + 'Tweets/Min');
-				}
+				updateCurrentTweetsPerMinute(numberOfTweetsWithinOneMinute, probeTag);
 			}
 			probeManager.setProbe(probeTag);
 			localPort.postMessage({update:probeTag});
 		}
 		else {
-			throw Error('Error Current tweets per minute');
+			probeTag.shortTermTweetsPerHour = 0;
+			console.log('Error Current tweets per minute');
 		}
 	});	
+}
+
+function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
+	if(tweetsWithinOneMinute 0.8 * 3 > probeTag.longTermTweetsPerHour) {
+		probeTag.shortTermTweetsPerHour = tweetsWithinOneMinute;
+		localPort.postMessage({alert:probeTag});
+		console.log('Number of current Tweets:' + tweetsWithinOneMinute + 'Tweets/min');
+		console.log('Alert >=' + tweetsWithinOneMinute + 'Tweets/Min');
+	}
 }
 
 function calculateTweetsPerMinute(timeString, resultCount) {
