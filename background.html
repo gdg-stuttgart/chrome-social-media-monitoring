@@ -47,11 +47,11 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 		if(data.results.length == 0) {
 			resultNumber = resultNumber / 10;
 			console.log('New result Number: ' + resultNumber);
-			$.getJSON(queryURL + '&rpp=1&page=' + page, function(data) {
+			$.getJSON(queryURL + '&rpp=1&page=', function(data) {
 		 		if(data.results.length == undefined) {
 					resultNumber = resultNumber / 10;
 					console.log('New result Number: ' + resultNumber);
-					$.getJSON(queryURL + '&rpp=1&page=' + page, function(data) {
+					$.getJSON(queryURL + '&rpp=1&page=', function(data) {
 				   	 	if(data.results.length != 0) {
 				   	 		processLongTermTweets(data, probeTag, resultNumber);
 						}
@@ -72,7 +72,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 }
 
 function processLongTermTweets(data, probeTag, resultNumber) {
-	timeString = data.results[0].created_at;
+	var timeString = data.results[0].created_at;
 	console.log('Time String: ' + timeString);
 	probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
 	probeManager.setProbe(probeTag);
