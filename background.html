@@ -147,7 +147,7 @@ function calculateTweetsPerMinute(timeString, resultCount) {
 	var numberOfTweetsWithinOneMinute = (1000 * 60) / timePerTweetInMS + 0.0;
 	console.log('numberOfTweetsWithinOneMinute: ' + numberOfTweetsWithinOneMinute);
 	console.log('Rounded: ' + Math.round(numberOfTweetsWithinOneMinute));
-	return Math.floor(numberOfTweetsWithinOneMinute);
+	return Math.round(numberOfTweetsWithinOneMinute);
 }
 
 function locationDetected(position) {
