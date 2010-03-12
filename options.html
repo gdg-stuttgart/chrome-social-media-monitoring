@@ -124,7 +124,11 @@ function playSound(){
 	
 	function _initOptionsPage() {
 		saveButton = document.getElementById("save_button");
-		markClean();
+		if(bkg.settings.isFirstRun()){
+			markDirty();
+		}else{
+			markClean();
+		}
 	}
 
 	function saveOptions() {
