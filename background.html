@@ -47,11 +47,11 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 		if(data.results.length == 0) {
 			resultNumber = resultNumber / 10;
 			console.log('New result Number: ' + resultNumber);
-			$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
+			$.getJSON(queryURL + '&rpp=1&page=' + page, function(data) {
 		 		if(data.results.length == undefined) {
 					resultNumber = resultNumber / 10;
 					console.log('New result Number: ' + resultNumber);
-					$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
+					$.getJSON(queryURL + '&rpp=1&page=' + page, function(data) {
 				   	 	if(data.results.length != 0) {
 				   	 		processLongTermTweets(data, probeTag, resultNumber);
 						}
