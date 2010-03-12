@@ -170,20 +170,6 @@ function requestGeoLocation(){
 	}
 }
 
-function geocodeLocation(address, radius) {
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://www.ilimitado.de/labs/chrome/extensions/social-monitor/geocoder.php?loc=" + address, true);
-	xhr.onreadystatechange = function() {
-	  if (xhr.readyState == 4) {
-	    var geocode = JSON.parse(xhr.responseText);
-	    var coordinates = geocode.Placemark["Point"].coordinates;
-
-	    localPort.postMessage({geocoded: coordinates[0] + "," + coordinates[1] + "," + radius + "km"});
-	  }
-	}
-	xhr.send();
-}
-
 function getProbeManager() {
 	return probeManager;
 }
