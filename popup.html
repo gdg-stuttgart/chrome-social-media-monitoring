@@ -148,12 +148,8 @@ function openResults() {
 <script type="text/javascript">
 function init() {
 
-	/*
-		XXX: remove populateDummyData - debugging
-	*/
-	//probeTags = getDummyData();
-	//var probeTags = JSON.parse(localStorage['probes']);
-
+	chrome.extension.getBackgroundPage().showNoEvents();
+	
 	var probeTags = probeManager.loadProbes();
 
 
