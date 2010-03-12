@@ -1,4 +1,5 @@
 function Probe() {
+	this.id = undefined;
 	this.query = "";
 	this.threshold = 0;
 	this.shortTermTweetsPerHour = 0;
