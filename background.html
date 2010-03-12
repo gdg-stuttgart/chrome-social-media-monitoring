@@ -122,7 +122,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			localPort.postMessage({update:probeTag});
 		}
 		else {
-			probeTag.shortTermTweetsPerHour = 0;
+			probeTag.shortTermTweetsPerHour = '?';
 			console.log('Error Current tweets per minute');
 		}
 	});	
