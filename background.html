@@ -82,23 +82,23 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 	
 	$.getJSON(queryURL + '&rpp=100&page=1', function(data) {
 		if(data.results != undefined && data.results.length > 0) {
-			var tweetDate = new Date(data.results[0].created_at);
-			var minuteAgo = tweetDate.getTime() - 60000;
+			var tweetDate = new Date();
+			var fiveMinAgo = tweetDate.getTime() - (60000 * 5);
 			
+			console.log('FiveMinAgo: ' + new Date(fiveMinAgo));
 			var index = 0;
-			console.log('While data.results[index].created_at: ' + data.results[index].created_at);
-			while(tweetDate > minuteAgo && index < 100) {
+			while(tweetDate > fiveMinAgo && index < 100) {
 				var ts = new Date(data.results[index].created_at);
 				tweetDate = ts.getTime();
-				console.log('tweetDate: ' + tweetDate);
-				var diff = tweetDate - minuteAgo;
+				console.log('tweetDate: ' + ts);
+				var diff = tweetDate - fiveMinAgo;
 				console.log('Diff: ' + diff);
 				index++;
 				console.log('current index: ' + index);
 			}
 			
-			var numberOfTweetsWithinOneMinute = index;
-			if(numberOfTweetsWithinOneMinute >=100) {
+			var numberOfTweetsWithinOneMinute = index / 5;
+			if(numberOfTweetsWithinOneMinute >= 100) {
 				probeTag.shortTermTweetsPerHour = '>100';
 				localPort.postMessage({update:probeTag});
 				localPort.postMessage({alert:probeTag});
@@ -146,7 +146,7 @@ function calculateTweetsPerMinute(timeString, resultCount) {
 	var numberOfTweetsWithinOneMinute = (1000 * 60) / timePerTweetInMS + 0.0;
 	console.log('numberOfTweetsWithinOneMinute: ' + numberOfTweetsWithinOneMinute);
 	console.log('Rounded: ' + Math.round(numberOfTweetsWithinOneMinute));
-	return Math.round(numberOfTweetsWithinOneMinute);
+	return numberOfTweetsWithinOneMinute;
 }
 
 function locationDetected(position) {
