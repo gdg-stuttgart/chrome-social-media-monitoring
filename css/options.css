@@ -1,7 +1,8 @@
 body{
 	background-color:#ebeff9;
 	font-family:helveticy, arial, sans-serif;
-	font-size:13px
+	font-size:13px;
+	color: #000000;
 }
 
 #content{

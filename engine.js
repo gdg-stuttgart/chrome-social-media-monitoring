@@ -122,7 +122,7 @@ function getProbesCount(onSuccess, onError) {
 	 * TODO: Refresh all probes
 	 */
 
-	//XXX Dummy action
+	// XXX Dummy action
 
 	
 	var probeTags = probeManager.loadProbes();
@@ -135,19 +135,25 @@ function getProbesCount(onSuccess, onError) {
 			count++;
 			chrome.browserAction.setBadgeText({text:"" + count});
 		}
-		if (count >0 ){
+		if (count > eventsCount){
 			chrome.browserAction.setIcon({"path":"img/icon.png"});
 			chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
 			chrome.browserAction.setBadgeText({text: "" + count});
-		}
 		
-		if(settings.soundAlert){
-			/*
-			 * TODO: Add sound alert
-			 */
-			console.log('rrrriiiiinnnnggg');
+			if(settings.soundAlert){
+				/*
+				 * TODO: Add sound alert
+				 */
+				console.log('rrrriiiiinnnnggg');
+				
+				pingSound = document.createElement('audio');
+			    pingSound.setAttribute('src', settings.soundAlert);
+			    pingSound.setAttribute('id', 'ping');
+			    pingSound.load();
+			    pingSound.play();
+			    
+			}
 		}
-		
 		
 	}else{
 		chrome.browserAction.setIcon({"path":"img/icon_nonew.png"});
