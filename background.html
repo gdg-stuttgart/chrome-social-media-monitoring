@@ -46,37 +46,39 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 	var resultNumber = 1000;	
 	
 	$.getJSON(queryURL + '&rpp=1&page=' + resultNumber, function(data) {
-		if(data.results == undefined) {
+		if(data.results.length == 0) {
 			resultNumber = resultNumber / 10;
 			console.log('New result Number: ' + resultNumber);
 			$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
-		 		if(data.results == undefined) {
+		 		if(data.results.length == undefined) {
 					resultNumber = resultNumber / 10;
 					console.log('New result Number: ' + resultNumber);
 					$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
-				   	 	if(data.results != undefined) {
-						  timeString = data.results[0].created_at;
-						  console.log('Time String: ' + timeString);
+				   	 	if(data.results.length != 0) {
+				   	 		processLongTermTweets(data);
 						}
 						else {
-							throw Error("Not enough tweets...");						
+							console.log("Not enough tweets...");						
 						}
 					});
 				}
 				else {
-					timeString = data.results[0].created_at;
-					console.log('Time String: ' + timeString);
+					processLongTermTweets(data);
 				}
 			});
 		}
 		else {
-			timeString = data.results[0].created_at;
-			console.log('Time String: ' + timeString);
+			processLongTermTweets(data);
 		}
-		probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
-		probeManager.setProbe(probeTag);
-		localPort.postMessage({update:probeTag});
 	});	
+}
+
+function processLongTermTweets(data) {
+	timeString = data.results[0].created_at;
+	console.log('Time String: ' + timeString);
+	probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
+	probeManager.setProbe(probeTag);
+	localPort.postMessage({update:probeTag});
 }
 
 function loadCurrentTweetsPerMinute(queryURL, probeTag) {
