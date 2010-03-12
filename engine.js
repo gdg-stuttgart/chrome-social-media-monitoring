@@ -144,6 +144,10 @@ function getProbesCount(onSuccess, onError) {
 
 	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
 	console.log('probesCount:' + probesCount + ' eventsCount:' + eventsCount);
+	if(probesCount == 0){
+		showNoActiveProbes();
+		return false;
+	}
 	
 	if(probesCount > 0 && eventsCount > 0){
 			chrome.browserAction.setIcon({"path":"img/icon.png"});
@@ -169,9 +173,16 @@ function getProbesCount(onSuccess, onError) {
 }
 
 function showNoEvents() {
+	chrome.browserAction.setIcon({"path":"img/icon.png"});
+	//chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
+	chrome.browserAction.setBadgeText({text:""});
+	eventsCount = 0;
+}
+
+function showNoActiveProbes() {
 	chrome.browserAction.setIcon({"path":"img/icon_nonew.png"});
 	chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-	chrome.browserAction.setBadgeText({text:"?"});
+	chrome.browserAction.setBadgeText({text:""});
 	eventsCount = 0;
 }
 
@@ -181,7 +192,7 @@ function updateUnreadCount(count) {
 		  eventsCount = count;
 		  chrome.browserAction.setIcon({"path":"img/icon.png"});
 		  chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-		  chrome.browserAction.setBadgeText({text:"?"});
+		  //chrome.browserAction.setBadgeText({text:"?"});
 			
 	  }
 }

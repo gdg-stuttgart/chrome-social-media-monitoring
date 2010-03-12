@@ -196,6 +196,16 @@ function addRemoveButtonListeners(){
 		 * remove from HTML
 		 */
 		probeDiv.remove();
+
+		/*
+		 * Update probes
+		 */
+
+		
+		chrome.extension.getBackgroundPage().updateProbes(function(count) {
+			//dummy function
+			console.log('updateProbes.callback:' + count);
+		  });
 				
 		/*
 		 * TODO: add communication with background.html
