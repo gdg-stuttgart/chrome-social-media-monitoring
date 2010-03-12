@@ -117,7 +117,7 @@ ProbeManager.prototype.countProbes = function() {
 			return count;
 		}
 		
-		for (var j in tagProbes) {
+		for (var j in probes) {
 			count++;
 		}
 		

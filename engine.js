@@ -59,7 +59,7 @@ function pluginInit() {
 	showNoEvents();
 	  
     if(show_options_page && (localStorage["version"] == null || localStorage["version"] != version)) {
-    	populateExampleData();//on first run
+    	populateExampleData();// on first run
     	localStorage["version"] = version;
         chrome.tabs.create({url : "options.html"});        
     } else if(show_options_page == false && (localStorage["version"] == null || localStorage["version"] != version)) {
@@ -140,22 +140,15 @@ function getProbesCount(onSuccess, onError) {
 	// XXX Dummy action
 
 	
-	var probeTags = probeManager.loadProbes();
+	var probesCount = probeManager.countProbes();
 
 	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
-		
-	if(probeTags){
-		var count = 0;
-		for (var i in probeTags) {
-			count++;
-			chrome.browserAction.setBadgeText({text:"" + count});
-		}
-		if (count == 0){
-			showNoEvents();
-		}else if(count > eventsCount){
+	console.log('probesCount:' + probesCount + ' eventsCount:' + eventsCount);
+	
+	if(probesCount > 0 && eventsCount > 0){
 			chrome.browserAction.setIcon({"path":"img/icon.png"});
 			chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
-			chrome.browserAction.setBadgeText({text: "" + count});
+			chrome.browserAction.setBadgeText({text: "" + eventsCount});
 		
 			if(settings.soundAlert){
 				/*
@@ -170,12 +163,8 @@ function getProbesCount(onSuccess, onError) {
 			    pingSound.play();
 			    
 			}
-		}
-		
 	}else{
-		chrome.browserAction.setIcon({"path":"img/icon_nonew.png"});
-		chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-		chrome.browserAction.setBadgeText({text:"\u203c"});
+		showNoEvents();
 	}
 }
 
@@ -183,7 +172,7 @@ function showNoEvents() {
 	chrome.browserAction.setIcon({"path":"img/icon_nonew.png"});
 	chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
 	chrome.browserAction.setBadgeText({text:"?"});
-	eventsCount = -1;
+	eventsCount = 0;
 }
 
 function updateUnreadCount(count) {
@@ -195,5 +184,5 @@ function updateUnreadCount(count) {
 		  chrome.browserAction.setBadgeText({text:"?"});
 			
 	  }
-	}
+}
 

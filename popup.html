@@ -49,6 +49,11 @@ console.log('onMessage:' + msg);
 	  if (msg.alert) {
 		  probeTags = msg.alert;
 		  console.log('onMessage[alert]:' + probeTags);
+		  chrome.extension.getBackgroundPage().eventsCount++;
+		  chrome.extension.getBackgroundPage().updateProbes(function(count) {
+				//dummy function
+				console.log('updateProbes.callback:' + count);
+			  });
 	  }	  
 });
 
