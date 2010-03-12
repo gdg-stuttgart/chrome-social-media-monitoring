@@ -13,8 +13,7 @@
   "default_locale": "en",
   "content_scripts": [
     { "matches": ["http://*/*"], 
-      "js": ["probe.js","probe_manager.js", "content_script.js", "lib/3rdparty/jquery-1.4.2.min.js", "lib/3rdparty/jquery.effects.core.min.js"],
-     "css": ["css/content.css","css/options.css"] }
+      "js": ["probe.js","probe_manager.js", "content_script.js", "lib/3rdparty/jquery-1.4.2.min.js", "lib/3rdparty/jquery.effects.core.min.js"]}
   ],
  
   "permissions": [

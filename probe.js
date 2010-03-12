@@ -10,6 +10,7 @@ function Probe() {
 	this.longitude = undefined;
 	this.radius = undefined;
 	this.state = 1; // 1 = active, 2 = paused
+	this.lastupdate = undefined;
 
 }
 
