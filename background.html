@@ -10,9 +10,7 @@
 </head>
 <body>
 <script type="text/javascript">
-var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
-var SHORT_TERM_INTERVAL_IN_HOURS = 1;
-var HOURS_TO_MS = 60 * 60 *1000;
+var CORRECTION_FACTOR = 0.8;
 
 var baseURL = 'http://search.twitter.com/search.json?';
 var probeManager = new ProbeManager();
@@ -131,8 +129,8 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 }
 
 function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
-	if(tweetsWithinOneMinute 0.8 * 3 > probeTag.longTermTweetsPerHour) {
-		probeTag.shortTermTweetsPerHour = tweetsWithinOneMinute;
+	if(tweetsWithinOneMinute * 3 > probeTag.longTermTweetsPerHour) {
+		probeTag.shortTermTweetsPerHour = tweetsWithinOneMinute * CORRECTION_FACTOR;
 		localPort.postMessage({alert:probeTag});
 		console.log('Number of current Tweets:' + tweetsWithinOneMinute + 'Tweets/min');
 		console.log('Alert >=' + tweetsWithinOneMinute + 'Tweets/Min');
