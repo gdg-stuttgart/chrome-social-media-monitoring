@@ -18,7 +18,7 @@ var probeTags;
 var currentProbe;
 
 
-var probes, template, inputTag, spanTag, inputAvgWeek, inputAvgDay;
+var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 port.onMessage.addListener(function(msg) {
@@ -163,6 +163,7 @@ function init() {
 		
 	probes = document.getElementById('probes');
 	template = xpath('//div[@id="template"]', document);
+	serviceIcon  = xpath('//span[@id="iconService"]', template);
 	spanTag  = xpath('//span[@id="tag"]', template);
 	inputTag = xpath('//input[@id="tag_input"]', template);
 	inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
@@ -221,6 +222,29 @@ function addRemoveButtonListeners(){
 		
 		$("div#options").css('display','block');
 	});
+
+	$("span#iconService").click(function() {
+		/*
+		 * get selected probe id
+		 */		
+		var probeDiv = $(this).parent('.probe');
+		var strDivId = probeDiv.attr('id');
+		strDivId = strDivId.substring(2);
+
+		var probeObj = probeManager.getProbeById(strDivId);
+		var radius = ""; 
+		if (probeObj.radius != undefined){
+			radius = probeObj.radius;
+		}
+
+		/*
+		 * TODO: remove hardcoded value - "Germany"
+		 */
+		var href = 'http://search.twitter.com/search?q=' + probeObj.query + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=Germany&within=' + radius + '&units=km&since=&until=&rpp=15';
+		window.open(href); 
+		return false;
+		
+	});
 	
 	$("#save_location").click(function() {
 
@@ -276,6 +300,9 @@ function addProbeHTML(tagProbeObj){
 	if(tagProbeObj){		
 
 		spanTag.innerHTML = tagProbeObj.query;
+
+
+		serviceIcon.setAttribute('class','service_' + tagProbeObj.serviceId);
 		
 		spanTag.setAttribute('class','span_tag');			
 		inputTag.setAttribute('class','tag hd');
@@ -408,7 +435,7 @@ function back(){
 </div>
 <span class="clear"><!--  --></span>
 
-<div id="footer">
+<div id="footr">
 <span id="btnAdd"> add new</span>
 
 <div class="option_row" style="padding-top:5px;">

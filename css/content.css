@@ -63,7 +63,7 @@ body {
 	margin-left: 2px;
 }
 
-#footer {
+#footr {
 	position: absolute;
 	border-top: solid 1px #eee;
 	margin-top: 4px;
@@ -151,7 +151,7 @@ body {
 }
 
 #iconService {
-	background-image: url('../img/icon_service_twitter.png');
+	background-image: url('../img/icon.png');
 	background-repeat: no-repeat;
 	height: 16px;
 	width: 16px;
@@ -161,6 +161,18 @@ body {
 	margin: 5px;
 	cursor: pointer;
 }
+
+#iconService.service_twitter {
+	background-image: url('../img/icon_service_twitter.png');
+}
+#iconService.service_buzz {
+	background-image: url('../img/icon_service_buzz.png');
+}
+#iconService.service_facebook {
+	background-image: url('../img/icon_service_facebook.png');
+}
+
+
 
 .avgWeek {
 	width: 30px;
