@@ -1,6 +1,6 @@
 body{
 	background-color:#ebeff9;
-	font-family:helveticy, arial, sans-serif;
+	font-family: helvetica, arial, sans-serif;
 	font-size:13px;
 	color: #000000;
 }
@@ -23,21 +23,25 @@ body{
 }
 
 #header {
-	padding-bottom: 1.5em;
-	padding-top: 1.5em;
+	padding-top: 15px;
+	padding-left: 5px;
+	padding-bottom: 15px;
+	margin: 10px;
+	background: url("../img/icon_48x48.png") 80px 2px no-repeat;
+    background-position: 5px 5px 5px 5px;
+	text-align:center
 }
 
 #header h1 {
-	font-size: 156%;
+	margin: 0px;
+	font-size: 160%;
+	font-weight: bold;
 	display: inline;
-	padding-bottom: 43px;
-	padding-left: 75px;
-	padding-top: 40px;
-	background: url(img/icon_128.png) no-repeat;
-	background-size: 67px;
-	background-position: 1px 18px;
+	padding-bottom: 10px;
+	padding-left: 55px;
+	padding-top: 20px;
 }
-
+ 
 .section-header {
 	background: #ebeff9;
 	border-top: 1px solid #b5c7de;
