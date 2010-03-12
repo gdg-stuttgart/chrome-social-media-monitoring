@@ -57,7 +57,7 @@ def getNumberOfTweetsPerMinuteNow(term)
   if index==0
     return nil #wenn es keinen Treffer gab, dann gibts auch keinen Alert
   end
-  if timeOfTweet<2.minutes.ago
+  if timeOfTweet<1.minutes.ago
     #kein einziger Tweet innerhalb der letzten 2 Minuten, dann andere Strategie:
     #vor wievielen Minuten waren der zehntletzte Treffer?
     if results[9]
@@ -82,6 +82,7 @@ run "test" #keine Auffälligkeiten
 run "canon7d" #keine Auffälligkeiten
 run "mark owen" #auch keine auffälligkeiten, obwohl es ein trending topic ist. Grund: die letzten 1000 tweets sind auch erst vor kurzem geschehen
 run "#OMJDByeah" #hier  tweetsPerMinuteNow=0.9  und tweetsPerMinuteSinceThousandsTweet=0.25 , d.h. dies ist ein echter Alert!
+run "heiseonline"
 
 #Ausgabe:
 #term=google tweetsPerMinuteNow=59  tweetsPerMinuteSinceThousandsTweet=71.0330762571719
