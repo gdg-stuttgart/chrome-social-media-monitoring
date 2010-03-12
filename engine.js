@@ -13,7 +13,6 @@ var settings = {
 		localStorage['poll'] = val;
 	},
 	get timeout() {
-		// return localStorage['timeout'] || 1000 * 15;
         return 1000*15;
 	},
 	set timeout(val) {
@@ -101,6 +100,38 @@ function getProbesCount(onSuccess, onError) {
 	 * TODO: Refresh all probes
 	 */
 
+	//XXX Dummy action
+
+	
+	var probeTags = probeManager.loadProbes();
+
+	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
+		
+	if(probeTags){
+		var count = 0;
+		for (var i in probeTags) {
+			count++;
+			chrome.browserAction.setBadgeText({text:"" + count});
+		}
+		if (count >0 ){
+			chrome.browserAction.setIcon({"path":"img/icon.png"});
+			chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
+			chrome.browserAction.setBadgeText({text: "" + count});
+		}
+		
+		if(settings.soundAlert){
+			/*
+			 * TODO: Add sound alert
+			 */
+			console.log('rrrriiiiinnnnggg');
+		}
+		
+		
+	}else{
+		chrome.browserAction.setIcon({"path":"img/icon_nonew.png"});
+		chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
+		chrome.browserAction.setBadgeText({text:"\u203c"});
+	}
 }
 
 function showNoEvents() {

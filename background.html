@@ -75,6 +75,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 		}
 		probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
 		probeManager.setProbe(probeTag);
+		localPort.postMessage({update:probeTag});
 	});	
 }
 
@@ -129,6 +130,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 				}
 			}
 			probeManager.setProbe(probeTag);
+			localPort.postMessage({update:probeTag});
 		}
 		else {
 			throw Error('Error Current tweets per minute');
