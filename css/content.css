@@ -25,6 +25,20 @@ body {
 #header {
 	padding: 5px;
 	border-bottom: solid 1px #eee;
+	padding-left: 10px;
+	padding-bottom:15px;
+	margin: 10px;
+	background: url("../img/icon_24x24.png") 0px 5px no-repeat;
+    background-position: 0px 5px;
+}
+
+#header h1 {
+	margin: 0px;
+	font-size: 120%;
+	display: inline;
+	padding-bottom: 15px;
+	padding-left: 25px;
+	padding-top: 1px;
 }
 
 #config {
@@ -32,17 +46,7 @@ body {
 	padding-left: 5px;
 	padding-right: 5px;
 	overflow: auto;
-}
-
-#header h1 {
-	font-size: 156%;
-	display: inline;
-	padding-bottom: 43px;
-	padding-left: 75px;
-	padding-top: 40px;
-	background: url('../img/icon_128.png') no-repeat;
-	background-size: 67px;
-	background-position: 1px 18px;
+	margin-top: 15px;
 }
 
 .section-header {
