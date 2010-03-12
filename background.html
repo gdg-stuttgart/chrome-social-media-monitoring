@@ -82,9 +82,8 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 	
 	$.getJSON(queryURL + '&rpp=100&page=1', function(data) {
 		if(data.results != undefined && data.results.length > 0) {
-			var startTime = new Date(data.results[0].created_at);
-			var minuteAgo = startTime.getTime() - 60000;
-			var tweetDate = new Date();
+			var tweetDate = new Date(data.results[0].created_at);
+			var minuteAgo = tweetDate.getTime() - 60000;
 			
 			var index = 0;
 			console.log('While data.results[index].created_at: ' + data.results[index].created_at);
@@ -97,7 +96,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 				index++;
 				console.log('current index: ' + index);
 			}
-
+			
 			var numberOfTweetsWithinOneMinute = index;
 			if(numberOfTweetsWithinOneMinute >=100) {
 				probeTag.shortTermTweetsPerHour = '>100';
