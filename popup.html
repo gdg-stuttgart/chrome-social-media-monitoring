@@ -16,10 +16,9 @@ var probeTags;
 var probes, template, inputTag, spanTag, inputAvgWeek, inputAvgDay;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
-
-chrome.extension.onConnect.addListener(function(port) {
-	  console.assert(port.name == "social-media-monitoring");
-	  port.onMessage.addListener(function(msg) {
+port.onMessage.addListener(function(msg) {
+	console.log('onMessage:' + msg);
+	  if (msg.update) {
 		console.log('onMessage:' + msg);
 		  if (msg.update) {
 			  probeTags = msg.update;
@@ -48,7 +47,6 @@ chrome.extension.onConnect.addListener(function(port) {
 			  probeTags = msg.alert;
 			  console.log('onMessage[alert]:' + probeTags);
 		  }	  
-	  });
 });
 
 $(document).ready(function() {

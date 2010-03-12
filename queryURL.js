@@ -1,6 +1,5 @@
 function QueryURL(baseURL, probeTag) {
 	this._baseURL = baseURL;
-	this._probe = probeTag;
 	this._query = probeTag.query;
 	this.timeIntervalInMS = undefined;
 	this._latitude = probeTag.latitude;

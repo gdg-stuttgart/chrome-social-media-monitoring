@@ -14,21 +14,23 @@ var LONG_TERM_INTERVAL_IN_HOURS = 24 * 7;
 var SHORT_TERM_INTERVAL_IN_HOURS = 1;
 var HOURS_TO_MS = 60 * 60 *1000;
 
-var baseURLs = {twitter: "http://search.twitter.com/search.json?"};
+var baseURL = 'http://search.twitter.com/search.json?';
 var probeManager = new ProbeManager();
-
-chrome.extension.onConnect.addListener(function(port) {
+var localPort;
+const extension = chrome.extension;
+extension.onConnect.addListener(function(port) {
 	console.assert(port.name == "social-media-monitoring");
+	localPort = port;
 	port.onMessage.addListener(function(msg) {
 		console.log('BackgroundPage, onMessage:' + msg);
 		  
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
 
-			var query = new QueryURL(baseURLs.twitter, probeTag)
-			query.timeIntervalInMS = LONG_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
-			var url = query.getURL()
-			loadData(query.getURL(), probeTag);
+			var query = new QueryURL(baseURL, probeTag);
+			var url = query.getURL();
+			loadLongTermTweetsPerMinute(url, probeTag);
+			loadCurrentTweetsPerMinute(url, probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -39,67 +41,125 @@ chrome.extension.onConnect.addListener(function(port) {
 	});
 });
 
-function loadData(queryURL, probeTag) {
-	console.log('queryURL' + queryURL);
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", queryURL, true);
-	xhr.onreadystatechange = function() {
-		  if (xhr.readyState == 4){
-			  var response = JSON.parse(xhr.responseText);
-			  if(response.error){
-				  throw new Error('Failed to load tweets:' + xhr.responseText);
-			   }else{
-				processData(probeTag, response);
-			  }
-		  }
-	};
-	xhr.send();
+function loadLongTermTweetsPerMinute(queryURL, probeTag) {
+	var timeString = 0;
+	var resultNumber = 1000;	
+	
+	$.getJSON(queryURL + '&rpp=1&page=' + resultNumber, function(data) {
+		if(data.results == undefined) {
+			resultNumber = resultNumber / 10;
+			console.log('New result Number: ' + resultNumber);
+			$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
+		 		if(data.results == undefined) {
+					resultNumber = resultNumber / 10;
+					console.log('New result Number: ' + resultNumber);
+					$.getJSON(baseURL + params + '&rpp=1&page=' + page, function(data) {
+				   	 	if(data.results != undefined) {
+						  timeString = data.results[0].created_at;
+						  console.log('Time String: ' + timeString);
+						}
+						else {
+							throw Error("Not enough tweets...");						
+						}
+					});
+				}
+				else {
+					timeString = data.results[0].created_at;
+					console.log('Time String: ' + timeString);
+				}
+			});
+		}
+		else {
+			timeString = data.results[0].created_at;
+			console.log('Time String: ' + timeString);
+		}
+		probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
+		probeManager.setProbe(probeTag);
+	});	
 }
 
-function processData(probeTag, response) {
-	var port = chrome.extension.connect({name: "social-media-monitoring"});
-	var data = response.results;
-	console.log('Received Tweets: ' + data);
-	console.log("Long term tweet Count :" + data.length);
-	probeTag.longTermTweetsPerHour = data.length;
-	var longTermRatio = data.length / LONG_TERM_INTERVAL_IN_HOURS;
+function loadCurrentTweetsPerMinute(queryURL, probeTag) {
+	
+	$.getJSON(queryURL + '&rpp=100&page=1', function(data) {
+		if(data.results != undefined && data.results.length > 0) {
+			var startTime = new Date(data.results[0].created_at);
+			var minuteAgo = startTime.getTime() - 60000;
+			var tweetDate = new Date();
+			
+			var index = 0;
+			console.log('While data.results[index].created_at: ' + data.results[index].created_at);
+			while(tweetDate > minuteAgo && index < 100) {
+				var ts = new Date(data.results[index].created_at);
+				tweetDate = ts.getTime();
+				console.log('tweetDate: ' + tweetDate);
+				var diff = tweetDate - minuteAgo;
+				console.log('Diff: ' + diff);
+				index++;
+				console.log('current index: ' + index);
+			}
 
-	//calculateShortTerm
-	var itemCount = 0;
-	$.each(data, function() { 
-		var now = new Date();
-		var intervalLength = SHORT_TERM_INTERVAL_IN_HOURS * HOURS_TO_MS;
-		var sinceDate = now.getTime() - intervalLength;
-		var creationDate = new Date(this.created_at);
-
-		if(creationDate.getTime() > sinceDate) 
-			itemCount++;
-	});
-
-	console.log("Short term tweet Count :" + itemCount);
-	probeTag.shortTermTweetsPerHour = itemCount;
-	var shortTermRatio = itemCount / SHORT_TERM_INTERVAL_IN_HOURS;
-
-	//We have to think about a factor user can add --> (shortTermRatio > longTermRatio * FACTOR)
-	if(shortTermRatio > longTermRatio) {
-		port.postMessage({alert:probeTag});
-	}
-
-	port.postMessage({update:probeTag});
-	probeManager.setProbe(probeTag);
+			var numberOfTweetsWithinOneMinute = index;
+			if(numberOfTweetsWithinOneMinute >=100) {
+				probeTag.shortTermTweetsPerHour = '>100';
+				localPort.postMessage({update:probeTag});
+				localPort.postMessage({alert:probeTag});
+				console.log('Number of current Tweets: >= 100 Tweets/min');
+				console.log('Alert >= 100 Tweets/Min');
+			}
+			else if (numberOfTweetsWithinOneMinute === 0) {
+				console.log('No Short term tweets in one minute');
+				var watchLastTweets = Math.floor(data.results.length / 10);
+				console.log('Try calculating current tweets per Minute with the last ' + watchLastTweets + 'Tweets');
+				var timeString = data.results[watchLastTweets].created_at;
+				var tweetsPerMinute = calculateTweetsPerMinute(timeString, watchLastTweets);
+				console.log('Calculated Tweets: ' + tweetsPerMinute + '100 Tweets/min');
+				if(tweetsPerMinute > probeTag.longTermTweetsPerHour) {
+					probeTag.shortTermTweetsPerHour = tweetsPerMinute;
+					localPort.postMessage({update:probeTag});
+					localPort.postMessage({alert:probeTag});
+					console.log('Alert >=' + tweetsPerMinute + 'Tweets/Min');
+				}
+			}
+			else {
+				if(numberOfTweetsWithinOneMinute > probeTag.longTermTweetsPerHour) {
+					probeTag.shortTermTweetsPerHour = numberOfTweetsWithinOneMinute;
+					localPort.postMessage({update:probeTag});
+					localPort.postMessage({alert:probeTag});
+					console.log('Number of current Tweets:' + numberOfTweetsWithinOneMinute + 'Tweets/min');
+					console.log('Alert >=' + tweetsPerMinute + 'Tweets/Min');
+				}
+			}
+			probeManager.setProbe(probeTag);
+		}
+		else {
+			throw Error('Error Current tweets per minute');
+		}
+	});	
 }
 
+function calculateTweetsPerMinute(timeString, resultCount) {
+	var lastTweet = new Date(timeString);	
+	var now = new Date();
+	var timeDiffInMS = now - lastTweet;
+	console.log('timeDiffInMS: ' + timeDiffInMS);
+	var timePerTweetInMS = timeDiffInMS / resultCount + 0.0;
+	console.log('timePerTweetInMS: ' + timePerTweetInMS);
+	var numberOfTweetsWithinOneMinute = (1000 * 60) / timePerTweetInMS + 0.0;
+	console.log('numberOfTweetsWithinOneMinute: ' + numberOfTweetsWithinOneMinute);
+	console.log('Rounded: ' + Math.round(numberOfTweetsWithinOneMinute));
+	return Math.floor(numberOfTweetsWithinOneMinute);
+}
 
 function locationDetected(position) {
 	  var latitude = position.coords.latitude;
 	  var longitude = position.coords.longitude;
-	  port.postMessage({locationDetected:{latitude:position.coords.latitude,
+	  localPort.postMessage({locationDetected:{latitude:position.coords.latitude,
 		  								  longitude:position.coords.longitude}});	  
 }
 
 function locationError(msg) {
   var status = typeof msg == 'string' ? msg : "failed";
-  port.postMessage({locationError:status});
+  localPort.postMessage({locationError:status});
 }
 
 function requestGeoLocation(){
@@ -118,7 +178,7 @@ function geocodeLocation(address, radius) {
 	    var geocode = JSON.parse(xhr.responseText);
 	    var coordinates = geocode.Placemark["Point"].coordinates;
 
-	    port.postMessage({geocoded: coordinates[0] + "," + coordinates[1] + "," + radius + "km"});
+	    localPort.postMessage({geocoded: coordinates[0] + "," + coordinates[1] + "," + radius + "km"});
 	  }
 	}
 	xhr.send();
