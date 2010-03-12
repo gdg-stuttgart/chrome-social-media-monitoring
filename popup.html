@@ -17,36 +17,34 @@ var probes, template, inputTag, spanTag, inputAvgWeek, inputAvgDay;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 port.onMessage.addListener(function(msg) {
-	console.log('onMessage:' + msg);
+console.log('onMessage:' + msg);
 	  if (msg.update) {
-		console.log('onMessage:' + msg);
-		  if (msg.update) {
-			  probeTags = msg.update;
-			  console.log('onMessage[update]:' + probeTags);
+		  probeTags = msg.update;
+		  console.log('onMessage[update]:' + probeTags);
 
-			/*
-			 * get right element from probe list
-			 */
-			  var tagObj = $('#f_' + probeTags.query.replace(" ","_") + '');
+		/*
+		 * get right element from probe list
+		 */
+		  var tagObj = $('#f_' + probeTags.query.replace(" ","_") + '');
 
-				 if (tagObj){
+			 if (tagObj){
 
-					 //$(tagObj).addClass('warn');
-					 $(tagObj).removeClass('loader');
-					 
-					 $(' > span#tag',tagObj).html($(' > input#tag_input',tagObj).val());
-					 
-					 $(' > span#tag',tagObj).removeClass('hd');
-					 $(' > input#tag_input',tagObj).addClass('hd');
-					 $(' > input.avgWeek',tagObj).val(probeTags.shortTermTweetsPerHour);
-					 $(' > input.avgDay',tagObj).val(probeTags.longTermTweetsPerHour);
-				 }
+				 //$(tagObj).addClass('warn');
+				 $(tagObj).removeClass('loader');
+				 
+				 $(' > span#tag',tagObj).html($(' > input#tag_input',tagObj).val());
+				 
+				 $(' > span#tag',tagObj).removeClass('hd');
+				 $(' > input#tag_input',tagObj).addClass('hd');
+				 $(' > input.avgWeek',tagObj).val(probeTags.shortTermTweetsPerHour);
+				 $(' > input.avgDay',tagObj).val(probeTags.longTermTweetsPerHour);
+			 }
 
-		  }
-		  if (msg.alert) {
-			  probeTags = msg.alert;
-			  console.log('onMessage[alert]:' + probeTags);
-		  }	  
+	  }
+	  if (msg.alert) {
+		  probeTags = msg.alert;
+		  console.log('onMessage[alert]:' + probeTags);
+	  }	  
 });
 
 $(document).ready(function() {
