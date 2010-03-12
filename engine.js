@@ -23,7 +23,29 @@ var settings = {
 	},
 	set soundAlert(val) {
 		localStorage['sound_alert'] = val;
+	},
+
+	/*
+	 * default longitude
+	 */
+	get latitude() {
+        return localStorage['latitude'];
+	},
+	set latitude(val) {
+		localStorage['latitude'] = val;
+	},
+
+	/*
+	 * default longitude
+	 */
+	get longitude() {
+        return localStorage['longitude'];
+	},
+	set longitude(val) {
+		localStorage['longitude'] = val;
 	}
+
+	
 }
 
 function pluginInit() {

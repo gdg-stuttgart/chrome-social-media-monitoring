@@ -75,6 +75,33 @@ ProbeManager.prototype.removeProbeById = function(id) {
 	}
 }
 
+ProbeManager.prototype.getProbeById = function(id) {
+	console.log('get Probe:' + id);
+	try {
+
+		var probes = JSON.parse(localStorage['probes']);
+
+		/*
+		 * added probes if not exist
+		 */
+		if (!probes) {
+			console.log('No probe found[' + id + ']:');
+			return null;
+		}
+
+		var probe = probes[escape(id)];
+
+		if (probe) {
+			return probe;
+		}
+
+	} catch (e) {
+		console.log("Error getting item to localstorage for id:" + id);
+		console.log(e);
+		return null;
+	}
+}
+
 ProbeManager.prototype._createUUID = function() {
     // http://www.ietf.org/rfc/rfc4122.txt
     var s = [];

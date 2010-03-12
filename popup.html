@@ -138,7 +138,9 @@ function openResults() {
 <div id="map_canvas"></div>
 
 <span id="lat"></span> 
-<span id="lng"></span> 
+<span id="lng"></span>
+
+<span id="save_status">Options saved</span>
 
 <button type="button" id="save_location">Save Location</button>
 
@@ -206,17 +208,39 @@ function addRemoveButtonListeners(){
 		/*
 		 * get selected probe id
 		 */		
-		var probeDiv = $(button).parent('.probe');
+		var probeDiv = $(this).parent('.probe');
 		var strDivId = probeDiv.attr('id');
 		strDivId = strDivId.substring(2);
 
-		currentProbe = probeManager.removeProbeById(strDivId);
+		currentProbe = probeManager.getProbeById(strDivId);
 		
 		
-		initMapSearch(currentProbe.lat, currentProbe.len);
+		initMapSearch(currentProbe.latitude, currentProbe.longitude);
+		
+		$("#distance").val(currentProbe.radius);
 		
 		$("div#options").css('display','block');
 	});
+	
+	$("#save_location").click(function() {
+
+		/*
+		 * reload probe (if it was in between changed)
+		 */
+		currentProbe = probeManager.getProbeById(currentProbe.id);
+
+		currentProbe.latitude = $("#lat").html();
+		currentProbe.longitude  = $("#lng").html();
+		currentProbe.radius  = $("#distance").val();
+		
+		
+		probeManager.setProbe(currentProbe);
+		$('#save_status').fadeIn('fast');
+		$('#save_status').fadeOut(3000);
+		
+	});
+	
+	
 
     $(".probe").click(function () {
     	       $(".probe").removeClass("selected");

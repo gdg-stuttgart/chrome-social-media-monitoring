@@ -224,7 +224,7 @@ body {
 	z-index: 10;
 	background-color: white;
 	display: none;
-	margin:5px;
+	padding:5px;
 }
 
 .loader {
@@ -244,4 +244,8 @@ body {
 
 #save_location{
 
+}
+
+#save_status{
+	display: none;
 }
