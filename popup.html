@@ -16,6 +16,7 @@ var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
 
 var probeTags;
 var currentProbe;
+var currentSelectedService = "twitter";
 
 
 var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay;
@@ -86,6 +87,7 @@ $(document).ready(function() {
 		});
 
 		if(!ignore){
+			currentSelectedService = "twitter";
 			addProbeHTML();
 			addRemoveButtonListeners();
 		}  
@@ -318,6 +320,8 @@ function addProbeHTML(tagProbeObj){
 		
 	}else{
 
+		serviceIcon.setAttribute('class','service_' + currentSelectedService);
+		
 		spanTag.setAttribute('class','span_tag hd');
 		spanTag.innerHTML = '';		
 		inputTag.setAttribute('class','tag');
