@@ -181,7 +181,7 @@ function addRemoveButtonListeners(){
 		/*
 		 * get selected probe id
 		 */		
-		var probeDiv = $(button).parent('.probe');
+		var probeDiv = $(this).parent('.probe');
 		var strDivId = probeDiv.attr('id');
 		strDivId = strDivId.substring(2);
 
