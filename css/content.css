@@ -242,7 +242,8 @@ body {
 }
 
 .warn {
-	border: 1px dotted #ff0000;
+	background-color: #CC3333;
+	
 }
 
 .selected {
