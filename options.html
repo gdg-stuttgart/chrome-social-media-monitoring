@@ -29,8 +29,13 @@ function refresh_extension() {
 	bkg.refresh(); 
 }
 
+
 function playSound(){
 	var urlSound = $('#sound-alert').val();
+
+	  /*
+	   * BUG: http://code.google.com/p/chromium/issues/detail?id=25972
+	   */
 
 	if(urlSound){
 		pingSound = document.createElement('audio');
@@ -63,6 +68,7 @@ function playSound(){
         
 </head>
 <body onload="_initOptionsPage();">
+
     <div id="content">
 	
 	<div id="header"><h1>Social Media Monitoring Extension</h1></div>	
@@ -99,9 +105,8 @@ function playSound(){
           <div class="option_picker">
             <select id="sound-alert"  onchange="markDirty();">
               <option value="">None</option>
-              <option value="http://work.max99x.com/cuckoo.ogg">Cuckoo</option>
-              <option value="http://work.max99x.com/bell.ogg">Chime</option>
-              <option value="http://work.max99x.com/cuckoo.ogg">Cuckoo</option>
+              <option value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg">Alert 1</option>
+              <option value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg">Alert 2</option>
             </select>
           </div>
 		  <input type="button" value="Play" onclick="playSound();" />
@@ -118,13 +123,13 @@ function playSound(){
 	<div id="title" class="section-header first">License</div>
 	This extension is released under the MIT license, and the code is available at <a href="http://code.google.com/p/chrome-social-media-monitoring/">Google Code Repository</a>.<br />
 	<br />
-	Icons created by <a href="http://www.icojoy.com/">Icojoy</a> (Khodjaev Stanislav) and <a href="http://www.komodomedia.com/">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License.	    
+	Icons created by <a href="http://www.icojoy.com/">Icojoy</a> (Stanislav Khodjaev) and <a href="http://www.komodomedia.com/">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License.	    
     </div>
     
 <!-- TODO: add extension link -->	
 <div class="footr"><a href="http://code.google.com/p/chrome-social-media-monitoring/">Social Media Monitoring Homepage</a></div>
 
-<script>
+<script type="text/javascript"> 
 	//var customDomainsTextbox;
 	var saveButton;
 
