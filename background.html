@@ -146,6 +146,13 @@ function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
 	probeTag.shortTermTweetsPerMin = tweetsWithinOneMinute * CORRECTION_FACTOR;
 
 	if(tweetsWithinOneMinute > probeTag.longTermTweetsPerMin * ALERT_RATIO) {
+		/*
+		 * 
+		 */
+		chrome.extension.getBackgroundPage().onNewEvent();
+		 /*
+		  * sent message to popup.html
+		  */
 		localPort.postMessage({alert:probeTag});
 		console.log('Alert >=' + tweetsWithinOneMinute + 'Tweets/Min');
 	}

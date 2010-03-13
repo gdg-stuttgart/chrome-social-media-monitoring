@@ -3,7 +3,7 @@ var version = "0.2";
 var show_options_page = true;
 var eventsCount = -1;
 var maxProbesLimit = 9;
-
+var alreadyAlerted = false;
 
 
 var settings = {
@@ -105,10 +105,11 @@ function startRequest() {
 }
 
 function updateProbes(callback) {
+	alreadyAlerted = false;
 	if (callback && typeof(callback) === 'function'){
-		getProbesCount(function(count) { callback(count); updateUnreadCount(count); }, showNoEvents);
+		getProbesCount(function(count) { callback(count); updateEventsCount(count); }, showNoEvents);
 	}else{
-		getProbesCount(updateUnreadCount, showNoEvents);
+		getProbesCount(updateEventsCount, showNoEvents);
 	}
 }
 
@@ -126,58 +127,45 @@ function refresh() {
 
 function updateProbes(callback) {
 	if (callback && typeof(callback) === 'function')
-		getProbesCount(function(count) { callback(count); updateUnreadCount(count); }, showNoEvents);
+		getProbesCount(function(count) { callback(count); updateEventsCount(count); }, showNoEvents);
 	else
-		getProbesCount(updateUnreadCount, showNoEvents);
+		getProbesCount(updateEventsCount, showNoEvents);
 }
 
 
 function getProbesCount(onSuccess, onError) {
-	
-	//var probeTags = probeManager.loadProbes();
-	//hier werden die updates getriggert und long und short term tweets geladen und GUI nomral mit events informiert.
-	//Da asyncer call stimmt der tweet count unten evtl nicht...
-	//if(probeTags){
-	//	for (var i in probeTags) {
-	//		loadTweets(probeTag);
-	//	}
-	//}
-	
+
 	var probesCount = probeManager.countProbes();
 
-	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
-	console.log('probesCount:' + probesCount + ' eventsCount:' + eventsCount);
 	if(probesCount == 0){
-		showNoActiveProbes();
+		if (onSuccess){
+			  onSuccess(0);
+		}
 		return false;
 	}
 	
-	if(probesCount > 0 && eventsCount > 0){
-			chrome.browserAction.setIcon({"path":"img/icon.png"});
-			chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
-			chrome.browserAction.setBadgeText({text: "" + eventsCount});
-		
-			if(settings.soundAlert){
-				/*
-				 * TODO: Add sound alert
-				 */
-				console.log('rrrriiiiinnnnggg');
-				
-				pingSound = document.createElement('audio');
-			    pingSound.setAttribute('src', settings.soundAlert);
-			    pingSound.setAttribute('id', 'ping');
-			    pingSound.load();
-			    pingSound.play();
-			    
-			}
-	}else{
-		showNoEvents();
+	var probes = probeManager.loadProbes();
+	/*
+	 * hier werden die updates getriggert und long und short term tweets geladen
+	 * und GUI nomral mit events informiert. Da asyncer call stimmt der tweet
+	 * count unten evtl nicht...
+	 */
+	if(probes){
+		for (var i in probes) {
+			loadTweets(probes[i]);
+		}
 	}
+	
+//	if (onSuccess){
+//		  onSuccess(2);
+//	}
+	
 }
 
 function showNoEvents() {
 	chrome.browserAction.setIcon({"path":"img/icon.png"});
-	//chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
+	// chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190,
+	// 230]});
 	chrome.browserAction.setBadgeText({text:""});
 	eventsCount = 0;
 }
@@ -189,14 +177,40 @@ function showNoActiveProbes() {
 	eventsCount = 0;
 }
 
-function updateUnreadCount(count) {
-	  if (eventsCount != count) {
+function updateEventsCount(count) {
 	  
-		  eventsCount = count;
-		  chrome.browserAction.setIcon({"path":"img/icon.png"});
-		  chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-		  //chrome.browserAction.setBadgeText({text:"?"});
+	eventsCount = count;
+
+	if(eventsCount > 0){
+		chrome.browserAction.setIcon({"path":"img/icon.png"});
+		chrome.browserAction.setBadgeBackgroundColor({color:[255,0,0,255]});
+		chrome.browserAction.setBadgeText({text: "" + eventsCount});
+		
+		if(settings.soundAlert && !alreadyAlerted){
 			
-	  }
+			console.log('rrrriiiiinnnnggg');
+				
+			pingSound = document.createElement('audio');
+			pingSound.setAttribute('src', settings.soundAlert);
+			pingSound.setAttribute('id', 'ping');
+			pingSound.load();
+			pingSound.play();
+			
+			alreadyAlerted = true;
+			    
+		}
+	}else{
+		showNoEvents();
+	}
+			
+}
+
+function onNewEvent(){
+	eventsCount++;
+	updateEventsCount(eventsCount);
+}
+function resetAlerts(){
+	showNoEvents();
+	alreadyAlerted = false;
 }
 

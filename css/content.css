@@ -74,6 +74,7 @@ body {
 	margin-top: 4px;
 	bottom: 0px;
 	left: 5px;
+	background-color: #ffffff;
 }
 
 #probes {
@@ -133,6 +134,7 @@ body {
 	margin-left: 5px;
 	cursor: pointer;
 }
+
 #btnRefresh.idle {
 	background-image: url('../img/icon_refresh.png');
 	background-repeat: no-repeat;
@@ -243,7 +245,6 @@ body {
 
 .warn {
 	background-color: #CC3333;
-	
 }
 
 .selected {
@@ -252,7 +253,7 @@ body {
 
 .disabled {
 	opacity: 0.4;
-	filter: alpha(opacity = 40);
+	filter: alpha(opacity =     40);
 }
 
 .cls {
@@ -279,10 +280,8 @@ body {
 	background-image: url('../img/loader_bar.gif');
 	background-repeat: repeat;
 	opacity: 0.4;
-	filter: alpha(opacity =   40);
+	filter: alpha(opacity =       40);
 }
-
-
 
 #map_canvas {
 	width: 300px;
@@ -292,13 +291,13 @@ body {
 	margin: 5px;
 }
 
-#enable_location{
-	display:inline;
-}
-#disable_location{
-	display:inline;
+#enable_location {
+	display: inline;
 }
 
+#disable_location {
+	display: inline;
+}
 
 #save_status {
 	display: none;

@@ -14,7 +14,7 @@
 <script type="text/javascript"><!--
 var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
 
-var probeTags;
+var probesList;
 var currentProbe;
 var currentProbeDiv;
 var currentSelectedService = "twitter";
@@ -24,7 +24,6 @@ var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay,
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 port.onMessage.addListener(function(msg) {
-console.log('onMessage:' + msg);
 	  if (msg.update) {
 		  probeObj = msg.update;
 		  console.log('onMessage[update]:' + probeObj);
@@ -73,14 +72,6 @@ console.log('onMessage:' + msg);
 		  	$(probeHTMLObj).removeClass('loader');
 		  	$(' > span#btnRefresh',probeHTMLObj).addClass('idle');
 		  }
-
-			/*
-		  chrome.extension.getBackgroundPage().eventsCount++;
-		  chrome.extension.getBackgroundPage().updateProbes(function(count) {
-				//dummy function
-				console.log('updateProbes.callback:' + count);
-			  });
-		  */
 	  }	  
 });
 
@@ -122,23 +113,23 @@ $(document).ready(function() {
 });
 
 function openResults() {
-	var tagProbes = probeManager.loadProbes();
+	var probes = probeManager.loadProbes();
 	
 	if (false) {
-		chrome.windows.create({url: tagProbes[0].searchQuery});
+		chrome.windows.create({url: probes[0].searchQuery});
 		chrome.windows.getLastFocused(function (window) {
 		
-			for (var j in tagProbes) {
+			for (var j in probes) {
 				if (j > 0) {
-					chrome.tabs.create({url: tagProbes[j].searchQuery, windowId: window.windowId});
+					chrome.tabs.create({url: probes[j].searchQuery, windowId: window.windowId});
 				}
 			}
 		
 		});
 	} else {	
 	
-		for (var i in tagProbes) {
-			chrome.tabs.create({url: tagProbes[i].searchQuery});
+		for (var i in probes) {
+			chrome.tabs.create({url: probes[i].searchQuery});
 		}
 	
 	}
@@ -182,14 +173,14 @@ function openResults() {
 <script type="text/javascript">
 function init() {
 
-	chrome.extension.getBackgroundPage().showNoEvents();
+	chrome.extension.getBackgroundPage().resetAlerts();
 	
-	var probeTags = probeManager.loadProbes();
+	var probes = probeManager.loadProbes();
 
 
 	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
 		
-	probes = document.getElementById('probes');
+	probesList = document.getElementById('probes');
 	template = xpath('//div[@id="template"]', document);
 	serviceIcon  = xpath('//span[@id="iconService"]', template);
 	spanTag  = xpath('//span[@id="tag"]', template);
@@ -199,17 +190,13 @@ function init() {
 	btnOptions	 = xpath('//span[@id="btnOptions"]', template);
 	btnRefresh 	 = xpath('//span[@id="btnRefresh"]', template);
 
-	if(probeTags){
-		for (var i in probeTags) {
-			addProbeHTML(probeTags[i]);
+	if(probes){
+		for (var i in probes) {
+			addProbeHTML(probes[i]);
 		}
 		addRemoveButtonListeners();
 	}
 
-	 chrome.extension.getBackgroundPage().updateProbes(function(count) {
-			//dummy function
-			console.log('updateProbes.callback:' + count);
-	});	
 }
 
 function addRemoveButtonListeners(){
@@ -232,6 +219,10 @@ function addRemoveButtonListeners(){
 	    probeDiv.slideUp("fast",function(){
 				probeDiv.remove();
 	    });
+
+		if(probeManager.countProbes() == 0){
+	    	chrome.extension.getBackgroundPage().showNoActiveProbes()
+		}
 
 		/*
 		 * Update probes
@@ -429,7 +420,7 @@ function addProbeHTML(probeObj){
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f_' + probeObj.id);
 
-		probes.appendChild(item);
+		probesList.appendChild(item);
 		
 	}else{
 
@@ -450,7 +441,7 @@ function addProbeHTML(probeObj){
 		item.setAttribute('id','f');
 
 		
-		probes.appendChild(item);
+		probesList.appendChild(item);
 
 		$("#f.probe > input#tag_input.tag").focus();
 		
@@ -506,10 +497,13 @@ function save() {
 	//chrome.extension.getBackgroundPage().init();
 }
 
-function refresh() {
-  startRequest(false);
-  document.getElementById('module').src = 'about:blank';
-  setIframeUrl();
+function refreshAll() {
+
+	chrome.extension.getBackgroundPage().updateProbes(function(count) {
+		console.log('updateProbes.callback:' + count);
+	});
+	
+
 }	
 
 function goToUrl(url) {
@@ -535,7 +529,7 @@ function back(){
 <div id="header">
 	<h1>Social Media Monitoring</h1>
 	<div style="position:absolute; top:15px; right: 15px">
-	<!-- <span class="link" onclick="refresh()">Refresh</span> | --><span class="link" onclick="goToUrl('options.html');">Options</span> | <span class="link" onclick="window.close()">Close</span>
+		<span class="link" onclick="refreshAll()">Refresh</span> | <span class="link" onclick="goToUrl('options.html');">Options</span> | <span class="link" onclick="window.close()">Close</span>
 	</div>
 </div>
 
