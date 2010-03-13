@@ -236,6 +236,22 @@ function addRemoveButtonListeners(){
 		$("div#options").css('display','block');
 	});
 
+	/*
+	 * refresh results
+	 */
+	$("span#btnRefresh").mousedown(function() {
+		/*
+		 * get selected probe id
+		 */		
+		var probeDiv = $(this).parent('.probe');
+		var strDivId = probeDiv.attr('id');
+		strDivId = strDivId.substring(2);
+
+		currentProbe = probeManager.getProbeById(strDivId);
+
+		port.postMessage({probeTagChanged: currentProbe});
+	});
+
 	$("span#iconService").click(function() {
 		/*
 		 * get selected probe id
@@ -444,7 +460,7 @@ function back(){
 <input type="text" class="avgWeek" disabled="disabled" value="0">
 <input type="text" class="avgDay" disabled="disabled" value="0">
 
-<span id="btnRemove"></span> <span id="btnOptions"></span> <span class="cls"><!--  --></span></div>
+<span id="btnRemove"></span> <span id="btnOptions"></span><span id="btnRefresh"></span> <span class="cls"><!--  --></span></div>
 </div>
 <span class="cls"><!--  --></span>
 </div>

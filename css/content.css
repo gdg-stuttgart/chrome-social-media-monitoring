@@ -124,6 +124,19 @@ body {
 	cursor: pointer;
 }
 
+#btnRefresh {
+	background-image: url('../img/icon_refresh.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: left;
+	vertical-align: middle;
+	margin-top: 6px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
 #btnRemove.hd {
 	display: none;
 }
