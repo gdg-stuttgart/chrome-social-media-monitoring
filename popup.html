@@ -11,7 +11,7 @@
 <script type="text/javascript" src="lib/geo_search.js"></script>
 
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
 var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
 
 var probeTags;
@@ -46,7 +46,11 @@ console.log('onMessage:' + msg);
 				 $(' > span.avgWeek',probeHTMLObj).html(probeObj.shortTermTweetsPerMin);
 				 $(' > span.avgDay',probeHTMLObj).html(probeObj.longTermTweetsPerMin);
 				 $(' > span#btnOptions',probeHTMLObj).removeClass('hd');
+
+				 
 				 $(' > span#btnRefresh',probeHTMLObj).removeClass('hd');
+				 $(' > span#btnRefresh',probeHTMLObj).removeClass('reloading');
+				 $(' > span#btnRefresh',probeHTMLObj).addClass('idle');
 				 
 				 
 				 if(probeObj.latitude == undefined){
@@ -61,11 +65,22 @@ console.log('onMessage:' + msg);
 	  if (msg.alert) {
 		  probeObj = msg.alert;
 		  console.log('onMessage[alert]:' + probeObj);
+		  
+		  var probeHTMLObj = $('#f_' + probeObj.id);
+
+		  if (probeHTMLObj){
+		  	$(probeHTMLObj).addClass('warn');
+		  	$(probeHTMLObj).removeClass('loader');
+		  	$(' > span#btnRefresh',probeHTMLObj).addClass('idle');
+		  }
+
+			/*
 		  chrome.extension.getBackgroundPage().eventsCount++;
 		  chrome.extension.getBackgroundPage().updateProbes(function(count) {
 				//dummy function
 				console.log('updateProbes.callback:' + count);
 			  });
+		  */
 	  }	  
 });
 
@@ -131,7 +146,7 @@ function openResults() {
 }
 
 
-</script>
+--></script>
 
 <style type="text/css">
   @import url("http://www.google.com/uds/css/gsearch.css");
@@ -190,6 +205,11 @@ function init() {
 		}
 		addRemoveButtonListeners();
 	}
+
+	 chrome.extension.getBackgroundPage().updateProbes(function(count) {
+			//dummy function
+			console.log('updateProbes.callback:' + count);
+	});	
 }
 
 function addRemoveButtonListeners(){
@@ -263,7 +283,9 @@ function addRemoveButtonListeners(){
 		currentProbeDiv = $(this).parent('.probe');
 		var strDivId = currentProbeDiv.attr('id');
 		strDivId = strDivId.substring(2);
-		$(currentProbeDiv).addClass('loader');
+		//$(currentProbeDiv).addClass('loader');
+		
+		$(' > span#btnRefresh',currentProbeDiv).addClass('reloading');
 		
 		currentProbe = probeManager.getProbeById(strDivId);
 
@@ -308,7 +330,9 @@ function addRemoveButtonListeners(){
 		probeManager.setProbe(currentProbe);
 
 		$(' > span#btnOptions',currentProbeDiv).removeClass('disabled');
-		$(currentProbeDiv).addClass('loader');
+		//$(currentProbeDiv).addClass('loader');
+		$(' > span#btnRefresh',currentProbeDiv).addClass('reloading');
+		
 		$('#save_status').fadeIn('fast');
 		$('#save_status').fadeOut(3000);
 		$("div#options").css('display','none');
@@ -334,7 +358,8 @@ function addRemoveButtonListeners(){
 
 		probeManager.setProbe(currentProbe);
 
-		$(currentProbeDiv).addClass('loader');
+		//$(currentProbeDiv).addClass('loader');
+		$(' > span#btnRefresh',currentProbeDiv).addClass('reloading');
 		$(' > span#btnOptions',currentProbeDiv).addClass('disabled');		
 		$('#save_status').fadeIn('fast');
 		$('#save_status').fadeOut(3000);
@@ -465,6 +490,7 @@ function save() {
 		$(this).attr('id','f_' + tagProbe.id );
 
 		$(this).addClass('loader');
+		$(' > span#btnRefresh',this).addClass('reloading');
 		port.postMessage({probeTagChanged: tagProbe});
 		
 	});
@@ -524,7 +550,7 @@ function back(){
 <span class="avgWeek">0</span>
 <span class="avgDay">0</span>
 
-<span id="btnRemove"></span> <span id="btnOptions"></span><span id="btnRefresh"></span> <span class="cls"><!--  --></span></div>
+<span id="btnRemove"></span> <span id="btnOptions"></span><span id="btnRefresh" class="idle"></span> <span class="cls"><!--  --></span></div>
 </div>
 <span class="cls"><!--  --></span>
 </div>

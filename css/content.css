@@ -125,8 +125,6 @@ body {
 }
 
 #btnRefresh {
-	background-image: url('../img/icon_refresh.png');
-	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
 	float: left;
@@ -134,6 +132,15 @@ body {
 	margin-top: 6px;
 	margin-left: 5px;
 	cursor: pointer;
+}
+#btnRefresh.idle {
+	background-image: url('../img/icon_refresh.png');
+	background-repeat: no-repeat;
+}
+
+#btnRefresh.reloading {
+	background-image: url('../img/icon_ajax_loader.gif');
+	background-repeat: repeat;
 }
 
 #btnRemove.hd {
@@ -273,6 +280,8 @@ body {
 	opacity: 0.4;
 	filter: alpha(opacity =   40);
 }
+
+
 
 #map_canvas {
 	width: 300px;
