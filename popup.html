@@ -501,11 +501,16 @@ function save() {
 		tagProbe.shortTermTweetsPerMin = 0;
 		tagProbe.longTermTweetsPerMin = 0 ;
 
+		chrome.extension.getBackgroundPage().showNoEvents();
+		
 		probeManager.setProbe(tagProbe);
 		$(this).attr('id','f_' + tagProbe.id );
 
 		$(this).addClass('loader');
 		$(' > span#btnRefresh',this).addClass('reloading');
+
+		
+		
 		port.postMessage({probeTagChanged: tagProbe});
 		
 	});

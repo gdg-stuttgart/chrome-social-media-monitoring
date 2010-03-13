@@ -136,7 +136,7 @@ function playSound(){
 	
 	function _initOptionsPage() {
 		saveButton = document.getElementById("save_button");
-		if(bkg.settings.isFirstRun()){
+		if(bkg.settings.isFirstRun){
 			markDirty();
 		}else{
 			markClean();
