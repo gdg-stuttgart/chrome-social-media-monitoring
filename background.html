@@ -100,6 +100,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			while(tweetDate > fiveMinAgo && index < 100) {
 				var ts = new Date(data.results[index].created_at);
 				tweetDate = ts.getTime();
+				index++;
 
 				var diff = tweetDate - fiveMinAgo;
 				console.log(index + ' tweets already found...' +
@@ -108,7 +109,6 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 							' Diff: ' + diff +
 							diff < 0 ? 'Termination condition full filled, stop counting...' : '');
 
-				index++;
 			}
 			var numberOfTweetsWithinOneMinute = index / 5;
 			console.log('Current Tweet count per Minute: ' + numberOfTweetsWithinOneMinute);

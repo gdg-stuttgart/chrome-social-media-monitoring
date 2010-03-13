@@ -16,11 +16,6 @@ QueryURL.prototype.getURL = function getURL() {
 	if(this._latitude !== undefined && this._longtitude !== undefined && this._radius !== undefined)
 		geoLoc = 'geocode=' + escape(this._latitude + ',' + this._longtitude + ',' + this._radius + 'km');
 	
-	console.log('baseURL:' + this._baseURL);
-	console.log('query:' + this._query !== undefined ? this._query : '');
-	console.log('since:' + since !== '' ? '&' + since : since);
-	console.log('geoLoc:' + geoLoc !== '' ? '&' + geoLoc : geoLoc);
-	
 	var urlQuery = this._query !== undefined ? 'q=' + this._query : '';
 	var urlSince = since !== '' ? '&' + since : since;
 	var urlGeoLoc = geoLoc !== '' ? '&' + geoLoc : geoLoc;
