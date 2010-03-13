@@ -91,6 +91,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			
 			console.log('FiveMinAgo: ' + new Date(fiveMinAgo));
 			var index = 0;
+			// TODO: Replace this with better algorithm then O(n), week could use a binary search like algorithm with O(log n)?
 			while(tweetDate > fiveMinAgo && index < 100) {
 				var ts = new Date(data.results[index].created_at);
 				tweetDate = ts.getTime();
@@ -103,10 +104,9 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			
 			var numberOfTweetsWithinOneMinute = index / 5;
 			if(numberOfTweetsWithinOneMinute >= 20) {
-				probeTag.shortTermTweetsPerMin = '>20';
-				localPort.postMessage({alert:probeTag});
-				console.log('Number of current Tweets: >= 100 Tweets/min');
-				console.log('Alert >= 100 Tweets/Min');
+				var timeString = data.results[data.results.length - 1].created_at;
+				var tweetsPerMinute = calculateTweetsPerMinute(timeString, data.results.length);
+				updateCurrentTweetsPerMinute(tweetsPerMinute, probeTag);
 			}
 			else if (numberOfTweetsWithinOneMinute === 0) {
 				console.log('No Short term tweets in one minute');
