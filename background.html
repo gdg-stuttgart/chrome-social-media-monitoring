@@ -59,6 +59,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 				   	 		processLongTermTweets(data, probeTag, resultNumber);
 						}
 						else {
+							localPort.postMessage({update:probeTag});
 							console.log("Seems like your keyword hasen't been tweeted yet...");						
 						}
 					});
@@ -122,7 +123,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			}
 			else if (numberOfTweetsWithinOneMinute === 0) {
 				console.log('No Short term tweets in one minute');
-				var watchLastTweets = Math.floor(data.results.length / 8);
+				var watchLastTweets = Math.floor(data.results.length / 10);
 				console.log('Try calculating current tweets per Minute with the last ' + watchLastTweets + 'Tweets');
 				var timeString = data.results[watchLastTweets].created_at;
 				var tweetsPerMinute = calculateTweetsPerMinute(timeString, watchLastTweets);
@@ -134,6 +135,10 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			}
 			probeManager.setProbe(probeTag);
 			localPort.postMessage({update:probeTag});
+		}
+		else if(data.results.length === 0){
+			probeTag.shortTermTweetsPerMin = 0;
+			console.log("Keyword hasen't been tweeted in the last five  minutes...");
 		}
 		else {
 			probeTag.shortTermTweetsPerMin = '?';
