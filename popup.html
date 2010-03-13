@@ -113,27 +113,31 @@ $(document).ready(function() {
 });
 
 function openResults() {
+
 	var probes = probeManager.loadProbes();
 	
-	if (false) {
-		chrome.windows.create({url: probes[0].searchQuery});
+	if ($('#open_results').val() == 'open_in_new_window') {
+		chrome.windows.create({url: buildProbeQuery(probes[0])});
 		chrome.windows.getLastFocused(function (window) {
-		
+
+			var count = 0;
 			for (var j in probes) {
-				if (j > 0) {
-					chrome.tabs.create({url: probes[j].searchQuery, windowId: window.windowId});
+				count++;
+				if(count == 1){
+					continue;
 				}
+					chrome.tabs.create({url: buildProbeQuery(probes[j]), windowId: window.windowId});
 			}
 		
 		});
 	} else {	
 	
 		for (var i in probes) {
-			chrome.tabs.create({url: probes[i].searchQuery});
+			chrome.tabs.create({url: buildProbeQuery(probes[i])});
 		}
 	
 	}
-	return false;
+	
 }
 
 
@@ -197,6 +201,8 @@ function init() {
 			addProbeHTML(probes[i]);
 		}
 		addRemoveButtonListeners();
+	}else{
+		$('#show-button').attr("disabled", "true");
 	}
 
 }
@@ -305,11 +311,7 @@ function addRemoveButtonListeners(){
 			radius = probeObj.radius;
 		}
 
-		/*
-		 * TODO: remove hardcoded value - "Germany"
-		 */
-		var href = 'http://search.twitter.com/search?q=' + probeObj.query + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=' + radius + '&units=km&since=&until=&rpp=15' + '&geocode=' + escape(probeObj.latitude + ',' + probeObj.longitude + ',' + probeObj.radius + 'km');
-		window.open(href); 
+		window.open(buildProbeQuery(probeObj)); 
 		return false;
 		
 	});
@@ -464,6 +466,17 @@ function xpath(path, node) {
   return document.evaluate(path, node).iterateNext();
 }
 
+function buildProbeQuery(probeObj){
+	if(probeObj){
+		if (probeObj.radius == undefined){
+			return 'http://search.twitter.com/search?q=' + probeObj.query + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=&units=km&since=&until=&rpp=15';
+		}else{
+			return 'http://search.twitter.com/search?q=' + probeObj.query + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=' + probeObj.radius + '&units=km&since=&until=&rpp=15' + '&geocode=' + escape(probeObj.latitude + ',' + probeObj.longitude + ',' + probeObj.radius + 'km');
+		}
+	}else{
+		return 'about:';
+	}
+}
 function save() {
 
 	
@@ -568,8 +581,8 @@ function back(){
 	<div class="option_name">Search results in</div>
 	<div class="option_picker">
 	<select id="open_results">
-		<option value="open_in_new_window">a new window</option>
 		<option value="open_in_current_window">the current window</option>
+		<option value="open_in_new_window">a new window</option>
 	</select>
 	<input id="show-button" type="button" value="Show" onclick="openResults();" />
 	</div>
