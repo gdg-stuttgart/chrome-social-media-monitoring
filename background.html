@@ -142,10 +142,9 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 }
 
 function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
-	if(tweetsWithinOneMinute * 3 > probeTag.longTermTweetsPerMin) {
+	if(tweetsWithinOneMinute > probeTag.longTermTweetsPerMin * 3) {
 		probeTag.shortTermTweetsPerMin = tweetsWithinOneMinute * CORRECTION_FACTOR;
 		localPort.postMessage({alert:probeTag});
-		console.log('Number of current Tweets:' + tweetsWithinOneMinute + 'Tweets/min');
 		console.log('Alert >=' + tweetsWithinOneMinute + 'Tweets/Min');
 	}
 }
