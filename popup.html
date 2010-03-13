@@ -179,9 +179,11 @@ function init() {
 
 
 	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
-		
+	/*
+	 * initialize template
+	 */
 	probesList = document.getElementById('probes');
-	template = xpath('//div[@id="template"]', document);
+	template = xpath('//ol[@id="template"]/li', document);
 	serviceIcon  = xpath('//span[@id="iconService"]', template);
 	spanTag  = xpath('//span[@id="tag"]', template);
 	inputTag = xpath('//input[@id="tag_input"]', template);
@@ -248,11 +250,17 @@ function addRemoveButtonListeners(){
 		strDivId = strDivId.substring(2);
 
 		currentProbe = probeManager.getProbeById(strDivId);
-		 
+
+		$("#save_status").css('display','none');
+
+		
 		if(currentProbe.latitude != undefined){
-			$("#enable_location").css('display','none');
+			$("#enable_location").css('display','inline');
+			$("#enable_location").html('set');
 			$("#disable_location").css('display','inline');
+
 		}else{
+			$("#enable_location").html('enable');
 			$("#enable_location").css('display','inline');
 			$("#disable_location").css('display','none');
 		}
@@ -419,6 +427,7 @@ function addProbeHTML(probeObj){
 		// copy node and update
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f_' + probeObj.id);
+		item.setAttribute('class','probe');
 
 		probesList.appendChild(item);
 		
@@ -439,6 +448,7 @@ function addProbeHTML(probeObj){
 		// copy node and update
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f');
+		item.setAttribute('class','probe');
 
 		
 		probesList.appendChild(item);
@@ -502,7 +512,6 @@ function refreshAll() {
 	chrome.extension.getBackgroundPage().updateProbes(function(count) {
 		console.log('updateProbes.callback:' + count);
 	});
-	
 
 }	
 
@@ -535,19 +544,22 @@ function back(){
 
 
 <div id="config">
-<div id="probes">
-<div id="template" class="probe"><span id="iconService"></span>
-<span id="tag" class="span_tag hd"><!--  --></span>
-<input type="text" id="tag_input" class="tag" maxlength="30">
 
-<span class="avgWeek">0</span>
-<span class="avgDay">0</span>
+<ol id="template" class="probe">
+	<li><span id="iconService"></span>
+	<span id="tag" class="span_tag hd"><!--  --></span>
+	<input type="text" id="tag_input" class="tag" maxlength="30">
+	<span class="avgWeek">0</span>
+	<span class="avgDay">0</span>
+	<span id="btnRemove"></span>
+	<span id="btnOptions"></span>
+	<span id="btnRefresh" class="idle"></span>
+	</li>
+</ol>
 
-<span id="btnRemove"></span> <span id="btnOptions"></span><span id="btnRefresh" class="idle"></span> <span class="cls"><!--  --></span></div>
-</div>
+<ol id="probes"></ol>
 <span class="cls"><!--  --></span>
 </div>
-<span class="cls"><!--  --></span>
 
 <div id="footr">
 <span id="btnAdd"> add new</span>

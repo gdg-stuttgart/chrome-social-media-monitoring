@@ -6,7 +6,7 @@ body {
 	font-size: 80%;
 	margin: 10px;
 	color: #000000;
-	overflow: hidden; 
+	overflow: hidden;
 }
 
 .popup {
@@ -81,6 +81,17 @@ body {
 #probes {
 	width: 380px;
 	display: block;
+}
+
+ol#probes {
+    margin:0px;
+    padding:0px;	
+}
+
+li {
+    margin:15px 0 0 0;
+    padding:0 10px 0 0;
+    line-height:15px;
 }
 
 .probe {
@@ -158,6 +169,8 @@ body {
 	display: block;
 	width: 100px;
 	padding-left: 20px;
+	cursor: pointer;
+	margin-top: 5px;
 	cursor: pointer;
 	margin-top: 5px;
 	margin-left: 10px;
@@ -253,7 +266,7 @@ body {
 
 .disabled {
 	opacity: 0.4;
-	filter: alpha(opacity =     40);
+	filter: alpha(opacity =         40);
 }
 
 .cls {
@@ -280,7 +293,7 @@ body {
 	background-image: url('../img/loader_bar.gif');
 	background-repeat: repeat;
 	opacity: 0.4;
-	filter: alpha(opacity =       40);
+	filter: alpha(opacity =           40);
 }
 
 #map_canvas {
