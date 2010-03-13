@@ -270,7 +270,7 @@ function addRemoveButtonListeners(){
 		
 		$("#distance").val(currentProbe.radius);
 		
-		$("div#options").css('display','block');
+		$("div#options").slideDown("fast");
 	});
 
 	/*
@@ -526,8 +526,7 @@ chrome.tabs.create({url: url});
 
 
 function back(){
-	$("div#options").css('display','none');
-	
+	$("div#options").slideUp("fast");
 }
 
 </script>
