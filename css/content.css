@@ -6,6 +6,7 @@ body {
 	font-size: 80%;
 	margin: 10px;
 	color: #000000;
+	overflow: hidden; 
 }
 
 .popup {
