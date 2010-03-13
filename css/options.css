@@ -13,6 +13,7 @@ body{
 	margin:40px auto 20px;
 	padding:12px;
 	width:600px;
+	-webkit-border-radius: 10px;
 }
 
 #content h1{
