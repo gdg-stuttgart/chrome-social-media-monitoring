@@ -48,18 +48,17 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 	
 	$.getJSON(queryURL + '&rpp=1&page=' + resultNumber, function(data) {
 		if(data.results.length == 0) {
-			resultNumber = resultNumber / 10;
-			console.log('New result Number: ' + resultNumber);
+			resultNumber = setNextResultNumberCount(resultNumber);
 			$.getJSON(queryURL + '&rpp=1&page=' + resultNumber, function(data) {
 		 		if(data.results.length == 0) {
-					resultNumber = resultNumber / 10;
-					console.log('New result Number: ' + resultNumber);
+		 			resultNumber = setNextResultNumberCount(resultNumber);
 					$.getJSON(queryURL + '&rpp=1&page=' + resultNumber, function(data) {
 				   	 	if(data.results.length != 0) {
+				   	 	console.log('Puhh finally found: ' + data.results.length + 'tweets for your keyword');
 				   	 		processLongTermTweets(data, probeTag, resultNumber);
 						}
 						else {
-							console.log("Not enough tweets...");						
+							console.log("Seems like your keyword hasen't been tweeted yet...");						
 						}
 					});
 				}
@@ -74,38 +73,50 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 	});	
 }
 
+function setNextResultNumberCount(resultNumber) {
+	console.log('Less than a ' + resultNumber + ' tweets ever');
+	resultNumber = resultNumber / 10;
+	console.log('Now checking last: ' + resultNumber + 'results');
+	return resultNumber;
+}
+
 function processLongTermTweets(data, probeTag, resultNumber) {
+	console.log("Starting processing of long term Tweets...");
 	var timeString = data.results[0].created_at;
-	console.log('Time String: ' + timeString);
 	probeTag.longTermTweetsPerMin = calculateTweetsPerMinute(timeString, resultNumber);
 	probeManager.setProbe(probeTag);
 	localPort.postMessage({update:probeTag});
 }
 
 function loadCurrentTweetsPerMinute(queryURL, probeTag) {
-	
+	console.log('Starting loading current tweets per minute...');
 	$.getJSON(queryURL + '&rpp=100&page=1', function(data) {
 		if(data.results.length > 0) {
 			var tweetDate = new Date();
 			var fiveMinAgo = tweetDate.getTime() - (60000 * 5);
 			
-			console.log('FiveMinAgo: ' + new Date(fiveMinAgo));
 			var index = 0;
 			// TODO: Replace this with better algorithm then O(n), week could use a binary search like algorithm with O(log n)?
 			while(tweetDate > fiveMinAgo && index < 100) {
 				var ts = new Date(data.results[index].created_at);
 				tweetDate = ts.getTime();
-				console.log('tweetDate: ' + ts);
+
 				var diff = tweetDate - fiveMinAgo;
-				console.log('Diff: ' + diff);
+				console.log(index + ' tweets already found...' +
+							'Tweet Date: ' + ts + 
+							' FiveMinAgo: ' + new Date(fiveMinAgo) + 
+							' Diff: ' + diff +
+							diff < 0 ? 'Termination condition full filled, stop counting...' : '');
+
 				index++;
-				console.log('current index: ' + index);
 			}
-			
 			var numberOfTweetsWithinOneMinute = index / 5;
+			console.log('Current Tweet count per Minute: ' + numberOfTweetsWithinOneMinute);
 			if(numberOfTweetsWithinOneMinute >= 20) {
+				console.log('Oh, more than 20 Tweets/Minute, switching strategy. Taking last 100 tweets for calculation');
 				var timeString = data.results[data.results.length - 1].created_at;
 				var tweetsPerMinute = calculateTweetsPerMinute(timeString, data.results.length);
+
 				updateCurrentTweetsPerMinute(tweetsPerMinute, probeTag);
 			}
 			else if (numberOfTweetsWithinOneMinute === 0) {
@@ -114,7 +125,6 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 				console.log('Try calculating current tweets per Minute with the last ' + watchLastTweets + 'Tweets');
 				var timeString = data.results[watchLastTweets].created_at;
 				var tweetsPerMinute = calculateTweetsPerMinute(timeString, watchLastTweets);
-				console.log('Calculated Tweets: ' + tweetsPerMinute + '100 Tweets/min');
 
 				updateCurrentTweetsPerMinute(tweetsPerMinute, probeTag);
 			}
@@ -126,7 +136,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 		}
 		else {
 			probeTag.shortTermTweetsPerMin = '?';
-			console.log('Error Current tweets per minute');
+			console.log('Error in loading tweets from server...');
 		}
 	});	
 }
@@ -141,15 +151,16 @@ function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
 }
 
 function calculateTweetsPerMinute(timeString, resultCount) {
+	console.log('Current tweet was created on: ' + timeString);
 	var lastTweet = new Date(timeString);	
 	var now = new Date();
 	var timeDiffInMS = now - lastTweet;
-	console.log('timeDiffInMS: ' + timeDiffInMS);
+	console.log('Time difference between now and tweet date in ms: ' + timeDiffInMS);
 	var timePerTweetInMS = timeDiffInMS / resultCount + 0.0;
-	console.log('timePerTweetInMS: ' + timePerTweetInMS);
+	console.log('Time per tweet in ms: ' + timePerTweetInMS);
 	var numberOfTweetsWithinOneMinute = (1000 * 60) / timePerTweetInMS + 0.0;
-	console.log('numberOfTweetsWithinOneMinute: ' + numberOfTweetsWithinOneMinute);
-	console.log('Rounded: ' + Math.round(numberOfTweetsWithinOneMinute));
+	console.log('Tweets per minute: ' + numberOfTweetsWithinOneMinute);
+	console.log('Rounded Avg of tweets per minute: ' + Math.round(numberOfTweetsWithinOneMinute));
 	return numberOfTweetsWithinOneMinute;
 }
 
