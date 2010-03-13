@@ -56,6 +56,7 @@ port.onMessage.addListener(function(msg) {
 					 $(' > span#btnOptions',probeHTMLObj).addClass('disabled');
 				 }
 				 
+				 $('#show-button').attr("disabled", "");
 
 				 
 			 }
@@ -106,7 +107,7 @@ $(document).ready(function() {
 		if(!ignore){
 			currentSelectedService = "twitter";
 			addProbeHTML();
-			addRemoveButtonListeners();
+			addButtonListeners();
 		}  
 	});
 
@@ -197,17 +198,16 @@ function init() {
 	btnRefresh 	 = xpath('//span[@id="btnRefresh"]', template);
 
 	if(probes){
+		$('#show-button').attr("disabled", "");
 		for (var i in probes) {
 			addProbeHTML(probes[i]);
 		}
-		addRemoveButtonListeners();
-	}else{
-		$('#show-button').attr("disabled", "true");
+		addButtonListeners();
 	}
 
 }
 
-function addRemoveButtonListeners(){
+function addButtonListeners(){
 	$("span#btnRemove").click(function() {
 		/*
 		 * get selected probe id
@@ -230,6 +230,7 @@ function addRemoveButtonListeners(){
 
 		if(probeManager.countProbes() == 0){
 	    	chrome.extension.getBackgroundPage().showNoActiveProbes()
+	    	$('#show-button').attr("disabled", "true");
 		}
 
 		/*
@@ -393,7 +394,7 @@ function addRemoveButtonListeners(){
 	);
 
     $("input#tag_input").keypress(function (e) {  
-        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {  
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
 			save();
         	return false;  
         } else {  
@@ -584,7 +585,7 @@ function back(){
 		<option value="open_in_current_window">the current window</option>
 		<option value="open_in_new_window">a new window</option>
 	</select>
-	<input id="show-button" type="button" value="Show" onclick="openResults();" />
+	<input id="show-button" type="button" value="Show" onclick="openResults();" disabled="disabled" />
 	</div>
 </div>
 </div>
