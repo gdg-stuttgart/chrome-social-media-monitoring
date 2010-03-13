@@ -155,12 +155,11 @@ body {
 	width: 16px;
 	height: 16px;
 	display: block;
-	padding-left: 10px;
 	width: 100px;
 	padding-left: 20px;
 	cursor: pointer;
 	margin-top: 5px;
-	margin-left: 20px;
+	margin-left: 10px;
 }
 
 #btnOptions {

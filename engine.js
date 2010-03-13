@@ -99,7 +99,6 @@ function scheduleRequest() {
 }
 
 function startRequest() {
-	
 	updateProbes();
 	scheduleRequest();
 }
@@ -138,6 +137,7 @@ function getProbesCount(onSuccess, onError) {
 	var probesCount = probeManager.countProbes();
 
 	if(probesCount == 0){
+		showNoActiveProbes();
 		if (onSuccess){
 			  onSuccess(0);
 		}
