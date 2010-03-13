@@ -159,7 +159,6 @@ function openResults() {
 <span id="lng"></span>
 <button type="button" id="enable_location">Enable</button>
 <button type="button" id="disable_location">Disable</button>
-
 <span id="save_status">Saved</span>
 
 
@@ -243,8 +242,8 @@ function addRemoveButtonListeners(){
 			$("#enable_location").css('display','none');
 			$("#disable_location").css('display','inline');
 		}else{
-			$("#enable_location").css('display','block');
-			$("#disable_location").css('display','inline');
+			$("#enable_location").css('display','inline');
+			$("#disable_location").css('display','none');
 		}
 		
 		initMapSearch(currentProbe.latitude, currentProbe.longitude);
@@ -313,7 +312,8 @@ function addRemoveButtonListeners(){
 		$('#save_status').fadeIn('fast');
 		$('#save_status').fadeOut(3000);
 		$("div#options").css('display','none');
-		
+		$(this).css('display','none');
+		$("#disable_location").css('display','none');		
 
 		port.postMessage({probeTagChanged: currentProbe});
 
@@ -339,6 +339,10 @@ function addRemoveButtonListeners(){
 		$('#save_status').fadeIn('fast');
 		$('#save_status').fadeOut(3000);
 		$("div#options").css('display','none');
+		$(this).css('display','none');
+		$("#enable_location").css('display','none');
+		
+		
 
 		port.postMessage({probeTagChanged: currentProbe});		
 
@@ -400,9 +404,6 @@ function addProbeHTML(probeObj){
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f_' + probeObj.id);
 
-
-
-		
 		probes.appendChild(item);
 		
 	}else{
@@ -500,6 +501,7 @@ chrome.tabs.create({url: url});
 
 function back(){
 	$("div#options").css('display','none');
+	
 }
 
 </script>

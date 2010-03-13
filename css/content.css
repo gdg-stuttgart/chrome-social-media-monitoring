@@ -282,9 +282,13 @@ body {
 	margin: 5px;
 }
 
-#save_location {
-	
+#enable_location{
+	display:inline;
 }
+#disable_location{
+	display:inline;
+}
+
 
 #save_status {
 	display: none;
