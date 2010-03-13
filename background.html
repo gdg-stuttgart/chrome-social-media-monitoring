@@ -24,11 +24,7 @@ extension.onConnect.addListener(function(port) {
 		  
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
-
-			var query = new QueryURL(baseURL, probeTag);
-			var url = query.getURL();
-			loadLongTermTweetsPerMinute(url, probeTag);
-			loadCurrentTweetsPerMinute(url, probeTag);
+			loadTweets(probeTag);
 		}
 		if (msg.geocode) {
 		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
@@ -38,6 +34,13 @@ extension.onConnect.addListener(function(port) {
 		}
 	});
 });
+
+function loadTweets(probeTag) {
+	var query = new QueryURL(baseURL, probeTag);
+	var url = query.getURL();
+	loadLongTermTweetsPerMinute(url, probeTag);
+	loadCurrentTweetsPerMinute(url, probeTag);
+}
 
 function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 	var timeString = 0;

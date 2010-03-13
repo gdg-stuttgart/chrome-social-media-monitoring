@@ -99,6 +99,7 @@ function scheduleRequest() {
 }
 
 function startRequest() {
+	
 	updateProbes();
 	scheduleRequest();
 }
@@ -132,13 +133,15 @@ function updateProbes(callback) {
 
 
 function getProbesCount(onSuccess, onError) {
-	probesArray = new Array();
-	/*
-	 * TODO: Refresh all probes
-	 */
-
-	// XXX Dummy action
-
+	
+	//var probeTags = probeManager.loadProbes();
+	//hier werden die updates getriggert und long und short term tweets geladen und GUI nomral mit events informiert.
+	//Da asyncer call stimmt der tweet count unten evtl nicht...
+	//if(probeTags){
+	//	for (var i in probeTags) {
+	//		loadTweets(probeTag);
+	//	}
+	//}
 	
 	var probesCount = probeManager.countProbes();
 
