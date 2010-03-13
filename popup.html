@@ -42,8 +42,8 @@ console.log('onMessage:' + msg);
 				 
 				 $(' > span#tag',tagObj).removeClass('hd');
 				 $(' > input#tag_input',tagObj).addClass('hd');
-				 $(' > input.avgWeek',tagObj).val(probeTags.shortTermTweetsPerHour);
-				 $(' > input.avgDay',tagObj).val(probeTags.longTermTweetsPerHour);
+				 $(' > input.avgWeek',tagObj).val(probeTags.shortTermTweetsPerMin);
+				 $(' > input.avgDay',tagObj).val(probeTags.longTermTweetsPerMin);
 			 }
 
 	  }
@@ -319,8 +319,8 @@ function addProbeHTML(tagProbeObj){
 		inputTag.setAttribute('class','tag hd');
 		
 		inputTag.setAttribute('value',tagProbeObj.query);
-		inputAvgWeek.setAttribute('value',tagProbeObj.shortTermTweetsPerHour);
-		inputAvgDay.setAttribute('value',tagProbeObj.longTermTweetsPerHour);
+		inputAvgWeek.setAttribute('value',tagProbeObj.shortTermTweetsPerMin);
+		inputAvgDay.setAttribute('value',tagProbeObj.longTermTweetsPerMin);
 		
 		// copy node and update
 		item = template.cloneNode(true);	  
@@ -377,8 +377,8 @@ function save() {
 
 		var tagProbe = new Probe();
 		tagProbe.query = tagObj.val();
-		tagProbe.shortTermTweetsPerHour = 0;
-		tagProbe.longTermTweetsPerHour = 0 ;
+		tagProbe.shortTermTweetsPerMin = 0;
+		tagProbe.longTermTweetsPerMin = 0 ;
 
 		probeManager.setProbe(tagProbe);
 		$(this).attr('id','f_' + tagProbe.id );

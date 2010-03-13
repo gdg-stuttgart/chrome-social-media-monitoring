@@ -74,7 +74,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 function processLongTermTweets(data, probeTag, resultNumber) {
 	var timeString = data.results[0].created_at;
 	console.log('Time String: ' + timeString);
-	probeTag.longTermTweetsPerHour = calculateTweetsPerMinute(timeString, resultNumber);
+	probeTag.longTermTweetsPerMin = calculateTweetsPerMinute(timeString, resultNumber);
 	probeManager.setProbe(probeTag);
 	localPort.postMessage({update:probeTag});
 }
@@ -100,7 +100,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			
 			var numberOfTweetsWithinOneMinute = index / 5;
 			if(numberOfTweetsWithinOneMinute >= 20) {
-				probeTag.shortTermTweetsPerHour = '>20';
+				probeTag.shortTermTweetsPerMin = '>20';
 				localPort.postMessage({alert:probeTag});
 				console.log('Number of current Tweets: >= 100 Tweets/min');
 				console.log('Alert >= 100 Tweets/Min');
@@ -122,15 +122,15 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 			localPort.postMessage({update:probeTag});
 		}
 		else {
-			probeTag.shortTermTweetsPerHour = '?';
+			probeTag.shortTermTweetsPerMin = '?';
 			console.log('Error Current tweets per minute');
 		}
 	});	
 }
 
 function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
-	if(tweetsWithinOneMinute * 3 > probeTag.longTermTweetsPerHour) {
-		probeTag.shortTermTweetsPerHour = tweetsWithinOneMinute * CORRECTION_FACTOR;
+	if(tweetsWithinOneMinute * 3 > probeTag.longTermTweetsPerMin) {
+		probeTag.shortTermTweetsPerMin = tweetsWithinOneMinute * CORRECTION_FACTOR;
 		localPort.postMessage({alert:probeTag});
 		console.log('Number of current Tweets:' + tweetsWithinOneMinute + 'Tweets/min');
 		console.log('Alert >=' + tweetsWithinOneMinute + 'Tweets/Min');

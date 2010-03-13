@@ -72,7 +72,7 @@ function populateExampleData(){
 	/*
 	 * TODO: set example values from final release
 	 */
-	localStorage["probes"] = '{"843B7DA67FF1445287321462ABEA7375":{"id":"843B7DA67FF1445287321462ABEA7375","query":"gtugna","threshold":0,"shortTermTweetsPerHour":0.2,"longTermTweetsPerHour":0,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="},"671F7B1266E94CA296B2313584D2D503":{"id":"671F7B1266E94CA296B2313584D2D503","query":"gtug","threshold":0,"shortTermTweetsPerHour":0.2,"longTermTweetsPerHour":0,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="},"A6ED7BB95CCA425BB486565486BCE7B7":{"id":"A6ED7BB95CCA425BB486565486BCE7B7","query":"nexusone","threshold":0,"shortTermTweetsPerHour":0.2,"longTermTweetsPerHour":0.30442371340378577,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="}}';
+	localStorage["probes"] = '{"843B7DA67FF1445287321462ABEA7375":{"id":"843B7DA67FF1445287321462ABEA7375","query":"gtugna","threshold":0,"shortTermTweetsPerMin":0.2,"longTermTweetsPerMin":0,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="},"671F7B1266E94CA296B2313584D2D503":{"id":"671F7B1266E94CA296B2313584D2D503","query":"gtug","threshold":0,"shortTermTweetsPerMin":0.2,"longTermTweetsPerMin":0,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="},"A6ED7BB95CCA425BB486565486BCE7B7":{"id":"A6ED7BB95CCA425BB486565486BCE7B7","query":"nexusone","threshold":0,"shortTermTweetsPerMin":0.2,"longTermTweetsPerMin":0.30442371340378577,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="}}';
 }
 
 function refresh() {
