@@ -26,10 +26,10 @@ body {
 	padding: 5px;
 	border-bottom: solid 1px #eee;
 	padding-left: 10px;
-	padding-bottom:15px;
+	padding-bottom: 15px;
 	margin: 10px;
 	background: url("../img/icon_24x24.png") 0px 5px no-repeat;
-    background-position: 0px 5px;
+	background-position: 0px 5px;
 }
 
 #header h1 {
@@ -88,7 +88,7 @@ body {
 }
 
 .tag {
-	width: 200px;
+	width: 190px;
 	display: inline;
 	float: left;
 	padding: 3px;
@@ -97,7 +97,7 @@ body {
 }
 
 .span_tag {
-	width: 200px;
+	width: 190px;
 	float: left;
 	height: 24px;
 	display: inline-block;
@@ -129,7 +129,6 @@ body {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
-	display: block;
 	float: left;
 	vertical-align: middle;
 	margin-top: 6px;
@@ -160,7 +159,6 @@ body {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
-	display: block;
 	float: left;
 	vertical-align: middle;
 	margin-top: 6px;
@@ -183,14 +181,14 @@ body {
 #iconService.service_twitter {
 	background-image: url('../img/icon_service_twitter.png');
 }
+
 #iconService.service_buzz {
 	background-image: url('../img/icon_service_buzz.png');
 }
+
 #iconService.service_facebook {
 	background-image: url('../img/icon_service_facebook.png');
 }
-
-
 
 .avgWeek {
 	width: 30px;
@@ -198,6 +196,10 @@ body {
 	text-align: right;
 	float: left;
 	margin-left: 10px;
+	border: 1px solid #ccc;
+	overflow: hidden;
+	padding: 2px;
+	margin-top: 4px;
 }
 
 .avgDay {
@@ -206,6 +208,10 @@ body {
 	text-align: right;
 	float: left;
 	margin-left: 2px;
+	border: 1px solid #ccc;
+	overflow: hidden;
+	padding: 2px;
+	margin-top: 4px;
 }
 
 #template {
@@ -236,6 +242,11 @@ body {
 	background-color: #ffff99;
 }
 
+.disabled {
+	opacity: 0.4;
+	filter: alpha(opacity = 40);
+}
+
 .cls {
 	clear: both;
 	height: 1px;
@@ -253,14 +264,14 @@ body {
 	z-index: 10;
 	background-color: white;
 	display: none;
-	padding:5px;
+	padding: 5px;
 }
 
 .loader {
 	background-image: url('../img/loader_bar.gif');
 	background-repeat: repeat;
 	opacity: 0.4;
-	filter: alpha(opacity =     40);
+	filter: alpha(opacity =   40);
 }
 
 #map_canvas {
@@ -268,14 +279,14 @@ body {
 	height: 300px;
 	position: relative;
 	background-color: rgb(229, 227, 223);
-	margin:5px;
+	margin: 5px;
 }
 
-#save_location{
-
+#save_location {
+	
 }
 
-#save_status{
+#save_status {
 	display: none;
 	background-color: #ffff99;
 }

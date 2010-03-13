@@ -16,40 +16,51 @@ var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
 
 var probeTags;
 var currentProbe;
+var currentProbeDiv;
 var currentSelectedService = "twitter";
 
 
-var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay;
+var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 port.onMessage.addListener(function(msg) {
 console.log('onMessage:' + msg);
 	  if (msg.update) {
-		  probeTags = msg.update;
-		  console.log('onMessage[update]:' + probeTags);
+		  probeObj = msg.update;
+		  console.log('onMessage[update]:' + probeObj);
 
 		/*
 		 * get right element from probe list
 		 */
-		  var tagObj = $('#f_' + probeTags.id);
+		  var probeHTMLObj = $('#f_' + probeObj.id);
 
-			 if (tagObj){
+			 if (probeHTMLObj){
 
-				 //$(tagObj).addClass('warn');
-				 $(tagObj).removeClass('loader');
+				 //$(probeHTMLObj).addClass('warn');
+				 $(probeHTMLObj).removeClass('loader');
 				 
-				 $(' > span#tag',tagObj).html($(' > input#tag_input',tagObj).val());
+				 $(' > span#tag',probeHTMLObj).html($(' > input#tag_input',probeHTMLObj).val());
 				 
-				 $(' > span#tag',tagObj).removeClass('hd');
-				 $(' > input#tag_input',tagObj).addClass('hd');
-				 $(' > input.avgWeek',tagObj).val(probeTags.shortTermTweetsPerMin);
-				 $(' > input.avgDay',tagObj).val(probeTags.longTermTweetsPerMin);
+				 $(' > span#tag',probeHTMLObj).removeClass('hd');
+				 $(' > input#tag_input',probeHTMLObj).addClass('hd');
+				 $(' > span.avgWeek',probeHTMLObj).html(probeObj.shortTermTweetsPerMin);
+				 $(' > span.avgDay',probeHTMLObj).html(probeObj.longTermTweetsPerMin);
+				 $(' > span#btnOptions',probeHTMLObj).removeClass('hd');
+				 $(' > span#btnRefresh',probeHTMLObj).removeClass('hd');
+				 
+				 
+				 if(probeObj.latitude == undefined){
+					 $(' > span#btnOptions',probeHTMLObj).addClass('disabled');
+				 }
+				 
+
+				 
 			 }
 
 	  }
 	  if (msg.alert) {
-		  probeTags = msg.alert;
-		  console.log('onMessage[alert]:' + probeTags);
+		  probeObj = msg.alert;
+		  console.log('onMessage[alert]:' + probeObj);
 		  chrome.extension.getBackgroundPage().eventsCount++;
 		  chrome.extension.getBackgroundPage().updateProbes(function(count) {
 				//dummy function
@@ -146,8 +157,10 @@ function openResults() {
 
 <span id="lat"></span> 
 <span id="lng"></span>
-<button type="button" id="save_location">Save Location</button>
-<span id="save_status">Options saved</span>
+<button type="button" id="enable_location">Enable</button>
+<button type="button" id="disable_location">Disable</button>
+
+<span id="save_status">Saved</span>
 
 
 
@@ -167,8 +180,10 @@ function init() {
 	serviceIcon  = xpath('//span[@id="iconService"]', template);
 	spanTag  = xpath('//span[@id="tag"]', template);
 	inputTag = xpath('//input[@id="tag_input"]', template);
-	inputAvgWeek = xpath('//input[@class="avgWeek"]', template);
-	inputAvgDay	 = xpath('//input[@class="avgDay"]', template);
+	inputAvgWeek = xpath('//span[@class="avgWeek"]', template);
+	inputAvgDay	 = xpath('//span[@class="avgDay"]', template);
+	btnOptions	 = xpath('//span[@id="btnOptions"]', template);
+	btnRefresh 	 = xpath('//span[@id="btnRefresh"]', template);
 
 	if(probeTags){
 		for (var i in probeTags) {
@@ -203,16 +218,12 @@ function addRemoveButtonListeners(){
 		 * Update probes
 		 */
 
-		
+/*		
 		chrome.extension.getBackgroundPage().updateProbes(function(count) {
 			//dummy function
 			console.log('updateProbes.callback:' + count);
 		  });
-				
-		/*
-		 * TODO: add communication with background.html
-		 */
-		 console.log('TODO: add communication with background.html\n port.postMessage({probeTagDeleted: tagProbe})');
+*/			
 
 	});
 	/*
@@ -222,12 +233,19 @@ function addRemoveButtonListeners(){
 		/*
 		 * get selected probe id
 		 */		
-		var probeDiv = $(this).parent('.probe');
-		var strDivId = probeDiv.attr('id');
+		currentProbeDiv = $(this).parent('.probe');
+		var strDivId = currentProbeDiv.attr('id');
 		strDivId = strDivId.substring(2);
 
 		currentProbe = probeManager.getProbeById(strDivId);
-		
+		 
+		if(currentProbe.latitude != undefined){
+			$("#enable_location").css('display','none');
+			$("#disable_location").css('display','inline');
+		}else{
+			$("#enable_location").css('display','block');
+			$("#disable_location").css('display','inline');
+		}
 		
 		initMapSearch(currentProbe.latitude, currentProbe.longitude);
 		
@@ -243,10 +261,11 @@ function addRemoveButtonListeners(){
 		/*
 		 * get selected probe id
 		 */		
-		var probeDiv = $(this).parent('.probe');
-		var strDivId = probeDiv.attr('id');
+		currentProbeDiv = $(this).parent('.probe');
+		var strDivId = currentProbeDiv.attr('id');
 		strDivId = strDivId.substring(2);
-
+		$(currentProbeDiv).addClass('loader');
+		
 		currentProbe = probeManager.getProbeById(strDivId);
 
 		port.postMessage({probeTagChanged: currentProbe});
@@ -256,8 +275,8 @@ function addRemoveButtonListeners(){
 		/*
 		 * get selected probe id
 		 */		
-		var probeDiv = $(this).parent('.probe');
-		var strDivId = probeDiv.attr('id');
+		currentProbeDiv = $(this).parent('.probe');
+		var strDivId = currentProbeDiv.attr('id');
 		strDivId = strDivId.substring(2);
 
 		var probeObj = probeManager.getProbeById(strDivId);
@@ -275,7 +294,7 @@ function addRemoveButtonListeners(){
 		
 	});
 	
-	$("#save_location").click(function() {
+	$("#enable_location").click(function() {
 
 		/*
 		 * reload probe (if it was in between changed)
@@ -288,9 +307,41 @@ function addRemoveButtonListeners(){
 		
 		
 		probeManager.setProbe(currentProbe);
+
+		$(' > span#btnOptions',currentProbeDiv).removeClass('disabled');
+		$(currentProbeDiv).addClass('loader');
 		$('#save_status').fadeIn('fast');
 		$('#save_status').fadeOut(3000);
+		$("div#options").css('display','none');
 		
+
+		port.postMessage({probeTagChanged: currentProbe});
+
+		
+		
+	});
+	
+	$("#disable_location").click(function() {
+
+		/*
+		 * reload probe (if it was in between changed)
+		 */
+		currentProbe = probeManager.getProbeById(currentProbe.id);
+
+		currentProbe.latitude = undefined;
+		currentProbe.longitude  = undefined;
+		currentProbe.radius  = undefined;
+
+		probeManager.setProbe(currentProbe);
+
+		$(currentProbeDiv).addClass('loader');
+		$(' > span#btnOptions',currentProbeDiv).addClass('disabled');		
+		$('#save_status').fadeIn('fast');
+		$('#save_status').fadeOut(3000);
+		$("div#options").css('display','none');
+
+		port.postMessage({probeTagChanged: currentProbe});		
+
 	});
 	
 	
@@ -324,25 +375,33 @@ function addRemoveButtonListeners(){
 }
 
 
-function addProbeHTML(tagProbeObj){
+function addProbeHTML(probeObj){
 
-	if(tagProbeObj){		
+	if(probeObj){		
 
-		spanTag.innerHTML = tagProbeObj.query;
+		spanTag.innerHTML = probeObj.query;
 
 
-		serviceIcon.setAttribute('class','service_' + tagProbeObj.serviceId);
+		serviceIcon.setAttribute('class','service_' + probeObj.serviceId);
 		
 		spanTag.setAttribute('class','span_tag');			
 		inputTag.setAttribute('class','tag hd');
 		
-		inputTag.setAttribute('value',tagProbeObj.query);
-		inputAvgWeek.setAttribute('value',tagProbeObj.shortTermTweetsPerMin);
-		inputAvgDay.setAttribute('value',tagProbeObj.longTermTweetsPerMin);
-		
+		inputTag.setAttribute('value',probeObj.query);
+		inputAvgWeek.innerHTML = probeObj.shortTermTweetsPerMin;
+		inputAvgDay.innerHTML = probeObj.longTermTweetsPerMin;
+
+		if(probeObj.latitude == undefined){
+			btnOptions.setAttribute('class','disabled');
+		}else{
+			btnOptions.setAttribute('class','');
+		}
 		// copy node and update
 		item = template.cloneNode(true);	  
-		item.setAttribute('id','f_' + tagProbeObj.id);
+		item.setAttribute('id','f_' + probeObj.id);
+
+
+
 		
 		probes.appendChild(item);
 		
@@ -355,13 +414,16 @@ function addProbeHTML(tagProbeObj){
 		inputTag.setAttribute('class','tag');
 			
 		inputTag.setAttribute('value','');
-		inputAvgWeek.setAttribute('value','0');
-		inputAvgDay.setAttribute('value','0');
-		
+		inputAvgWeek.innerHTML = '0';
+		inputAvgDay.innerHTML = '0';
+		btnOptions.setAttribute('class','hd');
+		btnRefresh.setAttribute('class','hd');
+				
 		// copy node and update
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f');
 
+		
 		probes.appendChild(item);
 
 		$("#f.probe > input#tag_input.tag").focus();
@@ -457,8 +519,8 @@ function back(){
 <span id="tag" class="span_tag hd"><!--  --></span>
 <input type="text" id="tag_input" class="tag" maxlength="30">
 
-<input type="text" class="avgWeek" disabled="disabled" value="0">
-<input type="text" class="avgDay" disabled="disabled" value="0">
+<span class="avgWeek">0</span>
+<span class="avgDay">0</span>
 
 <span id="btnRemove"></span> <span id="btnOptions"></span><span id="btnRefresh"></span> <span class="cls"><!--  --></span></div>
 </div>
