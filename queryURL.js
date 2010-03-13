@@ -3,7 +3,7 @@ function QueryURL(baseURL, probeTag) {
 	this._query = probeTag.query;
 	this.timeIntervalInMS = undefined;
 	this._latitude = probeTag.latitude;
-	this._longtitude = probeTag.longtitude;
+	this._longitude = probeTag.longitude;
 	this._radius = probeTag.radius;
 }
 
@@ -13,10 +13,10 @@ QueryURL.prototype.getURL = function getURL() {
 		since =  'since='+ escape(this.getSinceDate());
 	
 	var geoLoc = '';
-	if(this._latitude !== undefined && this._longtitude !== undefined && this._radius !== undefined)
-		geoLoc = 'geocode=' + escape(this._latitude + ',' + this._longtitude + ',' + this._radius + 'km');
+	if(this._latitude !== undefined && this._longitude !== undefined && this._radius !== undefined)
+		geoLoc = 'geocode=' + escape(this._latitude + ',' + this._longitude + ',' + this._radius + 'km');
 	
-	var urlQuery = this._query !== undefined ? 'q=' + this._query : '';
+	var urlQuery = this._query !== undefined ? 'q=' + escape(this._query) : '';
 	var urlSince = since !== '' ? '&' + since : since;
 	var urlGeoLoc = geoLoc !== '' ? '&' + geoLoc : geoLoc;
 	
