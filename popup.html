@@ -68,7 +68,7 @@ port.onMessage.addListener(function(msg) {
 				 }
 				 
 				 $('#show-button').attr("disabled", "");
-
+				 setAddButton();
 				 
 			 }
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
 			 
 		});
 
-		if(!ignore){
+		if(!ignore && !$(this).is('.disabled')){
 			currentSelectedService = "twitter";
 			addProbeHTML();
 			addButtonListeners();
@@ -230,18 +230,30 @@ function init() {
 	btnOptions	 = xpath('//span[@id="btnOptions"]', template);
 	btnRefresh 	 = xpath('//span[@id="btnRefresh"]', template);
 	btnSave 	 = xpath('//span[@id="btnSave"]', template);
-	
+
 	if(probes){
 		$('#show-button').attr("disabled", "");
 		for (var i in probes) {
 			addProbeHTML(probes[i]);
 		}
+		setAddButton();
 		addButtonListeners();
 	}
 	
 	chrome.extension.getBackgroundPage().resetAlerts();
 }
 
+function setAddButton(){
+	console.log('setAddButton:' + chrome.extension.getBackgroundPage().maxProbesLimit + ' <= ' + probeManager.countProbes());
+	
+	if(chrome.extension.getBackgroundPage().maxProbesLimit <= probeManager.countProbes()){
+		$('#btnAdd').addClass("disabled");
+		console.log('	disable');
+	}else{
+		console.log('	enable');
+		$('#btnAdd').removeClass("disabled");
+	}
+}
 function addButtonListeners(){
 	$("span#btnRemove").click(function() {
 		/*
@@ -255,11 +267,13 @@ function addButtonListeners(){
 		 * remove
 		 */
 		probeManager.removeProbeById(strDivId);
-
+		setAddButton();
+		
 		/*
 		 * remove from HTML
 		 */
 	    probeDiv.slideUp("fast",function(){
+		        
 				probeDiv.remove();
 	    });
 
@@ -527,6 +541,7 @@ function addProbeHTML(probeObj){
 		probesList.appendChild(item);
 
 		$("#f.probe > input#tag_input.tag").focus();
+		
 		
 
 	}
