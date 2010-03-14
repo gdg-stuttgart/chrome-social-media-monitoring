@@ -26,7 +26,11 @@ var map, probes, template, serviceIcon, inputTag, spanTag, spanLocation, inputAv
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 
-
+/*
+ * i18n
+ */
+ var strSearch = chrome.i18n.getMessage('search_location');
+ 
 
 /*
  * XXX: comented because of crash on windows 7 with chrome 5.0.342.3
@@ -92,6 +96,11 @@ port.onMessage.addListener(function(msg) {
 });
 
 $(document).ready(function() {
+	/*
+	 * i18n
+	 */
+	 $('#location').val(strSearch);
+	 
 	$("#btnAdd").click(function() {
 
 		/*
@@ -195,7 +204,7 @@ function openResults() {
 
 <div id="geolocform">
 	<form action="javascript:void(0);" onsubmit="showAddress(this.location.value); return false;"> 
-   	  <input id="location" type="text" name="location" value="Search Location" onfocus="if(this.value=='Search Location'){this.value='';}">
+   	  <input id="location" type="text" name="location" value="strSearch" onfocus="if(this.value==strSearch){this.value='';}">
    	  <select id="distance" name="distance"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="60">60</option><option value="70">70</option><option value="80">80</option><option value="90">90</option><option value="100">100</option><option value="200">200</option></select>
    	  <select id="unit" name="unit"><option value="km">kilometres</option>
    	  <!--  <option value="mi">miles</option>-->
@@ -323,7 +332,7 @@ function addButtonListeners(){
 			$("#enable_location").html('enable');
 			$("#enable_location").css('display','inline');
 			$("#disable_location").css('display','none');
-			$("#location").val('');
+			$('#location').val(strSearch);
 		}
 		
 		if (currentProbe.latitude != undefined && currentProbe.longitude != undefined)
