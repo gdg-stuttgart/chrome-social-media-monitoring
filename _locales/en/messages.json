@@ -23,6 +23,9 @@
    "sorry_no_content": {
       "message": "Sorry, nothing to see here."
    },
+   "options_header_title":{
+   	"message": "Social Media Monitoring Extension"
+   },   
    "description_title":{
    	"message": "Description"
    },
@@ -34,21 +37,70 @@ is more than three times higher than the long-term rate, you'll get an alert."
    },
    "options_title":{
    	"message": "Options"
-   },
-   
-                                                                                                                                                  
+   },                                                                                                                                          
    "options_default_geolocation_title":{
    	"message": "Default Geolocation:"
    },
-   "options_update_frequency_title":{
+ "options_geolocation_anywhere":{
+   	"message": "anywhere"
+   },  
+ "options_geolocation_userdefined":{
+   	"message": "define your location"
+   },
+ "search_location": {
+      "message": "$SEARCH_LOCATION$",
+      "placeholders": {
+         "search_location": {
+            "content": "$1",
+            "example": "1"
+            }
+      }
+   },
+ "kilometres":{
+   	"message": "kilometres"
+   },   
+ "button_findme":{
+   	"message": "Find me!"
+   },  
+ "status_checking":{
+   	"message": "Checking..."
+   },    
+ "options_update_frequency_title":{
    	"message": "Update every:"
    },
+ "minutes": {
+      "message": "$MINUTES$ minutes",
+      "placeholders": {
+         "minutes": {
+            "content": "$1",
+            "example": "1"
+            }
+      }
+   },   
    "options_sound_alert_title":{
    	"message": "Sound Alert:"
    },
-      
-   
-   
+   "options_sound_alert_none":{
+   	"message": "None"
+   },
+   "options_sound_alert_value": {
+      "message": "Alert $VALUE$",
+      "placeholders": {
+         "value": {
+            "content": "$1",
+            "example": "1"
+            }
+      }
+   },
+   "button_save":{
+   	"message": "Save"
+   },
+   "button_reset":{
+   	"message": "Reset"
+   },
+   "status_save":{
+   	"message": "Options saved"
+   },   
    "license_title":{
    	"message": "License"
    },

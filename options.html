@@ -157,7 +157,7 @@ function searchAddress(adress){
 <div id="content">
 
 <div id="header">
-<h1>Social Media Monitoring Extension</h1>
+<h1><script type="text/javascript">_writeMessage('options_header_title')</script></h1>
 </div>
 
 <div id="title_description" class="section-header first"><script type="text/javascript">_writeMessage('description_title')</script></div>
@@ -168,10 +168,9 @@ function searchAddress(adress){
 <div class="option_name"><script type="text/javascript">_writeMessage('options_default_geolocation_title')</script></div>
 <div class="option_picker"><input type="radio"
 	id="default_location_off" name="defaut_location" value="0"
-	checked="checked" /><label for="default_location_off">anywhere</label><br />
+	checked="checked" /><label for="default_location_off"><script type="text/javascript">_writeMessage('options_geolocation_anywhere')</script></label><br />
 <input type="radio" id="default_location_on" name="defaut_location"
-	value="1" /><label for="default_location_on">define your
-location</label>
+	value="1" /><label for="default_location_on"><script type="text/javascript">_writeMessage('options_geolocation_userdefined')</script></label>
 <div id="geo_options" class="hd">
 
 <div id="geolocform">
@@ -192,7 +191,7 @@ location</label>
 	<option value="100">100</option>
 	<option value="200">200</option>
 </select> <select id="unit" name="unit">
-	<option value="km">kilometres</option>
+	<option value="km"><script type="text/javascript">_writeMessage('kilometres')</script></option>
 	<!--  <option value="mi">miles</option>-->
 </select> <br>
 </form>
@@ -201,8 +200,8 @@ location</label>
 <div id="map_canvas"></div>
 
 <span id="lat"></span> <span id="lng"></span>
-<button id="find_me">Find me!</button>
-<span id="status" class="hd">checking...</span></div>
+<button id="find_me"><script type="text/javascript">_writeMessage('button_findme')</script></button>
+<span id="status" class="hd"><script type="text/javascript">_writeMessage('status_checking')</script></span></div>
 
 </div>
 </div>
@@ -211,14 +210,14 @@ location</label>
 <div class="option_name"><script type="text/javascript">_writeMessage('options_update_frequency_title')</script></div>
 <div class="option_picker"><select id="refresh-interval"
 	name="refresh" onchange="markDirty()">
-	<option value="1">1 minutes</option>
-	<option value="5">5 minutes</option>
-	<option value="10">10 minutes</option>
-	<option value="15">15 minutes</option>
-	<option value="20">20 minutes</option>
-	<option value="25">25 minutes</option>
-	<option value="30" selected="selected">30 minutes</option>
-	<option value="60">60 minutes</option>
+	<option value="1"><script type="text/javascript">_writeMessage('minutes',"1")</script></option>
+	<option value="5"><script type="text/javascript">_writeMessage('minutes',"5")</script></option>
+	<option value="10"><script type="text/javascript">_writeMessage('minutes',"10")</script></option>
+	<option value="15"><script type="text/javascript">_writeMessage('minutes',"15")</script></option>
+	<option value="20"><script type="text/javascript">_writeMessage('minutes',"20")</script></option>
+	<option value="25"><script type="text/javascript">_writeMessage('minutes',"25")</script></option>
+	<option value="30" selected="selected"><script type="text/javascript">_writeMessage('minutes',"30")</script></option>
+	<option value="60"><script type="text/javascript">_writeMessage('minutes',"60")</script></option>
 </select></div>
 </div>
 
@@ -226,19 +225,17 @@ location</label>
 <div class="option_name"><script type="text/javascript">_writeMessage('options_sound_alert_title')</script></div>
 <div class="option_picker"><select id="sound-alert"
 	onchange="markDirty();">
-	<option value="">None</option>
+	<option value=""><script type="text/javascript">_writeMessage('options_sound_alert_none')</script></option>
+	<option value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg"><script type="text/javascript">_writeMessage('options_sound_alert_value',"1")</script></option>
 	<option
-		value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg">Alert 1</option>
-	<option
-		value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg">Alert 2</option>
+		value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg"><script type="text/javascript">_writeMessage('options_sound_alert_value',"2")</script></option>
 </select></div>
 <input type="button" value="Play" onclick="playSound();" /></div>
 
 <div class="buttons">
-<button id="save_button" onclick="saveOptions();">Save</button>
-<!-- TODO: implement Reset -->
-<button id="reset_button" onclick="resetOptions();return false;">Reset</button>
-<span id="save_status">Options saved</span></div>
+<button id="save_button" onclick="saveOptions();"><script type="text/javascript">_writeMessage('button_save')</script></button>
+<button id="reset_button" onclick="resetOptions();return false;"><script type="text/javascript">_writeMessage('button_reset')</script></button>
+<span id="save_status"><script type="text/javascript">_writeMessage('status_save')</script></span></div>
 
 <div id="title_license" class="section-header first"><script type="text/javascript">_writeMessage('license_title')</script></div>
 <div id="body_license"><script type="text/javascript">_writeMessage('license_body')</script></div>
