@@ -5,15 +5,11 @@
 <link rel="shortcut icon" HREF="img/icon_16.png">
 <link rel="stylesheet" type="text/css" href="css/options.css">
 <style type="text/css">
-@import url("http://www.google.com/uds/css/gsearch.css");
-
-@import
-	url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css")
-	;
+	@import url("http://www.google.com/uds/css/gsearch.css");
+	@import	url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
 </style>
 <script type="text/javascript" src="lib/i18n.js"></script>
-<script type="text/javascript"
-	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAATfHumDbW3OmRByfquHd3SRTRERdeAiwZ9EeJWta3L_JZVS0bOBRQeZgr4K0xyVKzUdnnuFl8X9PX0w&sensor=false"></script>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAATfHumDbW3OmRByfquHd3SRTRERdeAiwZ9EeJWta3L_JZVS0bOBRQeZgr4K0xyVKzUdnnuFl8X9PX0w&sensor=false"></script>
 <script type="text/javascript" src="lib/geo_search.js"></script>
 
 <script type="text/javascript" src="lib/3rdparty/jquery-1.4.2.min.js"></script>
@@ -95,9 +91,15 @@ function error(msg) {
 /*
  * TODO: populate options interface 
  */
+ var strSearch = chrome.i18n.getMessage('search_location');
 //Restores select box state to saved value from localStorage.
  $(function() {
-
+	 /*
+	  *
+	  */
+	  
+	 $('#location').val(strSearch);
+	  
 	 $('#find_me').click(function() {
 		 if (navigator.geolocation) {
 			  navigator.geolocation.getCurrentPosition(success, error);
@@ -157,28 +159,25 @@ function searchAddress(adress){
 <div id="content">
 
 <div id="header">
-<h1><script type="text/javascript">_writeMessage('options_header_title')</script></h1>
+<h1><script type="text/javascript">_writeMessage('options_header_title');</script></h1>
 </div>
 
-<div id="title_description" class="section-header first"><script type="text/javascript">_writeMessage('description_title')</script></div>
-<script type="text/javascript">_writeMessage('description_body')</script>
-<div id="title_options" class="section-header first"><script type="text/javascript">_writeMessage('options_title')</script></div>
+<div id="title_description" class="section-header first"><script type="text/javascript">_writeMessage('description_title');</script></div>
+<script type="text/javascript">_writeMessage('description_body');</script>
+<div id="title_options" class="section-header first"><script type="text/javascript">_writeMessage('options_title');</script></div>
 
 <div class="option_row">
-<div class="option_name"><script type="text/javascript">_writeMessage('options_default_geolocation_title')</script></div>
-<div class="option_picker"><input type="radio"
-	id="default_location_off" name="defaut_location" value="0"
-	checked="checked" /><label for="default_location_off"><script type="text/javascript">_writeMessage('options_geolocation_anywhere')</script></label><br />
-<input type="radio" id="default_location_on" name="defaut_location"
-	value="1" /><label for="default_location_on"><script type="text/javascript">_writeMessage('options_geolocation_userdefined')</script></label>
+<div class="option_name"><script type="text/javascript">_writeMessage('options_default_geolocation_title');</script></div>
+<div class="option_picker">
+<input type="radio" id="default_location_off" name="defaut_location" value="0" checked="checked" />
+<label for="default_location_off"><script type="text/javascript">_writeMessage('options_geolocation_anywhere');</script></label>
+<input type="radio" id="default_location_on" name="defaut_location" value="1" />
+<label for="default_location_on"><script type="text/javascript">_writeMessage('options_geolocation_userdefined');</script></label>
 <div id="geo_options" class="hd">
 
 <div id="geolocform">
-<form action="javascript:void(0);"
-	onsubmit="searchAddress(this.location.value); return false;"><input
-	id="location" type="text" name="location" value="Search Location"
-	onfocus="if(this.value=='Search Location'){this.value='';}"> <select
-	id="distance" name="distance">
+<form action="javascript:void(0);" onsubmit="searchAddress(this.location.value); return false;">
+	<input id="location" type="text" name="location" value="" onfocus="if(this.value==strSearch){this.value='';}"> <select id="distance" name="distance">
 	<option value="10">10</option>
 	<option value="20">20</option>
 	<option value="30">30</option>
@@ -191,7 +190,7 @@ function searchAddress(adress){
 	<option value="100">100</option>
 	<option value="200">200</option>
 </select> <select id="unit" name="unit">
-	<option value="km"><script type="text/javascript">_writeMessage('kilometres')</script></option>
+	<option value="km"><script type="text/javascript">_writeMessage('kilometres');</script></option>
 	<!--  <option value="mi">miles</option>-->
 </select> <br>
 </form>
@@ -199,50 +198,52 @@ function searchAddress(adress){
 
 <div id="map_canvas"></div>
 
-<span id="lat"></span> <span id="lng"></span>
-<button id="find_me"><script type="text/javascript">_writeMessage('button_findme')</script></button>
-<span id="status" class="hd"><script type="text/javascript">_writeMessage('status_checking')</script></span></div>
+<span id="lat"></span>
+<span id="lng"></span>
+<button id="find_me"><script type="text/javascript">_writeMessage('button_findme');</script></button>
+<span id="status" class="hd"><script type="text/javascript">_writeMessage('status_checking');</script></span></div>
 
 </div>
 </div>
 
 <div class="option_row">
-<div class="option_name"><script type="text/javascript">_writeMessage('options_update_frequency_title')</script></div>
+<div class="option_name"><script type="text/javascript">_writeMessage('options_update_frequency_title');</script></div>
 <div class="option_picker"><select id="refresh-interval"
 	name="refresh" onchange="markDirty()">
-	<option value="1"><script type="text/javascript">_writeMessage('minutes',"1")</script></option>
-	<option value="5"><script type="text/javascript">_writeMessage('minutes',"5")</script></option>
-	<option value="10"><script type="text/javascript">_writeMessage('minutes',"10")</script></option>
-	<option value="15"><script type="text/javascript">_writeMessage('minutes',"15")</script></option>
-	<option value="20"><script type="text/javascript">_writeMessage('minutes',"20")</script></option>
-	<option value="25"><script type="text/javascript">_writeMessage('minutes',"25")</script></option>
-	<option value="30" selected="selected"><script type="text/javascript">_writeMessage('minutes',"30")</script></option>
-	<option value="60"><script type="text/javascript">_writeMessage('minutes',"60")</script></option>
+	<option value="1"><script type="text/javascript">_writeMessage('minutes',"1");</script></option>
+	<option value="5"><script type="text/javascript">_writeMessage('minutes',"5");</script></option>
+	<option value="10"><script type="text/javascript">_writeMessage('minutes',"10");</script></option>
+	<option value="15"><script type="text/javascript">_writeMessage('minutes',"15");</script></option>
+	<option value="20"><script type="text/javascript">_writeMessage('minutes',"20");</script></option>
+	<option value="25"><script type="text/javascript">_writeMessage('minutes',"25");</script></option>
+	<option value="30" selected="selected"><script type="text/javascript">_writeMessage('minutes',"30");</script></option>
+	<option value="60"><script type="text/javascript">_writeMessage('minutes',"60");</script></option>
 </select></div>
 </div>
 
 <div class="option_row">
-<div class="option_name"><script type="text/javascript">_writeMessage('options_sound_alert_title')</script></div>
-<div class="option_picker"><select id="sound-alert"
-	onchange="markDirty();">
-	<option value=""><script type="text/javascript">_writeMessage('options_sound_alert_none')</script></option>
-	<option value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg"><script type="text/javascript">_writeMessage('options_sound_alert_value',"1")</script></option>
-	<option
-		value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg"><script type="text/javascript">_writeMessage('options_sound_alert_value',"2")</script></option>
-</select></div>
+<div class="option_name"><script type="text/javascript">_writeMessage('options_sound_alert_title');</script></div>
+<div class="option_picker">
+	<select id="sound-alert" onchange="markDirty();">
+		<option value=""><script type="text/javascript">_writeMessage('options_sound_alert_none');</script></option>
+		<option value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg"><script type="text/javascript">_writeMessage('options_sound_alert_value',"1");</script></option>
+		<option value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg"><script type="text/javascript">_writeMessage('options_sound_alert_value',"2");</script></option>
+	</select>
+</div>
 <input type="button" value="Play" onclick="playSound();" /></div>
 
 <div class="buttons">
-<button id="save_button" onclick="saveOptions();"><script type="text/javascript">_writeMessage('button_save')</script></button>
-<button id="reset_button" onclick="resetOptions();return false;"><script type="text/javascript">_writeMessage('button_reset')</script></button>
-<span id="save_status"><script type="text/javascript">_writeMessage('status_save')</script></span></div>
+	<button id="save_button" onclick="saveOptions();"><script type="text/javascript">_writeMessage('button_save');</script></button>
+	<button id="reset_button" onclick="resetOptions();return false;"><script type="text/javascript">_writeMessage('button_reset');</script></button>
+	<span id="save_status"><script type="text/javascript">_writeMessage('status_save');</script></span>
+</div>
 
-<div id="title_license" class="section-header first"><script type="text/javascript">_writeMessage('license_title')</script></div>
-<div id="body_license"><script type="text/javascript">_writeMessage('license_body')</script></div>
+<div id="title_license" class="section-header first"><script type="text/javascript">_writeMessage('license_title');</script></div>
+<div id="body_license"><script type="text/javascript">_writeMessage('license_body');</script></div>
 </div>
 
 <!-- TODO: add extension link -->
-<div class="footr"><script type="text/javascript">_writeMessage('footer_info')</script></div>
+<div class="footr"><script type="text/javascript">_writeMessage('footer_info');</script></div>
 
 <script type="text/javascript"> 
 	//var customDomainsTextbox;

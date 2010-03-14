@@ -48,13 +48,7 @@ is more than three times higher than the long-term rate, you'll get an alert."
    	"message": "define your location"
    },
  "search_location": {
-      "message": "$SEARCH_LOCATION$",
-      "placeholders": {
-         "search_location": {
-            "content": "$1",
-            "example": "1"
-            }
-      }
+      "message": "Search Location"
    },
  "kilometres":{
    	"message": "kilometres"
