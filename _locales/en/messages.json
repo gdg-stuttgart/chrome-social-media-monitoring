@@ -3,7 +3,7 @@
 		"message": "Social Media Monitoring"
 	},
 	"ext_description": {
-		"message": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags."
+		"message": "Displays Twitter activity (tweets per minute, current and long-term) for user-defined keywords (at the moment, only Twitter is supported, more services are coming soon)."
 	},
 	"default_title": {
 		"message": "Social Media Monitoring"
@@ -78,7 +78,7 @@
 		"message": "Description"
 	},
 	"description_body": {
-		"message": "Social Media Monitor is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times higher than the long-term rate, you'll get an alert."
+		"message": "Social Media Monitor is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services are coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times higher than the long-term rate, you'll get an alert."
 	},
 	"options_title": {
 		"message": "Options"
