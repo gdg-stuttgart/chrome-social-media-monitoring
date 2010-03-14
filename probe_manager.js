@@ -11,7 +11,7 @@ ProbeManager.prototype.loadProbes = function() {
 			localStorage['probes'] = JSON.stringify(probes);
 		}
 	} catch (e) {
-		// TODO: handle exception
+		console.log('loadProbes excepiton');
 	}
 };
 
