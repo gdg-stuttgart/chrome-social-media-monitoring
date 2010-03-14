@@ -19,10 +19,13 @@ var currentProbe;
 var currentProbeDiv;
 var currentSelectedService = "twitter";
 
+var currentLocation = undefined;
+
 
 var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
+port.postMessage({requestGeolocation:'true'});
 port.onMessage.addListener(function(msg) {
 	  if (msg.update) {
 		  probeObj = msg.update;
@@ -73,7 +76,10 @@ port.onMessage.addListener(function(msg) {
 		  	$(probeHTMLObj).removeClass('loader');
 		  	$(' > span#btnRefresh',probeHTMLObj).addClass('idle');
 		  }
-	  }	  
+	  }
+	  if (msg.onLocationResult) {
+		  currentLocation = msg.onLocationResult;
+	  }  
 });
 
 $(document).ready(function() {
@@ -272,7 +278,14 @@ function addButtonListeners(){
 			$("#disable_location").css('display','none');
 		}
 		
-		initMapSearch(currentProbe.latitude, currentProbe.longitude);
+		if (currentProbe.latitude != undefined && currentProbe.longitude != undefined)
+			initMapSearch(currentProbe.latitude, currentProbe.longitude);
+		else if(currentLocation !== undefined) {
+			initMapSearch(currentLocation.latitude, currentLocation.longitude);
+		}
+		else {
+			initMapSearch(37.4328, -122.077); //hello google ;)
+		}
 		
 		$("#distance").val(currentProbe.radius);
 		

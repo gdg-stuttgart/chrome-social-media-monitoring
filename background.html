@@ -6,6 +6,7 @@
 <script type="text/javascript" src="probe_manager.js"></script>
 <script type="text/javascript" src="probe.js"></script>
 <script type="text/javascript" src="queryURL.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">$(pluginInit);</script>
 </head>
 <body>
@@ -26,9 +27,6 @@ extension.onConnect.addListener(function(port) {
 		if (msg.probeTagChanged) {
 			var probeTag = msg.probeTagChanged;
 			loadTweets(probeTag);
-		}
-		if (msg.geocode) {
-		  	geocodeLocation(msg.geocode.address, msg.geocode.radius);
 		}
 		if (msg.requestGeolocation) {
 		  	requestGeoLocation();
@@ -181,21 +179,37 @@ function calculateTweetsPerMinute(timeString, resultCount) {
 function locationDetected(position) {
 	  var latitude = position.coords.latitude;
 	  var longitude = position.coords.longitude;
-	  localPort.postMessage({locationDetected:{latitude:position.coords.latitude,
+	  localPort.postMessage({onLocationResult:{latitude:position.coords.latitude,
 		  								  longitude:position.coords.longitude}});	  
 }
 
 function locationError(msg) {
   var status = typeof msg == 'string' ? msg : "failed";
-  localPort.postMessage({locationError:status});
+  console.log('Error getting HTML5 Geolocation:' + status);
+  console.log('Now trying to get IPLocation');
+  var ipLocation = google.loader.ClientLocation;
+  if(ipLocation !== null) {
+	  console.log('Success getting IP Location');
+	  localPort.postMessage({onLocationResult:{latitude:ipLocation.latitude,longitude:ipLocation.longitude}});
+  }
+  else {
+	  console.log('Error getting IP Location, hello Mountain View');
+  }
 }
 
 function requestGeoLocation(){
 	if (navigator.geolocation) {
-	  navigator.geolocation.getCurrentPosition(locationDetected, locationError);
+		console.log('Requesting HTML5 Geolocation');
+	  	navigator.geolocation.getCurrentPosition(locationDetected, locationError);
 	} else {
 		locationError('Geo location not supported! Geolocation is currently only supported in the dev channels Try start chrome with arguments: --enable geolocation');
 	}
+}
+
+function requestIPLocation() {
+	$.getJSON('http://google.com/jsapi', function(data) {
+		
+	});
 }
 
 function getProbeManager() {
