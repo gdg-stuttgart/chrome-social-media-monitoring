@@ -3,22 +3,22 @@
 		"message": "Social Media Monitoring"
 	},
 	"ext_description": {
-		"message": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags."
+		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
 	},
 	"default_title": {
 		"message": "Social Media Monitoring"
 	},
 	"popup_refresh": {
-		"message": "Refresh"
+		"message": "Aktualisieren"
 	},
 	"popup_options": {
-		"message": "Options"
+		"message": "Optionen"
 	},
 	"popup_close": {
-		"message": "Close"
+		"message": "Schließen"
 	},
 	"popup_keywords": {
-		"message": "Keywords"
+		"message": "Stichworte"
 	},
 	"popup_cTpM": {
 		"message": "cTpM"
@@ -27,88 +27,88 @@
 		"message": "ltTpM"
 	},
 	   "tooltip_tkeywords": {
-      "message": "Keywords"
+      "message": "Stichworte"
    },  
    "tooltip_lttpm":{
-   	"message": "current number of Tweets per Minute"
+   	"message": "Kurzzeit Tweets pro Minute"
    },
    "tooltip_cttpm":{
-   	"message": "long-term Tweets per Minute"
+   	"message": "Langzeit Tweets per Minute"
    },  
 	"popup_searchresults": {
-		"message": "Search results in"
+		"message": "Suchergebnisse anzeigen in"
 	},
 	"searchresults_currentwindow": {
-		"message": "the current window"
+		"message": "Aktuellem Fenster"
 	},
 	"searchresults_newwindow": {
-		"message": "a new window"
+		"message": "Neuem Fenster"
 	},
 	"button_show": {
-		"message": "Show"
+		"message": "Anzeigen"
 	},
 	"button_addnew": {
-		"message": "add new"
+		"message": "Hinzufügen"
 	},
 	"popup_goback": {
-		"message": "Go back to the list"
+		"message": "Zurück zur Übersicht"
 	},
 	"button_enable": {
-		"message": "Enable"
+		"message": "Aktivieren"
 	},
 	"button_disable": {
-		"message": "Disable"
+		"message": "Deaktivieren"
 	},
 	"loading": {
-		"message": "Give it a second. It's going to space!"
+		"message": "Hab ein bißchen Geduld, es dauert etwas von hier bis zum Mars und zurück!"
 	},
 	"locale": {
-		"message": "en"
+		"message": "de"
 	},
 	"no_title": {
-		"message": "No Title"
+		"message": "Kein Titel"
 	},
 	"sorry_no_content": {
-		"message": "Sorry, nothing to see here."
+		"message": "Hier gibt es nicht zu sehen, sorry."
 	},
 	"options_header_title": {
 		"message": "Social Media Monitoring Extension"
 	},
 	"description_title": {
-		"message": "Description"
+		"message": "Beschreibung"
 	},
 	"description_body": {
-		"message": "Social Media Monitor is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times higher than the long-term rate, you'll get an alert."
+		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
 	},
 	"options_title": {
-		"message": "Options"
+		"message": "Optionen"
 	},
 	"options_default_geolocation_title": {
 		"message": "Default Geolocation:"
 	},
 	"options_geolocation_anywhere": {
-		"message": "anywhere"
+		"message": "überall"
 	},
 	"options_geolocation_userdefined": {
-		"message": "define your location"
+		"message": "Wählen Sie einen Ort aus"
 	},
 	"search_location": {
-		"message": "Search Location"
+		"message": "Ort suchen"
 	},
 	"kilometres": {
-		"message": "kilometres"
+		"message": "Kilometer"
 	},
 	"button_findme": {
-		"message": "Find me!"
+		"message": "Finde mich!"
 	},
 	"status_checking": {
-		"message": "Checking..."
+		"message": "Überprüfe..."
 	},
 	"status_saved": {
-		"message": "Saved..."
+		"message": "Gespeichert..."
 	},
 	"options_update_frequency_title": {
-		"message": "Update every:"
+		"message": "Aktualisiere alle:"
 	},
 	"minutes": {
 		"message": "$MINUTES$ minutes",
@@ -120,13 +120,13 @@
 		}
 	},
 	"options_sound_alert_title": {
-		"message": "Sound Alert:"
+		"message": "Sound Alarm:"
 	},
 	"options_sound_alert_none": {
-		"message": "None"
+		"message": "Kein"
 	},
 	"options_sound_alert_value": {
-		"message": "Alert $VALUE$",
+		"message": "Alarm $VALUE$",
 		"placeholders": {
 			"value": {
 				"content": "$1",
@@ -135,22 +135,22 @@
 		}
 	},
 	"button_play": {
-		"message": "Play"
+		"message": "Abspielen"
 	},
 	"button_save": {
-		"message": "Save"
+		"message": "Speichern"
 	},
 	"button_reset": {
-		"message": "Reset"
+		"message": "Zurücksetzen"
 	},
 	"status_save": {
-		"message": "Options saved"
+		"message": "Optionen gespeichert"
 	},
 	"license_title": {
-		"message": "License"
+		"message": "Lizenz"
 	},
 	"license_body": {
-		"message": "This extension is released under the MIT license, and the code is available at <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) and <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License."
+		"message": "Diese Extension steht unter MIT license, der Source-Code ist frei verfügbar unter <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) and <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License."
 	},
 	"footer_info": {
 		"message": "<a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Social Media Monitoring Homepage</a>"
