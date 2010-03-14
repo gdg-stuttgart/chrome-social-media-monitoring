@@ -14,6 +14,8 @@
 const CORRECTION_FACTOR = 0.8;
 const ALERT_RATIO = 3;
 
+var longTermFinishedTimeOut;
+
 var baseURL = 'http://search.twitter.com/search.json?';
 var probeManager = new ProbeManager();
 var localPort;
@@ -38,7 +40,10 @@ function loadTweets(probeTag) {
 	var query = new QueryURL(baseURL, probeTag);
 	var url = query.getURL();
 	loadLongTermTweetsPerMinute(url, probeTag);
-	loadCurrentTweetsPerMinute(url, probeTag);
+	longTermFinishedTimeOut = setTimeout ( function() { 
+		loadCurrentTweetsPerMinute(url, probeTag)
+	}
+	, 1000);
 }
 
 function loadLongTermTweetsPerMinute(queryURL, probeTag) {
@@ -53,7 +58,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 		 			resultNumber = setNextResultNumberCount(resultNumber);
 					$.getJSON(queryURL + '&rpp=1&page=' + resultNumber, function(data) {
 				   	 	if(data.results.length != 0) {
-				   	 	console.log('Puhh finally found: ' + data.results.length + 'tweets for your keyword');
+				   	 	console.log('Puhh finally found tweets for your keyword');
 				   	 		processLongTermTweets(data, probeTag, resultNumber);
 						}
 						else {
@@ -85,6 +90,8 @@ function processLongTermTweets(data, probeTag, resultNumber) {
 	var timeString = data.results[0].created_at;
 	probeTag.longTermTweetsPerMin = calculateTweetsPerMinute(timeString, resultNumber);
 	probeManager.setProbe(probeTag);
+	console.log("Finished Long Term procesing .....................");
+	clearTimeout(clearlongTermFinishedTimeOut);
 	localPort.postMessage({update:probeTag});
 }
 
@@ -148,7 +155,7 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 
 function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
 	probeTag.shortTermTweetsPerMin = tweetsWithinOneMinute * CORRECTION_FACTOR;
-
+	console.log("Finished Current Term procesing .....................");
 	if(tweetsWithinOneMinute > probeTag.longTermTweetsPerMin * ALERT_RATIO) {
 		/*
 		 * do something on new event
