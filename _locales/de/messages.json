@@ -82,7 +82,7 @@
 		"message": "Beschreibung"
 	},
 	"description_body": {
-		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
+		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur Twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
 	},
 	"options_title": {
 		"message": "Optionen"
@@ -94,7 +94,7 @@
 		"message": "überall"
 	},
 	"options_geolocation_userdefined": {
-		"message": "Wählen Sie einen Ort aus"
+		"message": "wählen Sie einen Ort aus"
 	},
 	"search_location": {
 		"message": "Ort suchen"
@@ -115,7 +115,7 @@
 		"message": "Aktualisiere alle:"
 	},
 	"minutes": {
-		"message": "$MINUTES$ minutes",
+		"message": "$MINUTES$ Minuten",
 		"placeholders": {
 			"minutes": {
 				"content": "$1",
@@ -154,7 +154,7 @@
 		"message": "Lizenz"
 	},
 	"license_body": {
-		"message": "Diese Extension steht unter MIT license, der Source-Code ist frei verfügbar unter <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons designed bei <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) und <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), verwendet nach Creative Commons Attribution-Share Alike 3.0 Unported Lizenz."
+		"message": "Diese Extension steht unter MIT license, der Source-Code ist frei verfügbar unter <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> Repository.<br /><br /> Icons designed bei <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) und <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), verwendet nach Creative Commons Attribution-Share Alike 3.0 Unported Lizenz."
 	},
 	"footer_info": {
 		"message": "<a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Social Media Monitoring Homepage</a>"
