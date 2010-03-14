@@ -39,10 +39,11 @@ is more than three times higher than the long-term rate, you'll get an alert."
    	"message": "License"
    },
     "license_body":{
-   	"message": "Social Media Monitor is a Google Chrome Extension that let you monitor Social Media (at the moment, only Twitter is 
-supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the 
-current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate 
-is more than three times higher than the long-term rate, you'll get an alert."
+   	"message": "This extension is released under the MIT license, and the code is
+available at <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br />
+<br />
+Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) and <a href=\"http://www.komodomedia.com/\">Komodo Media</a>
+(Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License."
    },
    "tooltip_tkeywords":{
    	"message": "TODO: tooltip_tkeywords"
