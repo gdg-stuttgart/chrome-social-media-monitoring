@@ -91,7 +91,6 @@ function processLongTermTweets(data, probeTag, resultNumber) {
 	probeTag.longTermTweetsPerMin = calculateTweetsPerMinute(timeString, resultNumber);
 	probeManager.setProbe(probeTag);
 	console.log("Finished Long Term procesing.");
-	clearTimeout(clearlongTermFinishedTimeOut);
 	localPort.postMessage({update:probeTag});
 }
 
