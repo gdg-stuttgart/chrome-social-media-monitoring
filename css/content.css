@@ -283,7 +283,7 @@ li {
 	display: inline;
 	text-align: right;
 	float: left;
-	margin-left: 30px;
+	margin-left: 6px;
 	border-bottom: 1px dotted #ccc;
 	overflow: hidden;
 	padding: 2px;
@@ -296,12 +296,13 @@ li {
 	display: inline;
 	text-align: right;
 	float: left;
-	margin-left: 139px;
+	margin-left: 163px;
 	border-bottom: 1px dotted #ccc;
 	overflow: hidden;
 	padding: 2px;
 	margin-top: 4px;
 	cursor: default;
+	
 }
 
 .ltTpM {
