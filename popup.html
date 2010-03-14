@@ -77,7 +77,7 @@ port.onMessage.addListener(function(msg) {
 		  var probeHTMLObj = $('#f_' + probeObj.id);
 
 		  if (probeHTMLObj){
-		  	$(probeHTMLObj).addClass('warn');
+		  	$(probeHTMLObj).addClass('marker');
 		  	$(probeHTMLObj).removeClass('loader');
 		  	$(' > span#btnRefresh',probeHTMLObj).addClass('idle');
 		  }
@@ -189,8 +189,6 @@ function openResults() {
 <script type="text/javascript">
 function init() {
 
-	chrome.extension.getBackgroundPage().resetAlerts();
-	
 	var probes = probeManager.loadProbes();
 
 
@@ -215,7 +213,8 @@ function init() {
 		}
 		addButtonListeners();
 	}
-
+	
+	chrome.extension.getBackgroundPage().resetAlerts();
 }
 
 function addButtonListeners(){
@@ -449,6 +448,13 @@ function addProbeHTML(probeObj){
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f_' + probeObj.id);
 		item.setAttribute('class','probe');
+
+		/*
+		 * mark probe if in marker array
+		 */
+		if (chrome.extension.getBackgroundPage().ifMarkerSet(probeObj.id)){
+			item.setAttribute('class','probe marker');
+		}
 
 		probesList.appendChild(item);
 		

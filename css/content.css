@@ -306,6 +306,10 @@ li {
 	background-color: #CC3333;
 }
 
+.marker{
+	background-color: #ff9999;
+}
+
 .selected {
 	background-color: #ffff99;
 }

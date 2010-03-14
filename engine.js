@@ -4,7 +4,7 @@ var show_options_page = true;
 var eventsCount = -1;
 var maxProbesLimit = 9;
 var alreadyAlerted = false;
-
+var markers = {}; // array of marked probes
 
 var settings = {
 	get pollInterval() {
@@ -158,9 +158,9 @@ function getProbesCount(onSuccess, onError) {
 		}
 	}
 	
-//	if (onSuccess){
-//		  onSuccess(2);
-//	}
+// if (onSuccess){
+// onSuccess(2);
+// }
 	
 }
 
@@ -207,12 +207,54 @@ function updateEventsCount(count) {
 			
 }
 
-function onNewEvent(){
-	eventsCount++;
-	updateEventsCount(eventsCount);
+function onNewEvent(probe){
+	
+	if(markers[probe.id]){
+		/*
+		 * refresh marker timestamp
+		 */
+		markers[probe.id] = new Date().getTime();
+		return false;
+	}
+	
+	/*
+	 * add activate marker
+	 */
+	markers[probe.id] = new Date().getTime();
+	        
+	updateEventsCount(countMarkers());
 }
 function resetAlerts(){
+	resetMarkers();
 	showNoEvents();
 	alreadyAlerted = false;
 }
+
+function resetMarkers() {
+	for (var j in markers) {
+		delete markers[j] 
+	}
+}
+
+function countMarkers(){
+	count = 0;
+	for (var j in markers) {
+		count++;
+	}
+	return count;
+}
+
+function ifMarkerSet(id){
+	try {
+		if(markers[id]){
+			delete markers[id]; 
+			return true;
+		}else{
+			return false;
+		}
+	} catch (e) {
+		return false;
+	}
+}
+
 
