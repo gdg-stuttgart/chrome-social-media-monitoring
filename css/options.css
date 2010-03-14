@@ -1,26 +1,26 @@
-body{
-	background-color:#ebeff9;
+body {
+	background-color: #ebeff9;
 	font-family: helvetica, arial, sans-serif;
-	font-size:13px;
+	font-size: 13px;
 	color: #000000;
 }
 
-#content{
-	background-color:#ffffff;
-	border-color:#b5c7de;
-	border-style:solid;
-	border-width:4px;
-	margin:40px auto 20px;
-	padding:12px;
-	width:600px;
+#content {
+	background-color: #ffffff;
+	border-color: #b5c7de;
+	border-style: solid;
+	border-width: 4px;
+	margin: 40px auto 20px;
+	padding: 12px;
+	width: 600px;
 	-webkit-border-radius: 10px;
 }
 
-#content h1{
-	color:#333333;
-	font-size:1.5em;
-	margin:0.7em 0 0;
-	text-align:center
+#content h1 {
+	color: #333333;
+	font-size: 1.5em;
+	margin: 0.7em 0 0;
+	text-align: center
 }
 
 #header {
@@ -29,8 +29,8 @@ body{
 	padding-bottom: 15px;
 	margin: 10px;
 	background: url("../img/icon_48x48.png") 80px 2px no-repeat;
-    background-position: 5px 5px 5px 5px;
-	text-align:center
+	background-position: 5px 5px 5px 5px;
+	text-align: center
 }
 
 #header h1 {
@@ -42,7 +42,7 @@ body{
 	padding-left: 55px;
 	padding-top: 20px;
 }
- 
+
 .section-header {
 	background: #ebeff9;
 	border-top: 1px solid #b5c7de;
@@ -62,35 +62,35 @@ body{
 	margin-left: 2px;
 }
 
-.option_row{
-	clear:left;
-	padding:2.5em 1em 0
+.option_row {
+	clear: left;
+	padding: 2.5em 1em 0
 }
 
-.option_name{
-	float:left;
-	font-weight:bold;
-	margin-top:3px;
-	width:13em
+.option_name {
+	float: left;
+	font-weight: bold;
+	margin-top: 3px;
+	width: 13em
 }
 
-.option_picker{
-	float:left
+.option_picker {
+	float: left
 }
 
-.buttons{
-	clear:left;
-	padding:2em 1em 0.7em
+.buttons {
+	clear: left;
+	padding: 2em 1em 0.7em
 }
 
 #save_status {
-	display:none;
+	display: none;
 	background-color: #ffff99;
 }
 
-.footr{
-	text-align:center;
-	argin-top:0.4em
+.footr {
+	text-align: center;
+	argin-top: 0.4em
 }
 
 .hd {
@@ -103,4 +103,16 @@ body{
 	position: relative;
 	background-color: rgb(229, 227, 223);
 	margin: 5px;
+}
+
+#status {
+	background-color: #ffff99;
+}
+
+.success {
+	background-color: #99ff99;
+}
+
+.fail {
+	background-color: #ff9999;
 }

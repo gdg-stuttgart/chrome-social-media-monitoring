@@ -15,6 +15,7 @@
 
 <script type="text/javascript"> 
 var bkg = chrome.extension.getBackgroundPage();
+var map;
 
 //Saves options to localStorage.
 function save_options() {
@@ -61,12 +62,45 @@ function playSound(){
 	    pingSound.play();
 	}
 }
+
+function success(position) {
+	  var s = document.querySelector('#status');
+	  
+	  if (s.className == 'success') {
+	    // not sure why we're hitting this twice in FF, I think it's to do with a cached result coming back    
+	    return;
+	  }
+	  
+	  s.innerHTML = "found you!";
+	  s.className = 'success';
+	  
+	  map.panTo(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+
+
+}
+
+function error(msg) {
+	  var s = document.querySelector('#status');
+	  s.innerHTML = typeof msg == 'string' ? msg : "failed";
+	  s.className = 'fail';
+	  
+	  // console.log(arguments);
+}
+
 /*
  * TODO: populate options interface 
  */
 //Restores select box state to saved value from localStorage.
  $(function() {
 
+	 $('#find_me').click(function() {
+		 if (navigator.geolocation) {
+			  navigator.geolocation.getCurrentPosition(success, error);
+			} else {
+			  error('not supported');
+			}
+	});
+ 	 
 	 $('#refresh-interval').val(bkg.settings.pollInterval / 60000);
 	 $('#sound-alert').val(bkg.settings.soundAlert);
 
@@ -77,11 +111,11 @@ function playSound(){
 	 if(bkg.settings.latitude == undefined || bkg.settings.latitude == 'undefined'){
 		 $("#default_location_off").attr("checked", true);
 		 $("div#geo_options").addClass('hd');
-		 initMapSearch();
+		 map = initMapSearch();
 	 }else{
 		 $("#default_location_on").attr("checked", true);
 		 $("div#geo_options").removeClass('hd');
-		 initMapSearch(bkg.settings.latitude, bkg.settings.longitude,function(){
+		 map = initMapSearch(bkg.settings.latitude, bkg.settings.longitude,function(){
 			 markDirty()
 		 });
 	 }
@@ -145,6 +179,8 @@ function searchAddress(adress){
 			
 			<span id="lat"></span> 
 			<span id="lng"></span>
+			<button id="find_me">find me!</button>
+			<span id="status" class="hd">checking...</span>
 			
 			</div>
          
