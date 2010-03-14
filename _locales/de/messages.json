@@ -29,10 +29,10 @@
 	   "tooltip_tkeywords": {
       "message": "Stichworte"
    },  
-   "tooltip_lttpm":{
+   "tooltip_cTpM":{
    	"message": "Kurzzeit Tweets pro Minute"
    },
-   "tooltip_cttpm":{
+   "tooltip_ltTpM":{
    	"message": "Langzeit Tweets per Minute"
    },  
 	"popup_searchresults": {

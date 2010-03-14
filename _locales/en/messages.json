@@ -29,11 +29,11 @@
 	   "tooltip_tkeywords": {
       "message": "Keywords"
    },  
-   "tooltip_lttpm":{
+   "tooltip_cTpM":{
    	"message": "current number of Tweets per Minute"
    },
-   "tooltip_cttpm":{
-   	"message": "long-term Tweets per Minute"
+   "tooltip_ltTpM":{
+   	"message": "long-term number of Tweets per Minute"
    },  
 	"popup_searchresults": {
 		"message": "Search results in"

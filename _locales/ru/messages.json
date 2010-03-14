@@ -32,10 +32,10 @@
 	"tooltip_tkeywords": {
     "message": "Ключевые слова"
    },  
-   "tooltip_lttpm":{
+   "tooltip_cTpM":{
    	"message": "текущее число Твитов в Минуту"
    },
-   "tooltip_cttpm":{
+   "tooltip_ltTpM":{
    	"message": "долгосрочное число Твитов в Минуту"
    },  
 	"popup_searchresults": {
