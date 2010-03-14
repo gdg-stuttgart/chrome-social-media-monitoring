@@ -8,8 +8,35 @@
    "default_title": {
       "message": "Social Media Monitoring"
    },
-   "close": {
+   "popup_refresh": {
+      "message": "Refresh"
+   },
+   "popup_options": {
+      "message": "Options"
+   },
+   "popup_close": {
       "message": "Close"
+   },
+   "popup_keywords": {
+      "message": "Keywords"
+   },
+   
+ "popup_searchresults":{
+   	"message": "Search results in"
+   },
+ "searchresults_currentwindow":{
+   	"message": "the current window"
+   },
+  "searchresults_newwindow":{
+   	"message": "a new window"
+   },     
+   
+   "button_show":{
+   	"message": "Show"
+   }, 
+   
+   "popup_goback": {
+      "message": "Go back to the list"
    },
    "loading": {
       "message": "Give it a second. It's going to space!"
@@ -86,6 +113,9 @@ is more than three times higher than the long-term rate, you'll get an alert."
             }
       }
    },
+    "button_play":{
+   	"message": "Play"
+   }, 
    "button_save":{
    	"message": "Save"
    },
