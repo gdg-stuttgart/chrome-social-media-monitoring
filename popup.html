@@ -314,16 +314,19 @@ function addButtonListeners(){
 			$("#enable_location").css('display','inline');
 			$("#enable_location").html('set');
 			$("#disable_location").css('display','inline');
+			$("#location").val(currentProbe.locationAddress);
 
 		}else{
 			$("#enable_location").html('enable');
 			$("#enable_location").css('display','inline');
 			$("#disable_location").css('display','none');
+			$("#location").val('');
 		}
 		
 		if (currentProbe.latitude != undefined && currentProbe.longitude != undefined)
-			initMapSearch(currentProbe.latitude, currentProbe.longitude, function(){
-				 onLocationChanged();
+			initMapSearch(currentProbe.latitude, currentProbe.longitude, function(adress){
+				console.log('adress:' + adress);
+				 onLocationChanged(adress);
 			 });
 		else if(currentLocation !== undefined) {
 			minitMapSearch(currentLocation.latitude, currentLocation.longitude);
@@ -334,13 +337,19 @@ function addButtonListeners(){
 			 */
 			if (chrome.extension.getBackgroundPage().settings.latitude != undefined && chrome.extension.getBackgroundPage().settings.latitude != 'undefined'){
 				console.log(chrome.extension.getBackgroundPage().settings.latitude);
-				initMapSearch(chrome.extension.getBackgroundPage().settings.latitude,chrome.extension.getBackgroundPage().settings.longitude);
+				initMapSearch(chrome.extension.getBackgroundPage().settings.latitude,chrome.extension.getBackgroundPage().settings.longitude, function(adress){
+					console.log('adress:' + adress);
+					onLocationChanged(adress);
+				 });
 			}else{
-				initMapSearch(37.4328, -122.077); //hello google ;)
+				initMapSearch(37.4328, -122.077, function(adress){
+					console.log('adress:' + adress);
+					onLocationChanged(adress);
+				 }); //hello google ;)
 			}
 		}
 
-		$("#location").val('');
+		
 		$("#distance").val(currentProbe.radius);
 		
 		$("div#options").slideDown("fast");
@@ -404,7 +413,7 @@ function addButtonListeners(){
 		currentProbe.latitude = $("#lat").html();
 		currentProbe.longitude  = $("#lng").html();
 		currentProbe.radius  = $("#distance").val();
-		
+		currentProbe.locationAddress = $("#location").val();
 		
 		probeManager.setProbe(currentProbe);
 
@@ -434,7 +443,7 @@ function addButtonListeners(){
 		currentProbe.latitude = undefined;
 		currentProbe.longitude  = undefined;
 		currentProbe.radius  = undefined;
-
+		currentProbe.locationAddress = undefined;
 		probeManager.setProbe(currentProbe);
 
 		//$(currentProbeDiv).addClass('loader');
@@ -490,8 +499,9 @@ function addButtonListeners(){
     
 }
 
-function onLocationChanged(){
-	console.log('onLocationChanged...');
+function onLocationChanged(adress){
+	console.log('onLocationChanged...' + adress);
+	$("#location").val(adress);
 }
 
 function addProbeHTML(probeObj){
