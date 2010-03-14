@@ -25,7 +25,12 @@ var currentLocation = undefined;
 var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
-port.postMessage({requestGeolocation:'true'});
+
+/*
+ * XXX: comented because of crash on windows 7 with chrome 5.0.342.3
+ */
+//port.postMessage({requestGeolocation:'true'});
+
 port.onMessage.addListener(function(msg) {
 	  if (msg.update) {
 		  probeObj = msg.update;
