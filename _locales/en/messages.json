@@ -26,6 +26,15 @@
 	"popup_ltTpM": {
 		"message": "ltTpM"
 	},
+	   "tooltip_tkeywords": {
+      "message": "Keywords"
+   },  
+   "tooltip_lttpm":{
+   	"message": "current number of Tweets per Minute"
+   },
+   "tooltip_cttpm":{
+   	"message": "long-term Tweets per Minute"
+   },  
 	"popup_searchresults": {
 		"message": "Search results in"
 	},
