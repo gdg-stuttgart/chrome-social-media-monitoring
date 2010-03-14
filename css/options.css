@@ -1,7 +1,7 @@
 body {
 	background-color: #ebeff9;
 	font-family: helvetica, arial, sans-serif;
-	font-size: 13px;
+	font-size: 0.8em;
 	color: #000000;
 }
 
@@ -20,7 +20,7 @@ body {
 	color: #333333;
 	font-size: 1.5em;
 	margin: 0.7em 0 0;
-	text-align: center
+	text-align: center;
 }
 
 #header {
@@ -30,7 +30,7 @@ body {
 	margin: 10px;
 	background: url("../img/icon_48x48.png") 80px 2px no-repeat;
 	background-position: 5px 5px 5px 5px;
-	text-align: center
+	text-align: center;
 }
 
 #header h1 {

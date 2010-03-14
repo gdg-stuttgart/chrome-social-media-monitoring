@@ -3,7 +3,7 @@ content.css
 */
 body {
 	font-family: helvetica, arial, sans-serif;
-	font-size: 80%;
+	font-size: 0.8em;
 	margin: 10px;
 	color: #000000;
 	overflow: hidden;
@@ -24,30 +24,27 @@ body {
 }
 
 #header {
-	padding: 5px;
+	height: 40px;
 	border-bottom: solid 1px #eee;
-	padding-left: 10px;
-	padding-bottom: 15px;
-	margin: 10px;
+	pdding-top: 5px;
+	pdding-left: 5px;
 	background: url("../img/icon_24x24.png") 0px 5px no-repeat;
-	background-position: 0px 5px;
+	background-position: 1em 7px;
 }
 
 #header h1 {
-	margin: 0px;
-	font-size: 120%;
+	position: absolute;
+	font-size: 1.2em;
 	display: inline;
-	padding-bottom: 15px;
-	padding-left: 25px;
-	padding-top: 1px;
+	padding-left: 48px;
+	height: 40px;
 }
 
 #config {
 	width: 380px;
-	padding-left: 5px;
-	padding-right: 5px;
-	overflow: auto;
-	margin-top: 15px;
+	padding-left: 0.5em;
+	overflow-x: auto;
+	margin-top: 0px;
 }
 
 .section-header {
@@ -70,12 +67,13 @@ body {
 }
 
 #footr {
+	width: 395px;
 	position: absolute;
 	border-top: solid 1px #eee;
 	margin-top: 4px;
 	bottom: 0px;
-	left: 5px;
 	background-color: #ffffff;
+	position: absolute;
 }
 
 #probes {
@@ -84,14 +82,20 @@ body {
 }
 
 ol#probes {
-    margin:0px;
-    padding:0px;	
+	margin: 0px;
+	padding: 0px;
 }
 
 li {
-    margin:1px;;
-    padding:1px;
-    line-height:15px;
+	margin: 1px;;
+	padding: 1px;
+	line-height: 15px;
+}
+
+.title {
+	display: block;
+	height: 28px;
+	padding: 2px;
 }
 
 .probe {
@@ -117,7 +121,7 @@ li {
 	vertical-align: middle;
 	padding: 3px;
 	margin-top: 2px;
-	cursor: pointer;
+	cursor: default;
 }
 
 .hd {
@@ -222,6 +226,7 @@ li {
 	overflow: hidden;
 	padding: 2px;
 	margin-top: 4px;
+	cursor: default;
 }
 
 .avgDay {
@@ -234,6 +239,46 @@ li {
 	overflow: hidden;
 	padding: 2px;
 	margin-top: 4px;
+	cursor: default;
+}
+
+.tKeywords {
+	width: 60px;
+	display: inline;
+	text-align: right;
+	float: left;
+	margin-left: 30px;
+	border-bottom: 1px dotted #ccc;
+	overflow: hidden;
+	padding: 2px;
+	margin-top: 4px;
+	cursor: default;
+}
+
+.cTpM {
+	width: 30px;
+	display: inline;
+	text-align: right;
+	float: left;
+	margin-left: 139px;
+	border-bottom: 1px dotted #ccc;
+	overflow: hidden;
+	padding: 2px;
+	margin-top: 4px;
+	cursor: default;
+}
+
+.ltTpM {
+	width: 30px;
+	display: inline;
+	text-align: right;
+	float: left;
+	margin-left: 5px;
+	border-bottom: 1px dotted #ccc;
+	overflow: hidden;
+	padding: 2px;
+	margin-top: 4px;
+	cursor: default;
 }
 
 #template {
@@ -242,7 +287,8 @@ li {
 
 .option_row {
 	clear: left;
-	padding: 2.5em 1em 0
+	padding-bottom: 2.5em;
+	padding-left: 1em;
 }
 
 .option_name {
@@ -266,7 +312,7 @@ li {
 
 .disabled {
 	opacity: 0.4;
-	filter: alpha(opacity =         40);
+	filter: alpha(opacity =                   40);
 }
 
 .cls {
@@ -293,7 +339,7 @@ li {
 	background-image: url('../img/loader_bar.gif');
 	background-repeat: repeat;
 	opacity: 0.4;
-	filter: alpha(opacity =           40);
+	filter: alpha(opacity =                     40);
 }
 
 #map_canvas {
