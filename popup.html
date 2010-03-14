@@ -29,8 +29,9 @@ var port = chrome.extension.connect({name: "social-media-monitoring"});
 /*
  * i18n
  */
- var strSearch = chrome.i18n.getMessage('search_location');
- 
+var strSearch = chrome.i18n.getMessage('search_location');
+var strLocationSet = chrome.i18n.getMessage('button_set');
+var strLocationEnable = chrome.i18n.getMessage('button_enable');
 
 /*
  * TODO:  Automated location detection turned off for now, because of:
@@ -222,8 +223,8 @@ function openResults() {
 
 <span id="lat"></span> 
 <span id="lng"></span>
-<button type="button" id="enable_location"><script type="text/javascript">_writeMessage('popup_enable');</script></button>
-<button type="button" id="disable_location"><script type="text/javascript">_writeMessage('popup_disable');</script></button>
+<button type="button" id="enable_location"><script type="text/javascript">_writeMessage('button_enable');</script></button>
+<button type="button" id="disable_location"><script type="text/javascript">_writeMessage('button_disable');</script></button>
 <span id="save_status"><script type="text/javascript">_writeMessage('status_saved');</script></span>
 
 </div>
@@ -329,12 +330,13 @@ function addButtonListeners(){
 		
 		if(currentProbe.latitude != undefined){
 			$("#enable_location").css('display','inline');
-			$("#enable_location").html('set');
+			$("#enable_location").html(strLocationSet);
+			
 			$("#disable_location").css('display','inline');
 			$("#location").val(currentProbe.locationAddress);
 
 		}else{
-			$("#enable_location").html('enable');
+			$("#enable_location").html(strLocationEnable);
 			$("#enable_location").css('display','inline');
 			$("#disable_location").css('display','none');
 			$('#location').val(strSearch);
@@ -699,7 +701,9 @@ function back(){
 
 
 <div id="header">
+<!-- 
 	<h1><script type="text/javascript">_writeMessage('default_title');</script></h1>
+-->
 	<div style="position:absolute; top:11px; right: 15px">
 		<span class="link" onclick="refreshAll()"><script type="text/javascript">_writeMessage('popup_refresh');</script></span> | <span class="link" onclick="goToUrl('options.html');"><script type="text/javascript">_writeMessage('popup_options');</script></span> | <span class="link" onclick="window.close()"><script type="text/javascript">_writeMessage('popup_close');</script></span>
 	</div>

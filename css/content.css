@@ -28,7 +28,10 @@ body {
 	border-bottom: solid 1px #eee;
 	pdding-top: 5px;
 	pdding-left: 5px;
+	/*
 	background: url("../img/icon_24x24.png") 0px 5px no-repeat;
+	*/
+	background: url("../img/logo_popup.png") 0px 5px no-repeat;
 	background-position: 1em 7px;
 }
 
@@ -332,7 +335,8 @@ li {
 	float: left;
 	font-weight: bold;
 	margin-top: 3px;
-	width: 13em
+	width: 13em;
+	white-space: nowrap;
 }
 
 .option_picker {

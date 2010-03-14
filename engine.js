@@ -80,9 +80,9 @@ function pluginInit() {
 
 function populateExampleData(){
 	/*
-	 * TODO: set example values from final release
+	 * set example values probes
 	 */
-	localStorage["probes"] = '{"843B7DA67FF1445287321462ABEA7375":{"id":"843B7DA67FF1445287321462ABEA7375","query":"gtugna","threshold":0,"shortTermTweetsPerMin":0.2,"longTermTweetsPerMin":0,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="},"671F7B1266E94CA296B2313584D2D503":{"id":"671F7B1266E94CA296B2313584D2D503","query":"gtug","threshold":0,"shortTermTweetsPerMin":0.2,"longTermTweetsPerMin":0,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="},"A6ED7BB95CCA425BB486565486BCE7B7":{"id":"A6ED7BB95CCA425BB486565486BCE7B7","query":"nexusone","threshold":0,"shortTermTweetsPerMin":0.2,"longTermTweetsPerMin":0.30442371340378577,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q="}}';
+	localStorage["probes"] = '{"DD24EC051A604188B611C8E92CE9B679":{"id":"DD24EC051A604188B611C8E92CE9B679","query":"earthquake","threshold":0,"shortTermTweetsPerMin":5.6000000000000005,"longTermTweetsPerMin":4.362914182350616,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q=","state":1},"CFBA803F393348F183575CFE2E1A7F2A":{"id":"CFBA803F393348F183575CFE2E1A7F2A","query":"gtugbattle","threshold":0,"shortTermTweetsPerMin":0.015043235198161718,"longTermTweetsPerMin":0.0021098137151584176,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q=","state":1,"latitude":"51.16569","longitude":"10.45153","radius":"200","locationAddress":"Germany"},"5700AD36547C44FB8E29BFC5E08DCEDB":{"id":"5700AD36547C44FB8E29BFC5E08DCEDB","query":"nexusone","threshold":0,"shortTermTweetsPerMin":0.002115316431176494,"longTermTweetsPerMin":0.003802670455748913,"serviceId":"twitter","searchQuery":"http://search.twitter.com/search.json?&q=","state":1,"latitude":"37.38605","longitude":"-122.08385","radius":"80","locationAddress":"Mountain View"}}';
 }
 
 function refresh() {
