@@ -2,13 +2,17 @@
 <html>
 <head>
 <title>Social Media Monitoring Extension Options</title>
-<link rel="shortcut icon" HREF="img/icon_16.png"> 
+<link rel="shortcut icon" HREF="img/icon_16.png">
 <link rel="stylesheet" type="text/css" href="css/options.css">
 <style type="text/css">
-  @import url("http://www.google.com/uds/css/gsearch.css");
-  @import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
+@import url("http://www.google.com/uds/css/gsearch.css");
+
+@import
+	url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css")
+	;
 </style>
-<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAATfHumDbW3OmRByfquHd3SRTRERdeAiwZ9EeJWta3L_JZVS0bOBRQeZgr4K0xyVKzUdnnuFl8X9PX0w&sensor=false"></script>
+<script type="text/javascript"
+	src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAATfHumDbW3OmRByfquHd3SRTRERdeAiwZ9EeJWta3L_JZVS0bOBRQeZgr4K0xyVKzUdnnuFl8X9PX0w&sensor=false"></script>
 <script type="text/javascript" src="lib/geo_search.js"></script>
 
 <script type="text/javascript" src="lib/3rdparty/jquery-1.4.2.min.js"></script>
@@ -127,7 +131,11 @@ function error(msg) {
 	  * set  internatiolizaded values
 	  */
 
-	  $('#title').html(chrome.i18n.getMessage('options'));
+	  $('#title_description').html(chrome.i18n.getMessage('description_title'));
+	  $('#body_description').html(chrome.i18n.getMessage('description_body'));
+	  $('#title_options').html(chrome.i18n.getMessage('options_title'));
+	  $('#title_license').html(chrome.i18n.getMessage('license_title'));
+	  $('#body_license').html(chrome.i18n.getMessage('license_body'));
 
 	  $("input[name='defaut_location']").change(function(){
 		  console.log($("input[name='defaut_location']").val());
@@ -147,89 +155,117 @@ function searchAddress(adress){
 	showAddress(adress,function(){markDirty()});
 }
 </script>
-        
+
 </head>
 <body onload="_initOptionsPage();" onunload="GUnload();">
 
-    <div id="content">
-	
-	<div id="header"><h1>Social Media Monitoring Extension</h1></div>	
-	
-	<div id="title" class="section-header first">Options</div>
-	  
-        <div class="option_row">
-          <div class="option_name">Default geolocation:</div>
-          <div class="option_picker">
-        	<input type="radio" id="default_location_off" name="defaut_location" value="0" checked="checked"/><label for="default_location_off">anywhere</label><br/>
-        	<input type="radio" id="default_location_on" name="defaut_location" value="1"/><label for="default_location_on">define your location</label>
-         <div id="geo_options" class="hd">
+<div id="content">
 
-			<div id="geolocform">
-				<form action="javascript:void(0);" onsubmit="searchAddress(this.location.value); return false;"> 
-			   	  <input id="location" type="text" name="location" value="Search Location" onfocus="if(this.value=='Search Location'){this.value='';}">
-			   	  <select id="distance" name="distance"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="60">60</option><option value="70">70</option><option value="80">80</option><option value="90">90</option><option value="100">100</option><option value="200">200</option></select>
-			   	  <select id="unit" name="unit"><option value="km">kilometres</option>
-			   	  <!--  <option value="mi">miles</option>-->
-			   	  </select>
-			   	  <br>
-				</form>
-			</div>
-			   	
-			<div id="map_canvas"></div>
-			
-			<span id="lat"></span> 
-			<span id="lng"></span>
-			<button id="find_me">find me!</button>
-			<span id="status" class="hd">checking...</span>
-			
-			</div>
-         
-          </div>
-        </div>	  
-	  
-        <div class="option_row">
-          <div class="option_name">Update every:</div>
-          <div class="option_picker">
-            <select id="refresh-interval" name="refresh" onchange="markDirty()">
-                <option value="1">1 minutes</option>
-                <option value="5">5 minutes</option>
-                <option value="10">10 minutes</option>
-                <option value="15">15 minutes</option>
-                <option value="20">20 minutes</option>
-                <option value="25">25 minutes</option>
-                <option value="30" selected="selected">30 minutes</option>
-                <option value="60">60 minutes</option>
-            </select>
-          </div>
-        </div>
-        
-		<div class="option_row">
-          <div class="option_name">Sound alert:</div>
-          <div class="option_picker">
-            <select id="sound-alert"  onchange="markDirty();">
-              <option value="">None</option>
-              <option value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg">Alert 1</option>
-              <option value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg">Alert 2</option>
-            </select>
-          </div>
-		  <input type="button" value="Play" onclick="playSound();" />
-        </div>
+<div id="header">
+<h1>Social Media Monitoring Extension</h1>
+</div>
 
-        <div class="buttons">
-          <button id="save_button" onclick="saveOptions();">Save</button>
-		  <!-- TODO: implement Reset -->
-          <button id="reset_button" onclick="resetOptions();return false;">Reset</button>
-          <span id="save_status">Options saved</span>
-        </div>
-      
-	<div id="title" class="section-header first">License</div>
-	This extension is released under the MIT license, and the code is available at <a href="http://code.google.com/p/chrome-social-media-monitoring/">Google Code</a> repository.<br />
-	<br />
-	Icons created by <a href="http://www.icojoy.com/">Icojoy</a> (Stanislav Khodjaev) and <a href="http://www.komodomedia.com/">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License.	    
-    </div>
-    
-<!-- TODO: add extension link -->	
-<div class="footr"><a href="http://code.google.com/p/chrome-social-media-monitoring/">Social Media Monitoring Homepage</a></div>
+<div id="title_description" class="section-header first">Description</div>
+<div id="body_description">Social Media Monitor is a Google Chrome Extension that let you monitor Social Media (at the moment, only Twitter is 
+supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the 
+current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate 
+is more than three times higher than the long-term rate, you'll get an alert.</div>
+
+<div id="title_options" class="section-header first">Options</div>
+
+<div class="option_row">
+<div class="option_name">Default geolocation:</div>
+<div class="option_picker"><input type="radio"
+	id="default_location_off" name="defaut_location" value="0"
+	checked="checked" /><label for="default_location_off">anywhere</label><br />
+<input type="radio" id="default_location_on" name="defaut_location"
+	value="1" /><label for="default_location_on">define your
+location</label>
+<div id="geo_options" class="hd">
+
+<div id="geolocform">
+<form action="javascript:void(0);"
+	onsubmit="searchAddress(this.location.value); return false;"><input
+	id="location" type="text" name="location" value="Search Location"
+	onfocus="if(this.value=='Search Location'){this.value='';}"> <select
+	id="distance" name="distance">
+	<option value="10">10</option>
+	<option value="20">20</option>
+	<option value="30">30</option>
+	<option value="40">40</option>
+	<option value="50">50</option>
+	<option value="60">60</option>
+	<option value="70">70</option>
+	<option value="80">80</option>
+	<option value="90">90</option>
+	<option value="100">100</option>
+	<option value="200">200</option>
+</select> <select id="unit" name="unit">
+	<option value="km">kilometres</option>
+	<!--  <option value="mi">miles</option>-->
+</select> <br>
+</form>
+</div>
+
+<div id="map_canvas"></div>
+
+<span id="lat"></span> <span id="lng"></span>
+<button id="find_me">Find me!</button>
+<span id="status" class="hd">checking...</span></div>
+
+</div>
+</div>
+
+<div class="option_row">
+<div class="option_name">Update every:</div>
+<div class="option_picker"><select id="refresh-interval"
+	name="refresh" onchange="markDirty()">
+	<option value="1">1 minutes</option>
+	<option value="5">5 minutes</option>
+	<option value="10">10 minutes</option>
+	<option value="15">15 minutes</option>
+	<option value="20">20 minutes</option>
+	<option value="25">25 minutes</option>
+	<option value="30" selected="selected">30 minutes</option>
+	<option value="60">60 minutes</option>
+</select></div>
+</div>
+
+<div class="option_row">
+<div class="option_name">Sound alert:</div>
+<div class="option_picker"><select id="sound-alert"
+	onchange="markDirty();">
+	<option value="">None</option>
+	<option
+		value="http://chrome-social-media-monitoring.googlecode.com/files/sound01.ogg">Alert
+	1</option>
+	<option
+		value="http://chrome-social-media-monitoring.googlecode.com/files/sound02.ogg">Alert
+	2</option>
+</select></div>
+<input type="button" value="Play" onclick="playSound();" /></div>
+
+<div class="buttons">
+<button id="save_button" onclick="saveOptions();">Save</button>
+<!-- TODO: implement Reset -->
+<button id="reset_button" onclick="resetOptions();return false;">Reset</button>
+<span id="save_status">Options saved</span></div>
+
+<div id="title_license" class="section-header first">License</div>
+<div id="body_license">This extension is released under the MIT license, and the code is
+available at <a
+	href="http://code.google.com/p/chrome-social-media-monitoring/">Google Code</a> repository.<br />
+<br />
+Icons created by <a href="http://www.icojoy.com/">Icojoy</a> (Stanislav
+Khodjaev) and <a href="http://www.komodomedia.com/">Komodo Media</a>
+(Rogie King), used as per the Creative Commons Attribution-Share Alike
+3.0 Unported License.</div>
+</div>
+
+<!-- TODO: add extension link -->
+<div class="footr"><a
+	href="http://code.google.com/p/chrome-social-media-monitoring/">Social
+Media Monitoring Homepage</a></div>
 
 <script type="text/javascript"> 
 	//var customDomainsTextbox;

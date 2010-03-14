@@ -23,8 +23,26 @@
    "sorry_no_content": {
       "message": "Sorry, nothing to see here."
    },
-   "options":{
+   "description_title":{
+   	"message": "Description"
+   },
+   "description_body":{
+   	"message": "Social Media Monitor is a Google Chrome Extension that let you monitor Social Media (at the moment, only Twitter is 
+supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the 
+current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate 
+is more than three times higher than the long-term rate, you'll get an alert."
+   },
+   "options_title":{
    	"message": "Options"
+   },
+   "license_title":{
+   	"message": "License"
+   },
+    "license_body":{
+   	"message": "Social Media Monitor is a Google Chrome Extension that let you monitor Social Media (at the moment, only Twitter is 
+supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the 
+current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate 
+is more than three times higher than the long-term rate, you'll get an alert."
    },
    "tooltip_tkeywords":{
    	"message": "TODO: tooltip_tkeywords"
