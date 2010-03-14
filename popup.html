@@ -613,6 +613,9 @@ function save() {
 
 function refreshAll() {
 
+	$('.probe > span#btnRefresh').removeClass('idle');
+	$('.probe > span#btnRefresh').addClass('reloading');
+	
 	chrome.extension.getBackgroundPage().updateProbes(function(count) {
 		console.log('updateProbes.callback:' + count);
 	});
