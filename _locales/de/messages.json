@@ -39,10 +39,10 @@
 		"message": "Suchergebnisse anzeigen in"
 	},
 	"searchresults_currentwindow": {
-		"message": "Aktuellem Fenster"
+		"message": "aktuellem Fenster"
 	},
 	"searchresults_newwindow": {
-		"message": "Neuem Fenster"
+		"message": "neuem Fenster"
 	},
 	"button_show": {
 		"message": "Anzeigen"
