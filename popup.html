@@ -22,7 +22,7 @@ var currentProbeDiv;
 var currentSelectedService = "twitter";
 var currentLocation = undefined;
 
-var map, probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh, btnSave;
+var map, probes, template, serviceIcon, inputTag, spanTag, spanLocation, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh, btnSave;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 
@@ -65,6 +65,7 @@ port.onMessage.addListener(function(msg) {
 				 
 				 if(probeObj.latitude == undefined){
 					 $(' > span#btnOptions',probeHTMLObj).addClass('disabled');
+					 $(' > span#probe_geo',probeHTMLObj).addClass('hd');
 				 }
 				 
 				 $('#show-button').attr("disabled", "");
@@ -224,6 +225,8 @@ function init() {
 	template = xpath('//ol[@id="template"]/li', document);
 	serviceIcon  = xpath('//span[@id="iconService"]', template);
 	spanTag  = xpath('//span[@id="tag"]', template);
+	spanLocation  = xpath('//span[@id="probe_geo"]', template);
+	
 	inputTag = xpath('//input[@id="tag_input"]', template);
 	inputAvgWeek = xpath('//span[@class="avgWeek"]', template);
 	inputAvgDay	 = xpath('//span[@class="avgDay"]', template);
@@ -417,6 +420,9 @@ function addButtonListeners(){
 		
 		probeManager.setProbe(currentProbe);
 
+		$(' > span#probe_geo',currentProbeDiv).html($("#location").val());
+		$(' > span#probe_geo',currentProbeDiv).removeClass('hd');
+		
 		$(' > span#btnOptions',currentProbeDiv).removeClass('disabled');
 		//$(currentProbeDiv).addClass('loader');
 		$(' > span#btnRefresh',currentProbeDiv).addClass('reloading');
@@ -448,7 +454,10 @@ function addButtonListeners(){
 
 		//$(currentProbeDiv).addClass('loader');
 		$(' > span#btnRefresh',currentProbeDiv).addClass('reloading');
-		$(' > span#btnOptions',currentProbeDiv).addClass('disabled');		
+		$(' > span#btnOptions',currentProbeDiv).addClass('disabled');	
+		$(' > span#probe_geo',currentProbeDiv).html('');
+		$(' > span#probe_geo',currentProbeDiv).addClass('hd');
+				
 		$('#save_status').fadeIn('fast');
 		$('#save_status').fadeOut(3000);
 		$("div#options").css('display','none');
@@ -509,11 +518,14 @@ function addProbeHTML(probeObj){
 	if(probeObj){		
 
 		spanTag.innerHTML = probeObj.query;
-
+		
+		spanLocation.innerHTML = probeObj.locationAddress;
 
 		serviceIcon.setAttribute('class','service_' + probeObj.serviceId);
 		
-		spanTag.setAttribute('class','span_tag');			
+		spanTag.setAttribute('class','span_tag');
+		spanLocation.setAttribute('class','span_geo');
+			
 		inputTag.setAttribute('class','tag hd');
 		
 		inputTag.setAttribute('value',probeObj.query);
@@ -522,8 +534,10 @@ function addProbeHTML(probeObj){
 
 		if(probeObj.latitude == undefined){
 			btnOptions.setAttribute('class','disabled');
+			spanLocation.setAttribute('class','hd');
 		}else{
 			btnOptions.setAttribute('class','');
+			spanLocation.setAttribute('class','');
 		}
 		btnSave.setAttribute('class','hd');
 
@@ -547,6 +561,10 @@ function addProbeHTML(probeObj){
 		
 		spanTag.setAttribute('class','span_tag hd');
 		spanTag.innerHTML = '';		
+
+		spanLocation.setAttribute('class','hd');
+		spanLocation.innerHTML = '';		
+		
 		inputTag.setAttribute('class','tag');
 			
 		inputTag.setAttribute('value','');
@@ -679,6 +697,7 @@ function back(){
 <ol id="template" class="probe">
 	<li><span id="iconService"></span>
 	<span id="tag" class="span_tag hd"><!--  --></span>
+	<span id="probe_geo" class="span_geo hd"><!--  --></span>
 	<input type="text" id="tag_input" class="tag" maxlength="30">
 	<span class="avgWeek">0</span>
 	<span class="avgDay">0</span>
