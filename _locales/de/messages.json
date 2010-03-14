@@ -3,7 +3,7 @@
 		"message": "Social Media Monitoring"
 	},
 	"ext_description": {
-		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
+		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, und Geolocation in sozialen Netzwerken (momentan nur twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
 	},
 	"default_title": {
 		"message": "Social Media Monitoring"
@@ -82,7 +82,7 @@
 		"message": "Beschreibung"
 	},
 	"description_body": {
-		"message": "Social Media Monitor ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur Twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
+		"message": "Social Media Monitoring ermöglicht es ein bestimmtes Stichwort, wie z.B. earthquake, in sozialen Netzwerken (momentan nur Twitter), zu monitoren. Die Extension schlägt Alarm, wenn die Anzahl der Signale, des definierten Stichworts in den letzten Minuten signifikannt höher ist, als die in den Tagen zuvor."
 	},
 	"options_title": {
 		"message": "Optionen"
