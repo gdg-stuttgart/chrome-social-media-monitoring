@@ -46,6 +46,16 @@ var settings = {
 	set longitude(val) {
 		localStorage['longitude'] = val;
 	},
+
+	/*
+	 * default longitude
+	 */
+	get radius() {
+        return localStorage['radius'];
+	},
+	set radius(val) {
+		localStorage['radius'] = val;
+	},
 	
 	get isFirstRun(){
 		if(localStorage["version"] == null){
@@ -123,14 +133,6 @@ function refresh() {
   resetTimer();
   pluginInit();
 }
-
-function updateProbes(callback) {
-	if (callback && typeof(callback) === 'function')
-		getProbesCount(function(count) { callback(count); updateEventsCount(count); }, showNoEvents);
-	else
-		getProbesCount(updateEventsCount, showNoEvents);
-}
-
 
 function getProbesCount(onSuccess, onError) {
 

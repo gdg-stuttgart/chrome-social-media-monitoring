@@ -4,6 +4,13 @@
 <title>Social Media Monitoring Extension Options</title>
 <link rel="shortcut icon" HREF="img/icon_16.png"> 
 <link rel="stylesheet" type="text/css" href="css/options.css">
+<style type="text/css">
+  @import url("http://www.google.com/uds/css/gsearch.css");
+  @import url("http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css");
+</style>
+<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAATfHumDbW3OmRByfquHd3SRTRERdeAiwZ9EeJWta3L_JZVS0bOBRQeZgr4K0xyVKzUdnnuFl8X9PX0w&sensor=false"></script>
+<script type="text/javascript" src="lib/geo_search.js"></script>
+
 <script type="text/javascript" src="lib/3rdparty/jquery-1.4.2.min.js"></script>
 
 <script type="text/javascript"> 
@@ -15,7 +22,16 @@ function save_options() {
 	bkg.settings.timeout = 1000 * 15;
 
 	bkg.settings.soundAlert = $('#sound-alert').val();
-	
+
+	if($("#default_location_off").attr("checked")){
+		bkg.settings.latitude = undefined;
+		bkg.settings.longitude = undefined;
+		bkg.settings.radius  = undefined;
+	}else{
+		bkg.settings.latitude = $("#lat").html();
+		bkg.settings.longitude  = $("#lng").html();
+		bkg.settings.radius  = $("#distance").val();
+	}
 	
 	
 	refresh_extension();
@@ -54,20 +70,52 @@ function playSound(){
 	 $('#refresh-interval').val(bkg.settings.pollInterval / 60000);
 	 $('#sound-alert').val(bkg.settings.soundAlert);
 
+	 $("#lat").html(bkg.settings.latitude);
+	 $("#lng").html(bkg.settings.longitude);
+	 $("#distance").val(bkg.settings.radius);
+
+	 if(bkg.settings.latitude == undefined || bkg.settings.latitude == 'undefined'){
+		 $("#default_location_off").attr("checked", true);
+		 $("div#geo_options").addClass('hd');
+		 initMapSearch();
+	 }else{
+		 $("#default_location_on").attr("checked", true);
+		 $("div#geo_options").removeClass('hd');
+		 initMapSearch(bkg.settings.latitude, bkg.settings.longitude,function(){
+			 markDirty()
+		 });
+	 }
+	 
+
+	 
+		 
 	 /*
 	  * set  internatiolizaded values
 	  */
 
 	  $('#title').html(chrome.i18n.getMessage('options'));
+
+	  $("input[name='defaut_location']").change(function(){
+		  console.log($("input[name='defaut_location']").val());
+		  if ($("input[name='defaut_location']:checked").val() == '1'){
+			  $("div#geo_options").slideDown("fast");
+			  markDirty();
+		  }else{
+			  $("div#geo_options").slideUp("fast");
+			  markDirty();
+	     }
+	  });
 	  
 
 	 
  });
- 
+function searchAddress(adress){
+	showAddress(adress,function(){markDirty()});
+}
 </script>
         
 </head>
-<body onload="_initOptionsPage();">
+<body onload="_initOptionsPage();" onunload="GUnload();">
 
     <div id="content">
 	
@@ -75,14 +123,41 @@ function playSound(){
 	
 	<div id="title" class="section-header first">Options</div>
 	  
-      <form name="options_form" action="">
         <div class="option_row">
+          <div class="option_name">Default geolocation:</div>
+          <div class="option_picker">
+        	<input type="radio" id="default_location_off" name="defaut_location" value="0" checked="checked"/><label for="default_location_off">anywhere</label><br/>
+        	<input type="radio" id="default_location_on" name="defaut_location" value="1"/><label for="default_location_on">define your location</label>
+         <div id="geo_options" class="hd">
+
+			<div id="geolocform">
+				<form action="javascript:void(0);" onsubmit="searchAddress(this.location.value); return false;"> 
+			   	  <input id="location" type="text" name="location" value="Search Location" onfocus="if(this.value=='Search Location'){this.value='';}">
+			   	  <select id="distance" name="distance"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="60">60</option><option value="70">70</option><option value="80">80</option><option value="90">90</option><option value="100">100</option><option value="200">200</option></select>
+			   	  <select id="unit" name="unit"><option value="km">kilometres</option>
+			   	  <!--  <option value="mi">miles</option>-->
+			   	  </select>
+			   	  <br>
+				</form>
+			</div>
+			   	
+			<div id="map_canvas"></div>
+			
+			<span id="lat"></span> 
+			<span id="lng"></span>
+			
+			</div>
+         
+          </div>
+        </div>	  
+
+        <!--<div class="option_row">
           <div class="option_name">Default On Click Behavior:</div>
           <div class="option_picker">
         <input type="radio" id="default" name="defaut_click" value="1" checked="checked"/><label for="default">Always show popup</label><br/>
         <input type="radio" id="off" name="defaut_click" value="0"/><label for="off">Never show popup (Go straight to browser tabs when new search result(s) exist)</label>
           </div>
-        </div>	  
+        </div>-->	  
 			  
         <div class="option_row">
           <div class="option_name">Update every:</div>
@@ -118,7 +193,6 @@ function playSound(){
           <button id="reset_button" onclick="resetOptions();return false;">Reset</button>
           <span id="save_status">Options saved</span>
         </div>
-      </form>	
       
 	<div id="title" class="section-header first">License</div>
 	This extension is released under the MIT license, and the code is available at <a href="http://code.google.com/p/chrome-social-media-monitoring/">Google Code Repository</a>.<br />
@@ -141,6 +215,7 @@ function playSound(){
 		}else{
 			markClean();
 		}
+		
 	}
 
 	function saveOptions() {

@@ -92,3 +92,15 @@ body{
 	text-align:center;
 	argin-top:0.4em
 }
+
+.hd {
+	display: none;
+}
+
+#map_canvas {
+	width: 300px;
+	height: 300px;
+	position: relative;
+	background-color: rgb(229, 227, 223);
+	margin: 5px;
+}
