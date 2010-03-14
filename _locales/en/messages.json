@@ -25,5 +25,14 @@
    },
    "options":{
    	"message": "Options"
+   },
+   "tooltip_tkeywords":{
+   	"message": "TODO: tooltip_tkeywords"
+   },
+   "tooltip_lttpm":{
+   	"message": "TODO: tooltip_lttpm"
+   },
+   "tooltip_cttpm":{
+   	"message": "TODO: tooltip_cttpm"
    }
 }

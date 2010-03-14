@@ -7,6 +7,8 @@
 <script type="text/javascript" src="probe.js"></script>
 <script type="text/javascript" src="lib/3rdparty/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="lib/3rdparty/jquery.effects.core.min.js"></script>
+<script type="text/javascript" src="lib/3rdparty/jquery.tooltip.min.js"></script>
+
 <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAATfHumDbW3OmRByfquHd3SRTRERdeAiwZ9EeJWta3L_JZVS0bOBRQeZgr4K0xyVKzUdnnuFl8X9PX0w&sensor=false"></script>
 <script type="text/javascript" src="lib/geo_search.js"></script>
 
@@ -18,13 +20,13 @@ var probesList;
 var currentProbe;
 var currentProbeDiv;
 var currentSelectedService = "twitter";
-
 var currentLocation = undefined;
-
 
 var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
+
+
 
 /*
  * XXX: comented because of crash on windows 7 with chrome 5.0.342.3
@@ -122,6 +124,29 @@ $(document).ready(function() {
 		}  
 	});
 
+	/*
+	 * set tooltips
+	 */
+	$(".tKeywords").tooltip({
+		bodyHandler: function() {
+			return chrome.i18n.getMessage('tooltip_tkeywords');
+		},
+		showURL: false
+	});
+	$(".ltTpM").tooltip({
+		bodyHandler: function() {
+			return chrome.i18n.getMessage('tooltip_lttpm');
+		},
+		showURL: false
+	});
+
+	$(".cTpM").tooltip({
+		bodyHandler: function() {
+			return chrome.i18n.getMessage('tooltip_cttpm');
+		},
+		showURL: false
+	});
+	
 });
 
 function openResults() {
