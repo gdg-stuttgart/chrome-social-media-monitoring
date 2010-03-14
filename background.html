@@ -94,8 +94,9 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 	console.log('Starting loading current tweets per minute...');
 	$.getJSON(queryURL + '&rpp=100&page=1', function(data) {
 		if(data.results.length > 0) {
-			var tweetDate = new Date();
-			var fiveMinAgo = tweetDate.getTime() - (60000 * 5);
+			var now = new Date();
+			var fiveMinAgo = now.getTime() - (60000 * 5);
+			var tweetDate = new Date(data.results[0].created_at);
 			
 			var index = 0;
 			// TODO: Replace this with better algorithm then O(n), week could use a binary search like algorithm with O(log n)?
