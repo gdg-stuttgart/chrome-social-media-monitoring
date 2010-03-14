@@ -63,7 +63,7 @@ function loadLongTermTweetsPerMinute(queryURL, probeTag) {
 						}
 						else {
 							localPort.postMessage({update:probeTag});
-							console.log("Seems like your keyword hasen't been tweeted yet...");						
+							console.log("Seems like your keyword hasen't been tweeted yet!?");						
 						}
 					});
 				}
@@ -90,7 +90,7 @@ function processLongTermTweets(data, probeTag, resultNumber) {
 	var timeString = data.results[0].created_at;
 	probeTag.longTermTweetsPerMin = calculateTweetsPerMinute(timeString, resultNumber);
 	probeManager.setProbe(probeTag);
-	console.log("Finished Long Term procesing .....................");
+	console.log("Finished Long Term procesing.");
 	clearTimeout(clearlongTermFinishedTimeOut);
 	localPort.postMessage({update:probeTag});
 }
@@ -111,11 +111,11 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 				index++;
 
 				var diff = tweetDate - fiveMinAgo;
-				console.log(index + ' tweets already found...' +
+				console.log(index + ' tweets already found' +
 							'Tweet Date: ' + ts + 
 							' FiveMinAgo: ' + new Date(fiveMinAgo) + 
 							' Diff: ' + diff +
-							diff < 0 ? 'Termination condition full filled, stop counting...' : '');
+							diff < 0 ? 'Termination condition full filled, stop counting' : '');
 
 			}
 			var numberOfTweetsWithinOneMinute = index / 5;
@@ -144,18 +144,18 @@ function loadCurrentTweetsPerMinute(queryURL, probeTag) {
 		}
 		else if(data.results.length === 0){
 			probeTag.shortTermTweetsPerMin = 0;
-			console.log("Keyword hasen't been tweeted in the last five  minutes...");
+			console.log("Keyword hasen't been tweeted in the last five  minutes");
 		}
 		else {
 			probeTag.shortTermTweetsPerMin = '?';
-			console.log('Error in loading tweets from server...');
+			console.log('Error in loading tweets from server');
 		}
 	});	
 }
 
 function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
 	probeTag.shortTermTweetsPerMin = tweetsWithinOneMinute * CORRECTION_FACTOR;
-	console.log("Finished Current Term procesing .....................");
+	console.log("Finished Current Term processing");
 	if(tweetsWithinOneMinute > probeTag.longTermTweetsPerMin * ALERT_RATIO) {
 		/*
 		 * do something on new event
@@ -195,7 +195,7 @@ function locationDetected(position) {
 function locationError(msg) {
   var status = typeof msg == 'string' ? msg : "failed";
   console.log('Error getting HTML5 Geolocation:' + status);
-  console.log('Now trying to get IPLocation');
+  console.log('Now trying to get IPLocation...');
   var ipLocation = google.loader.ClientLocation;
   if(ipLocation !== null) {
 	  console.log('Success getting IP Location');
@@ -208,7 +208,7 @@ function locationError(msg) {
 
 function requestGeoLocation(){
 	if (navigator.geolocation) {
-		console.log('Requesting HTML5 Geolocation');
+		console.log('Requesting HTML5 Geolocation...');
 	  	navigator.geolocation.getCurrentPosition(locationDetected, locationError);
 	} else {
 		locationError('Geo location not supported! Geolocation is currently only supported in the dev channels Try start chrome with arguments: --enable geolocation');

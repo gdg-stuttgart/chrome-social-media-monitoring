@@ -33,8 +33,11 @@ var port = chrome.extension.connect({name: "social-media-monitoring"});
  
 
 /*
- * XXX: comented because of crash on windows 7 with chrome 5.0.342.3
- */
+ * TODO:  Automated location detection turned off for now, because of:
+ *      - crash on windows 7 with chrome 5.0.342.3 
+ *      - Linux (5.0.347.0 (40857) Ubuntu + Suse works) but just iploction because even with --enable-geolocation no html5 geolocation detection...
+ *      - Mac?
+*/
 //port.postMessage({requestGeolocation:'true'});
 
 port.onMessage.addListener(function(msg) {
