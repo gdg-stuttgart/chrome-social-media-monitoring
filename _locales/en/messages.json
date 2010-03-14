@@ -19,8 +19,13 @@
    },
    "popup_keywords": {
       "message": "Keywords"
+   },  
+   "popup_cTpM":{
+   	"message": "cTpM"
    },
-   
+   "popup_ltTpM":{
+   	"message": "ltTpM"
+   },  
  "popup_searchresults":{
    	"message": "Search results in"
    },
@@ -138,13 +143,4 @@ Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodja
    "footer_info":{
    	"message": "<a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Social Media Monitoring Homepage</a>"
    },
-   "tooltip_tkeywords":{
-   	"message": "TODO: tooltip_tkeywords"
-   },
-   "tooltip_lttpm":{
-   	"message": "TODO: tooltip_lttpm"
-   },
-   "tooltip_cttpm":{
-   	"message": "TODO: tooltip_cttpm"
-   }
 }
