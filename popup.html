@@ -16,14 +16,13 @@
 
 <script type="text/javascript"><!--
 var probeManager = chrome.extension.getBackgroundPage().getProbeManager();
-
 var probesList;
 var currentProbe;
 var currentProbeDiv;
 var currentSelectedService = "twitter";
 var currentLocation = undefined;
 
-var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh, btnSave;
+var map, probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh, btnSave;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 
@@ -323,12 +322,22 @@ function addButtonListeners(){
 		}
 		
 		if (currentProbe.latitude != undefined && currentProbe.longitude != undefined)
-			initMapSearch(currentProbe.latitude, currentProbe.longitude);
+			initMapSearch(currentProbe.latitude, currentProbe.longitude, function(){
+				 onLocationChanged();
+			 });
 		else if(currentLocation !== undefined) {
-			initMapSearch(currentLocation.latitude, currentLocation.longitude);
+			minitMapSearch(currentLocation.latitude, currentLocation.longitude);
 		}
 		else {
-			initMapSearch(37.4328, -122.077); //hello google ;)
+			/*
+			 * preset with default location
+			 */
+			if (chrome.extension.getBackgroundPage().settings.latitude != undefined && chrome.extension.getBackgroundPage().settings.latitude != 'undefined'){
+				console.log(chrome.extension.getBackgroundPage().settings.latitude);
+				initMapSearch(chrome.extension.getBackgroundPage().settings.latitude,chrome.extension.getBackgroundPage().settings.longitude);
+			}else{
+				initMapSearch(37.4328, -122.077); //hello google ;)
+			}
 		}
 		
 		$("#distance").val(currentProbe.radius);
@@ -480,6 +489,9 @@ function addButtonListeners(){
     
 }
 
+function onLocationChanged(){
+	console.log('onLocationChanged...');
+}
 
 function addProbeHTML(probeObj){
 
