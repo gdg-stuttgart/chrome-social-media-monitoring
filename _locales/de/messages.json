@@ -154,7 +154,7 @@
 		"message": "Lizenz"
 	},
 	"license_body": {
-		"message": "Diese Extension steht unter MIT license, der Source-Code ist frei verfügbar unter <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) and <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License."
+		"message": "Diese Extension steht unter MIT license, der Source-Code ist frei verfügbar unter <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons designed bei <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) und <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), verwendet nach Creative Commons Attribution-Share Alike 3.0 Unported Lizenz."
 	},
 	"footer_info": {
 		"message": "<a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Social Media Monitoring Homepage</a>"
