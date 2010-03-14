@@ -59,6 +59,10 @@
 	"button_disable": {
 		"message": "Disable"
 	},
+	"button_set": {
+		"message": "Set"
+	},	
+	
 	"loading": {
 		"message": "Give it a second. It's going to space!"
 	},

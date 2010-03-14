@@ -59,6 +59,10 @@
 	"button_disable": {
 		"message": "Deaktivieren"
 	},
+	"button_set": {
+		"message": "Setzten"
+	},	
+	
 	"loading": {
 		"message": "Hab ein bißchen Geduld, es dauert etwas von hier bis zum Mars und zurück!"
 	},

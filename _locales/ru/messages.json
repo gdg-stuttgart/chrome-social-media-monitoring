@@ -17,6 +17,9 @@
 	"popup_close": {
 		"message": "Закрыть"
 	},
+	"button_set": {
+		"message": "Установить"
+	},		
 	"popup_keywords": {
 		"message": "Ключевые слова"
 	},
