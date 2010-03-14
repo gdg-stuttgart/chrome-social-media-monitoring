@@ -165,6 +165,22 @@ li {
 	display: none;
 }
 
+#btnSave{
+	background-image: url('../img/icon_save.png');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: left;
+	vertical-align: middle;
+	margin-top: 6px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+#btnSave.hd {
+	display: none;
+}
+
 #btnAdd {
 	background-image: url('../img/icon_add.png');
 	background-repeat: no-repeat;

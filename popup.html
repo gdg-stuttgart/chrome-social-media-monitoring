@@ -22,7 +22,7 @@ var currentProbeDiv;
 var currentSelectedService = "twitter";
 var currentLocation = undefined;
 
-var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh;
+var probes, template, serviceIcon, inputTag, spanTag, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh, btnSave;
 
 var port = chrome.extension.connect({name: "social-media-monitoring"});
 
@@ -55,7 +55,8 @@ port.onMessage.addListener(function(msg) {
 				 $(' > span.avgWeek',probeHTMLObj).html(probeObj.shortTermTweetsPerMin);
 				 $(' > span.avgDay',probeHTMLObj).html(probeObj.longTermTweetsPerMin);
 				 $(' > span#btnOptions',probeHTMLObj).removeClass('hd');
-
+				 $(' > span#btnSave',probeHTMLObj).addClass('hd');
+				 
 				 
 				 $(' > span#btnRefresh',probeHTMLObj).removeClass('hd');
 				 $(' > span#btnRefresh',probeHTMLObj).removeClass('reloading');
@@ -216,8 +217,6 @@ function init() {
 
 	var probes = probeManager.loadProbes();
 
-
-	console.log('TODO: add communication with background.html\n port.postMessage({probeTagLoad: tagProbe})');
 	/*
 	 * initialize template
 	 */
@@ -230,7 +229,8 @@ function init() {
 	inputAvgDay	 = xpath('//span[@class="avgDay"]', template);
 	btnOptions	 = xpath('//span[@id="btnOptions"]', template);
 	btnRefresh 	 = xpath('//span[@id="btnRefresh"]', template);
-
+	btnSave 	 = xpath('//span[@id="btnSave"]', template);
+	
 	if(probes){
 		$('#show-button').attr("disabled", "");
 		for (var i in probes) {
@@ -340,6 +340,16 @@ function addButtonListeners(){
 		port.postMessage({probeTagChanged: currentProbe});
 	});
 
+	$("span#btnSave").click(function() {
+
+		if (!$(this).is('.disable')){
+			save();
+		}
+		
+	});
+	
+	
+
 	$("span#iconService").click(function() {
 		/*
 		 * get selected probe id
@@ -439,10 +449,18 @@ function addButtonListeners(){
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
 			save();
         	return false;  
-        } else {  
+        } else {
             return true;  
         }  
-    });  
+    }).keyup(function (e) {
+        var parent = $(this).parent();
+    	if($(this).val()){
+    		 $("> span#btnSave",parent).removeClass("disabled");
+        }else{
+        	$(">span#btnSave",parent).addClass("disabled");
+        }
+
+   });
 	
     
 }
@@ -469,6 +487,8 @@ function addProbeHTML(probeObj){
 		}else{
 			btnOptions.setAttribute('class','');
 		}
+		btnSave.setAttribute('class','hd');
+
 		// copy node and update
 		item = template.cloneNode(true);	  
 		item.setAttribute('id','f_' + probeObj.id);
@@ -496,6 +516,7 @@ function addProbeHTML(probeObj){
 		inputAvgDay.innerHTML = '0';
 		btnOptions.setAttribute('class','hd');
 		btnRefresh.setAttribute('class','hd');
+		btnSave.setAttribute('class','disabled');
 				
 		// copy node and update
 		item = template.cloneNode(true);	  
@@ -619,8 +640,10 @@ function back(){
 	<input type="text" id="tag_input" class="tag" maxlength="30">
 	<span class="avgWeek">0</span>
 	<span class="avgDay">0</span>
-	<span id="btnRemove"></span>
+	<span id="btnSave"></span>
 	<span id="btnOptions"></span>
+	<span id="btnRemove"></span>
+	
 	<span id="btnRefresh" class="idle"></span>
 	</li>
 </ol>

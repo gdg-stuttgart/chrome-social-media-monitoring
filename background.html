@@ -151,13 +151,15 @@ function updateCurrentTweetsPerMinute(tweetsWithinOneMinute, probeTag) {
 
 	if(tweetsWithinOneMinute > probeTag.longTermTweetsPerMin * ALERT_RATIO) {
 		/*
-		 * 
+		 * do something on new event
 		 */
 			onNewEvent(probeTag);
 		 /*
-		  * sent message to popup.html
+		  * sent message to popup.html if popup.html is active
 		  */
-		localPort.postMessage({alert:probeTag});
+		  if(localPort){
+			localPort.postMessage({alert:probeTag});
+		  }
 		console.log('Alert >=' + tweetsWithinOneMinute + 'Tweets/Min');
 	}
 }
