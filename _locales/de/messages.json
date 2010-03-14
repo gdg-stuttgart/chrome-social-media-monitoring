@@ -1,0 +1,158 @@
+{
+	"ext_name": {
+		"message": "Social Media Monitoring"
+	},
+	"ext_description": {
+		"message": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags."
+	},
+	"default_title": {
+		"message": "Social Media Monitoring"
+	},
+	"popup_refresh": {
+		"message": "Refresh"
+	},
+	"popup_options": {
+		"message": "Options"
+	},
+	"popup_close": {
+		"message": "Close"
+	},
+	"popup_keywords": {
+		"message": "Keywords"
+	},
+	"popup_cTpM": {
+		"message": "cTpM"
+	},
+	"popup_ltTpM": {
+		"message": "ltTpM"
+	},
+	   "tooltip_tkeywords": {
+      "message": "Keywords"
+   },  
+   "tooltip_lttpm":{
+   	"message": "current number of Tweets per Minute"
+   },
+   "tooltip_cttpm":{
+   	"message": "long-term Tweets per Minute"
+   },  
+	"popup_searchresults": {
+		"message": "Search results in"
+	},
+	"searchresults_currentwindow": {
+		"message": "the current window"
+	},
+	"searchresults_newwindow": {
+		"message": "a new window"
+	},
+	"button_show": {
+		"message": "Show"
+	},
+	"button_addnew": {
+		"message": "add new"
+	},
+	"popup_goback": {
+		"message": "Go back to the list"
+	},
+	"button_enable": {
+		"message": "Enable"
+	},
+	"button_disable": {
+		"message": "Disable"
+	},
+	"loading": {
+		"message": "Give it a second. It's going to space!"
+	},
+	"locale": {
+		"message": "en"
+	},
+	"no_title": {
+		"message": "No Title"
+	},
+	"sorry_no_content": {
+		"message": "Sorry, nothing to see here."
+	},
+	"options_header_title": {
+		"message": "Social Media Monitoring Extension"
+	},
+	"description_title": {
+		"message": "Description"
+	},
+	"description_body": {
+		"message": "Social Media Monitor is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times higher than the long-term rate, you'll get an alert."
+	},
+	"options_title": {
+		"message": "Options"
+	},
+	"options_default_geolocation_title": {
+		"message": "Default Geolocation:"
+	},
+	"options_geolocation_anywhere": {
+		"message": "anywhere"
+	},
+	"options_geolocation_userdefined": {
+		"message": "define your location"
+	},
+	"search_location": {
+		"message": "Search Location"
+	},
+	"kilometres": {
+		"message": "kilometres"
+	},
+	"button_findme": {
+		"message": "Find me!"
+	},
+	"status_checking": {
+		"message": "Checking..."
+	},
+	"status_saved": {
+		"message": "Saved..."
+	},
+	"options_update_frequency_title": {
+		"message": "Update every:"
+	},
+	"minutes": {
+		"message": "$MINUTES$ minutes",
+		"placeholders": {
+			"minutes": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"options_sound_alert_title": {
+		"message": "Sound Alert:"
+	},
+	"options_sound_alert_none": {
+		"message": "None"
+	},
+	"options_sound_alert_value": {
+		"message": "Alert $VALUE$",
+		"placeholders": {
+			"value": {
+				"content": "$1",
+				"example": "1"
+			}
+		}
+	},
+	"button_play": {
+		"message": "Play"
+	},
+	"button_save": {
+		"message": "Save"
+	},
+	"button_reset": {
+		"message": "Reset"
+	},
+	"status_save": {
+		"message": "Options saved"
+	},
+	"license_title": {
+		"message": "License"
+	},
+	"license_body": {
+		"message": "This extension is released under the MIT license, and the code is available at <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) and <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License."
+	},
+	"footer_info": {
+		"message": "<a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Social Media Monitoring Homepage</a>"
+	}
+}
