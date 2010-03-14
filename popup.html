@@ -200,13 +200,13 @@ function openResults() {
 
 <div id="options">
 
-<a href="#" id="back" onclick="back();">Go back to the list</a>
+<a href="#" id="back" onclick="back();"><script type="text/javascript">_writeMessage('popup_goback');</script></a>
 
 <div id="geolocform">
 	<form action="javascript:void(0);" onsubmit="showAddress(this.location.value); return false;"> 
    	  <input id="location" type="text" name="location" value="strSearch" onfocus="if(this.value==strSearch){this.value='';}">
    	  <select id="distance" name="distance"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option><option value="50">50</option><option value="60">60</option><option value="70">70</option><option value="80">80</option><option value="90">90</option><option value="100">100</option><option value="200">200</option></select>
-   	  <select id="unit" name="unit"><option value="km">kilometres</option>
+   	  <select id="unit" name="unit"><option value="km"><script type="text/javascript">_writeMessage('kilometres');</script></option>
    	  <!--  <option value="mi">miles</option>-->
    	  </select>
    	  <br>
@@ -217,9 +217,9 @@ function openResults() {
 
 <span id="lat"></span> 
 <span id="lng"></span>
-<button type="button" id="enable_location">Enable</button>
-<button type="button" id="disable_location">Disable</button>
-<span id="save_status">Saved</span>
+<button type="button" id="enable_location"><script type="text/javascript">_writeMessage('popup_enable');</script></button>
+<button type="button" id="disable_location"><script type="text/javascript">_writeMessage('popup_disable');</script></button>
+<span id="save_status"><script type="text/javascript">_writeMessage('status_saved');</script></span>
 
 </div>
 <script type="text/javascript">
@@ -694,9 +694,9 @@ function back(){
 
 
 <div id="header">
-	<h1>Social Media Monitoring</h1>
+	<h1><script type="text/javascript">_writeMessage('default_title');</script></h1>
 	<div style="position:absolute; top:11px; right: 15px">
-		<span class="link" onclick="refreshAll()">Refresh</span> | <span class="link" onclick="goToUrl('options.html');">Options</span> | <span class="link" onclick="window.close()">Close</span>
+		<span class="link" onclick="refreshAll()"><script type="text/javascript">_writeMessage('popup_refresh');</script></span> | <span class="link" onclick="goToUrl('options.html');"><script type="text/javascript">_writeMessage('popup_options');</script></span> | <span class="link" onclick="window.close()"><script type="text/javascript">_writeMessage('popup_close');</script></span>
 	</div>
 </div>
 
@@ -719,25 +719,25 @@ function back(){
 </ol>
 <ol id="probes">
 	<li class="title">
-	<span class="tKeywords">Keywords</span>
-	<span class="cTpM">cTpM</span>
-	<span class="ltTpM">ltTpM</span>
+	<span class="tKeywords"><script type="text/javascript">_writeMessage('popup_keywords');</script></span>
+	<span class="cTpM"><script type="text/javascript">_writeMessage('popup_cTpM');</script></span>
+	<span class="ltTpM"><script type="text/javascript">_writeMessage('popup_ltTpM');</script></span>
 	</li>
 </ol>
 </div>
 <span class="cls"><!--  --></span>
 
 <div id="footr">
-<span id="btnAdd"> add new</span>
+<span id="btnAdd"> <script type="text/javascript">_writeMessage('button_addnew');</script></span>
 
 <div class="option_row" style="padding-top:5px;">
-	<div class="option_name">Search results in</div>
+	<div class="option_name"><script type="text/javascript">_writeMessage('popup_searchresults');</script></div>
 	<div class="option_picker">
 	<select id="open_results">
-		<option value="open_in_current_window">the current window</option>
-		<option value="open_in_new_window">a new window</option>
+		<option value="open_in_current_window"><script type="text/javascript">_writeMessage('searchresults_currentwindow');</script></option>
+		<option value="open_in_new_window"><script type="text/javascript">_writeMessage('searchresults_newwindow');</script></option>
 	</select>
-	<input id="show-button" type="button" value="Show" onclick="openResults();" disabled="disabled" />
+	<button id="show-button" onclick="openResults();" disabled="disabled"><script type="text/javascript">_writeMessage('button_show');</script></button>
 	</div>
 </div>
 </div>

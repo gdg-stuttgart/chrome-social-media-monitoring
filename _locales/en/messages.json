@@ -26,7 +26,7 @@
    "popup_ltTpM":{
    	"message": "ltTpM"
    },  
- "popup_searchresults":{
+   "popup_searchresults":{
    	"message": "Search results in"
    },
  "searchresults_currentwindow":{
@@ -39,9 +39,17 @@
    "button_show":{
    	"message": "Show"
    }, 
-   
+    "button_addnew":{
+   	"message": "add new"
+   },   
    "popup_goback": {
       "message": "Go back to the list"
+   },
+   "button_enable":{
+   	"message": "Enable"
+   },
+   "button_disable":{
+   	"message": "Disable"
    },
    "loading": {
       "message": "Give it a second. It's going to space!"
@@ -90,6 +98,9 @@ is more than three times higher than the long-term rate, you'll get an alert."
    },  
  "status_checking":{
    	"message": "Checking..."
+   }, 
+ "status_saved":{
+   	"message": "Saved..."
    },    
  "options_update_frequency_title":{
    	"message": "Update every:"
