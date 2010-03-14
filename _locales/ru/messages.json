@@ -1,24 +1,24 @@
-{
+﻿{
 	"ext_name": {
 		"message": "Social Media Monitoring"
 	},
 	"ext_description": {
-		"message": "Displays the number of unread items (e.g. tweets, etc.) with pre-defined search tags."
+		"message": "Показывает активность появления твитов (количество твитов в минуту, текущее и долгосрочное) для определенных пользователем ключевых слов (e.g. tweets, etc.)."
 	},
 	"default_title": {
 		"message": "Social Media Monitoring"
 	},
 	"popup_refresh": {
-		"message": "Refresh"
+		"message": "Обновить"
 	},
 	"popup_options": {
-		"message": "Options"
+		"message": "Настройки"
 	},
 	"popup_close": {
-		"message": "Close"
+		"message": "Закрыть"
 	},
 	"popup_keywords": {
-		"message": "Keywords"
+		"message": "Ключевые слова"
 	},
 	"popup_cTpM": {
 		"message": "cTpM"
@@ -26,38 +26,38 @@
 	"popup_ltTpM": {
 		"message": "ltTpM"
 	},
-	   "tooltip_tkeywords": {
-      "message": "Keywords"
+	"tooltip_tkeywords": {
+    "message": "Ключевые слова"
    },  
    "tooltip_lttpm":{
-   	"message": "current number of Tweets per Minute"
+   	"message": "текущее число Твитов в Минуту"
    },
    "tooltip_cttpm":{
-   	"message": "long-term Tweets per Minute"
+   	"message": "долгосрочное число Твитов в Минуту"
    },  
 	"popup_searchresults": {
-		"message": "Search results in"
+		"message": "Результаты поиска в"
 	},
 	"searchresults_currentwindow": {
-		"message": "the current window"
+		"message": "текущем окне"
 	},
 	"searchresults_newwindow": {
-		"message": "a new window"
+		"message": "новом окне"
 	},
 	"button_show": {
-		"message": "Show"
+		"message": "Открыть"
 	},
 	"button_addnew": {
-		"message": "add new"
+		"message": "Добавить"
 	},
 	"popup_goback": {
-		"message": "Go back to the list"
+		"message": "Вернуться к списку"
 	},
 	"button_enable": {
-		"message": "Enable"
+		"message": "Активировать"
 	},
 	"button_disable": {
-		"message": "Disable"
+		"message": "Деактивировать"
 	},
 	"loading": {
 		"message": "Give it a second. It's going to space!"
@@ -72,46 +72,46 @@
 		"message": "Sorry, nothing to see here."
 	},
 	"options_header_title": {
-		"message": "Social Media Monitoring Extension"
+		"message": "Social Media Monitoring Расширение"
 	},
 	"description_title": {
-		"message": "Description"
+		"message": "Описание"
 	},
 	"description_body": {
-		"message": "Social Media Monitor is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times higher than the long-term rate, you'll get an alert."
+		"message": "Social Media Monitoring - Google Chrome расширение, которое позволяет отслеживать Social Media (в данный момент, поддержка Твиттера, ожидаются другие сервисы) путем расчета двух величин для каждого из опереденных пользователем ключевых слов. Первое число - текущее число твитов в минуту, второе - долгосрочное число твитов в минуту. Если текущее соотношение между первым и вторым числами больше чем 3, пользователь получит сигнал."
 	},
 	"options_title": {
-		"message": "Options"
+		"message": "Настройки"
 	},
 	"options_default_geolocation_title": {
-		"message": "Default Geolocation:"
+		"message": "Местоположение по умолчанию:"
 	},
 	"options_geolocation_anywhere": {
-		"message": "anywhere"
+		"message": "везде"
 	},
 	"options_geolocation_userdefined": {
-		"message": "define your location"
+		"message": "определить местоположение"
 	},
 	"search_location": {
-		"message": "Search Location"
+		"message": "Искать местоположение"
 	},
 	"kilometres": {
-		"message": "kilometres"
+		"message": "километров"
 	},
 	"button_findme": {
-		"message": "Find me!"
+		"message": "Найти меня!"
 	},
 	"status_checking": {
-		"message": "Checking..."
+		"message": "Локализация..."
 	},
 	"status_saved": {
-		"message": "Saved..."
+		"message": "Сохранение..."
 	},
 	"options_update_frequency_title": {
-		"message": "Update every:"
+		"message": "Обновлять каждые:"
 	},
 	"minutes": {
-		"message": "$MINUTES$ minutes",
+		"message": "$MINUTES$ минут",
 		"placeholders": {
 			"minutes": {
 				"content": "$1",
@@ -120,13 +120,13 @@
 		}
 	},
 	"options_sound_alert_title": {
-		"message": "Sound Alert:"
+		"message": "Звуковой сигнал:"
 	},
 	"options_sound_alert_none": {
-		"message": "None"
+		"message": "Нет"
 	},
 	"options_sound_alert_value": {
-		"message": "Alert $VALUE$",
+		"message": "Звук $VALUE$",
 		"placeholders": {
 			"value": {
 				"content": "$1",
@@ -135,22 +135,22 @@
 		}
 	},
 	"button_play": {
-		"message": "Play"
+		"message": "Прослушать"
 	},
 	"button_save": {
-		"message": "Save"
+		"message": "Сохранить"
 	},
 	"button_reset": {
-		"message": "Reset"
+		"message": "Восстановить"
 	},
 	"status_save": {
-		"message": "Options saved"
+		"message": "Настройки сохранены"
 	},
 	"license_title": {
-		"message": "License"
+		"message": "Лицензия"
 	},
 	"license_body": {
-		"message": "This extension is released under the MIT license, and the code is available at <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> repository.<br /><br /> Icons created by <a href=\"http://www.icojoy.com/\">Icojoy</a> (Stanislav Khodjaev) and <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), used as per the Creative Commons Attribution-Share Alike 3.0 Unported License."
+		"message": "Данное расширение распространяется под MIT лицензией, и его код доступен на <a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Google Code</a> репозитории.<br /><br /> Иконки, созданные <a href=\"http://www.icojoy.com/\">Icojoy</a> (Станислав Ходяев) и <a href=\"http://www.komodomedia.com/\">Komodo Media</a> (Rogie King), использованы на основании Creative Commons Attribution-Share Alike 3.0 Unported лицензии."
 	},
 	"footer_info": {
 		"message": "<a href=\"http://code.google.com/p/chrome-social-media-monitoring/\">Social Media Monitoring Homepage</a>"
