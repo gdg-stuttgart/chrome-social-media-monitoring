@@ -82,7 +82,7 @@
 		"message": "Description"
 	},
 	"description_body": {
-		"message": "Social Media Monitoring is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services are coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times higher than the long-term rate, you'll get an alert."
+		"message": "Social Media Monitoring is a Google Chrome Extension that lets you monitor Social Media (at the moment, only Twitter is supported, more services are coming soon) by calculating two values for each keyword(s) that you define. The first is the current number of Tweets per Minute, while the other is the long-term number of Tweets per Minute. If the current rate is more than three times (you can define your own) higher than the long-term rate, you'll get an alert."
 	},
 	"options_title": {
 		"message": "Options"
@@ -138,6 +138,18 @@
 			}
 		}
 	},
+	"options_hide_probe_labels": {
+		"message": "cTpM and ltTpM labels:"
+	},
+	"hide": {
+		"message": "hide"
+	},
+	"options_global_threshold_ratio": {
+		"message": "Threshold ratio:"
+	},
+	"options_global_threshold_ratio_default_hint": {
+		"message": "(default = 3)"
+	},	
 	"button_play": {
 		"message": "Play"
 	},

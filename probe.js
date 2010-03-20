@@ -12,8 +12,7 @@ function Probe() {
 	this.state = 1; // 1 = active, 2 = paused
 	this.lastupdate = undefined;
 	this.locationAddress = undefined;
-	
-
+	this.thresholdRatio = 3;
 }
 
 Probe.prototype.setQuery = function(query){

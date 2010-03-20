@@ -156,7 +156,7 @@ li {
 	width: 16px;
 	height: 16px;
 	display: block;
-	float: left;
+	float: right;
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;
@@ -166,7 +166,7 @@ li {
 #btnRefresh {
 	width: 16px;
 	height: 16px;
-	float: left;
+	float: right;
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;
@@ -193,7 +193,7 @@ li {
 	width: 16px;
 	height: 16px;
 	display: block;
-	float: left;
+	float: right;
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;
@@ -224,7 +224,7 @@ li {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
-	float: left;
+	float: right;
 	vertical-align: middle;
 	margin-top: 6px;
 	margin-left: 5px;

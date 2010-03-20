@@ -122,6 +122,18 @@
 			}
 		}
 	},
+	"options_hide_probe_labels": {
+		"message": "cTpM и ltTpM:"
+	},
+	"hide": {
+		"message": "скрыть"
+	},
+	"options_global_threshold_ratio": {
+		"message": "Пороговое значение:"
+	},
+	"options_global_threshold_ratio_default_hint": {
+		"message": "(по умолчанию = 3)"
+	},	
 	"options_sound_alert_title": {
 		"message": "Звуковой сигнал:"
 	},

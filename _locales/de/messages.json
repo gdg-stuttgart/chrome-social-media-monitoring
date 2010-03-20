@@ -138,6 +138,18 @@
 			}
 		}
 	},
+	"options_probe_labels": {
+		"message": "cTpM und ltTpM:"
+	},
+	"hide": {
+		"message": "verstecken"
+	},	
+	"options_global_threshold_ratio": {
+		"message": "Grenzwertfaktor:"
+	},
+	"options_global_threshold_ratio_default_hint": {
+		"message": "(default = 3)"
+	},
 	"button_play": {
 		"message": "Abspielen"
 	},

@@ -116,3 +116,11 @@ body {
 .fail {
 	background-color: #ff9999;
 }
+
+.hint {
+	color: #626562;
+}
+#options_global_threshold_ratio{
+	width:30px;
+	margin-right: 10px;
+}

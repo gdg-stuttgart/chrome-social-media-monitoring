@@ -92,6 +92,10 @@ port.onMessage.addListener(function(msg) {
 		  	$(probeHTMLObj).addClass('marker');
 		  	$(probeHTMLObj).removeClass('loader');
 		  	$(' > span#btnRefresh',probeHTMLObj).addClass('idle');
+			if(chrome.extension.getBackgroundPage().settings.hideProbeLabels == true || chrome.extension.getBackgroundPage().settings.hideProbeLabels == 'true' ){
+				$('> .avgWeek', probeHTMLObj).css('display','inline');
+				$('> .avgDay', probeHTMLObj).css('display','inline');	
+			}	
 		  }
 	  }
 	  if (msg.onLocationResult) {
@@ -103,7 +107,7 @@ $(document).ready(function() {
 	/*
 	 * i18n
 	 */
-	 $('#location').val(strSearch);
+	$('#location').val(strSearch);
 	 
 	$("#btnAdd").click(function() {
 
@@ -228,7 +232,7 @@ function openResults() {
 <span id="save_status"><script type="text/javascript">_writeMessage('status_saved');</script></span>
 
 </div>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 function init() {
 
 	var probes = probeManager.loadProbes();
@@ -257,6 +261,17 @@ function init() {
 		setAddButton();
 		addButtonListeners();
 	}
+
+	/* hide show labels */
+	
+	console.log(chrome.extension.getBackgroundPage().settings.hideProbeLabels);
+	if(chrome.extension.getBackgroundPage().settings.hideProbeLabels == true || chrome.extension.getBackgroundPage().settings.hideProbeLabels == 'true' ){
+		$('.title').css('display','none');
+		$('.avgWeek').css('display','none');
+		$('.avgDay').css('display','none');	
+	}
+	
+
 	
 	chrome.extension.getBackgroundPage().resetAlerts();
 }
@@ -495,11 +510,21 @@ function addButtonListeners(){
     ).mouseover( function () {
 		 //$(' > #btnRemove',this).removeClass("hd");
 		 $(this).addClass("selected");
+
+			if(chrome.extension.getBackgroundPage().settings.hideProbeLabels == true || chrome.extension.getBackgroundPage().settings.hideProbeLabels == 'true' ){
+				$('> .avgWeek', this).css('display','inline');
+				$('> .avgDay', this).css('display','inline');	
+			}	 
 		    
 		}
 	).mouseout( function () {
 		//$(' > #btnRemove',this).addClass("hd");
 	    $(this).removeClass("selected");
+
+		if(chrome.extension.getBackgroundPage().settings.hideProbeLabels == true || chrome.extension.getBackgroundPage().settings.hideProbeLabels == 'true' ){
+			$('> .avgWeek', this).css('display','none');
+			$('> .avgDay', this).css('display','none');	
+		}	 	    
 	    	 
 	    }
 	);
@@ -697,7 +722,7 @@ function back(){
 	$("div#options").slideUp("fast");
 }
 
-</script>
+--></script>
 
 
 <div id="header">
@@ -719,11 +744,11 @@ function back(){
 	<input type="text" id="tag_input" class="tag" maxlength="30">
 	<span class="avgWeek">0</span>
 	<span class="avgDay">0</span>
-	<span id="btnSave"></span>
-	<span id="btnOptions"></span>
-	<span id="btnRemove"></span>
-	
+
 	<span id="btnRefresh" class="idle"></span>
+	<span id="btnSave"></span>
+	<span id="btnRemove"></span>
+	<span id="btnOptions"></span>	
 	</li>
 </ol>
 <ol id="probes">

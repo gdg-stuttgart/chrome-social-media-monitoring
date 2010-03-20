@@ -1,10 +1,11 @@
 var timer = null;
-var version = "0.1";
+var version = "0.1.1";
 var show_options_page = true;
 var eventsCount = -1;
 var maxProbesLimit = 7;
 var alreadyAlerted = false;
 var markers = {}; // array of marked probes
+const ALERT_RATIO = 3;
 
 var settings = {
 	get pollInterval() {
@@ -62,7 +63,28 @@ var settings = {
 			return true;
 		}
 		return false;
+	},
+
+	get hideProbeLabels() {
+        return localStorage['options_hide_probe_labels'];
+	},
+	set hideProbeLabels(val) {
+		localStorage['options_hide_probe_labels'] = val;
+	},
+	
+	/*
+	 * default global_threshold_ratio
+	 */
+	get thresholdRatio() {
+		if(localStorage["options_global_threshold_ratio"] == null || localStorage["options_global_threshold_ratio"] == undefined || localStorage["options_global_threshold_ratio"] == "undefined"){
+			localStorage["options_global_threshold_ratio"] = ALERT_RATIO;
+		}
+        return localStorage['options_global_threshold_ratio'];
+	},
+	set thresholdRatio(val) {
+		localStorage['options_global_threshold_ratio'] = val;
 	}
+	
 }
 
 function pluginInit() {

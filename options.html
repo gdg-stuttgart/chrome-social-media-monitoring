@@ -24,7 +24,17 @@ function save_options() {
 	bkg.settings.timeout = 1000 * 15;
 
 	bkg.settings.soundAlert = $('#sound-alert').val();
+	
 
+	var options_global_threshold_ratio = $('#options_global_threshold_ratio').val();
+	
+	bkg.settings.hideProbeLabels = $('#options_hide_probe_labels').attr('checked');
+	bkg.settings.thresholdRatio = parseFloat(options_global_threshold_ratio.replace(",","."));
+
+	console.log($('#options_hide_probe_labels').attr('checked'));
+	console.log(parseFloat($('#options_global_threshold_ratio').val()));
+	
+	
 	if($("#default_location_off").attr("checked")){
 		bkg.settings.latitude = undefined;
 		bkg.settings.longitude = undefined;
@@ -115,6 +125,11 @@ function error(msg) {
 	 $("#lng").html(bkg.settings.longitude);
 	 $("#distance").val(bkg.settings.radius);
 
+	 $("#options_global_threshold_ratio").val(bkg.settings.thresholdRatio);
+
+	 if(bkg.settings.hideProbeLabels == "true"){
+	 	$("#options_hide_probe_labels").attr("checked", "true" );
+	 }
 	 if(bkg.settings.latitude == undefined || bkg.settings.latitude == 'undefined'){
 		 $("#default_location_off").attr("checked", true);
 		 $("div#geo_options").addClass('hd');
@@ -233,6 +248,20 @@ function searchAddress(adress){
 <button onclick="playSound();"><script type="text/javascript">_writeMessage('button_play');</script></button>
 </div>
 
+<div class="option_row">
+	<div class="option_name"><script type="text/javascript">_writeMessage('options_probe_labels');</script></div>
+	<div class="option_picker">
+	<input type="checkbox" id="options_hide_probe_labels" name="options_hide_probe_labels" onchange="markDirty();"  value="1" /><script type="text/javascript">_writeMessage('hide');</script>
+	</div>
+</div>
+
+<div class="option_row">
+	<div class="option_name"><script type="text/javascript">_writeMessage('options_global_threshold_ratio');</script></div>
+	<div class="option_picker">
+	<input type="text" id="options_global_threshold_ratio" name="options_global_threshold_ratio" maxlength="4" onchange="markDirty();" onkeyup="markDirty();" /><span class="hint"><script type="text/javascript">_writeMessage('options_global_threshold_ratio_default_hint');</script></span>
+	</div>
+</div>
+
 <div class="buttons">
 	<button id="save_button" onclick="saveOptions();"><script type="text/javascript">_writeMessage('button_save');</script></button>
 	<button id="reset_button" onclick="resetOptions();return false;"><script type="text/javascript">_writeMessage('button_reset');</script></button>
@@ -270,6 +299,9 @@ function searchAddress(adress){
 	function resetOptions() {
 		 $('#refresh-interval').val("30");
 		 $('#sound-alert').val("");
+		 $("#options_global_threshold_ratio").val(3);
+		 $("#options_hide_probe_labels").attr("checked", false);
+			 		 
 		 saveOptions();
 		return false;
 	}
