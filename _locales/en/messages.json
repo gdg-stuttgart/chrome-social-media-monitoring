@@ -145,7 +145,7 @@
 		"message": "hide"
 	},
 	"options_global_threshold_ratio": {
-		"message": "Threshold ratio:"
+		"message": "Notification Threshold:"
 	},
 	"options_global_threshold_ratio_default_hint": {
 		"message": "(default = 3)"

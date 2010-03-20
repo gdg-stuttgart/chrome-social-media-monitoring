@@ -145,7 +145,7 @@
 		"message": "verstecken"
 	},	
 	"options_global_threshold_ratio": {
-		"message": "Grenzwertfaktor:"
+		"message": "Notifikation-Schwellwert:"
 	},
 	"options_global_threshold_ratio_default_hint": {
 		"message": "(default = 3)"
