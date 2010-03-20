@@ -138,7 +138,7 @@
 			}
 		}
 	},
-	"options_hide_probe_labels": {
+	"options_probe_labels": {
 		"message": "cTpM and ltTpM labels:"
 	},
 	"hide": {
