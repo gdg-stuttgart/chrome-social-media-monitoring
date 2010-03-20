@@ -1,5 +1,5 @@
 var timer = null;
-var version = "0.1.2";
+var version = "0.1.3";
 var show_options_page = true;
 var eventsCount = -1;
 var maxProbesLimit = 7;
@@ -91,7 +91,10 @@ function pluginInit() {
 	showNoEvents();
 	  
     if(show_options_page && (localStorage["version"] == null || localStorage["version"] != version)) {
-    	populateExampleData();// on first run
+    	if (localStorage["version"] == null){
+    		populateExampleData();// on first run
+    	}
+    	
     	localStorage["version"] = version;
         chrome.tabs.create({url : "options.html"});        
     } else if(show_options_page == false && (localStorage["version"] == null || localStorage["version"] != version)) {
