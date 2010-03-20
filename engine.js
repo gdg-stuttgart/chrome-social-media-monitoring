@@ -1,5 +1,5 @@
 var timer = null;
-var version = "0.1.1";
+var version = "0.1.2";
 var show_options_page = true;
 var eventsCount = -1;
 var maxProbesLimit = 7;
