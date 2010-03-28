@@ -531,7 +531,13 @@ function addButtonListeners(){
 
     $("input#tag_input").keypress(function (e) {  
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-			save();
+        	var parent = $(this).parent();
+    		var strDivId = parent.attr('id');
+    		strDivId = strDivId.substring(2);
+    		if(strDivId != 'f' && strDivId.length > 0)
+        		update(strDivId);
+    		else 
+				save();
         	return false;  
         } else {
             return true;  
@@ -545,8 +551,14 @@ function addButtonListeners(){
         }
 
    });
-	
-    
+
+    $("span#tag").click(function () {  
+    	var parent = $(this).parent();
+    	var input = $("input#tag_input", parent);
+    	$(this).addClass("hd");
+    	input.removeClass("hd").css('width','140').css('margin-right','56');
+		input.focus();
+    })
 }
 
 function onLocationChanged(adress){
@@ -646,6 +658,7 @@ function buildProbeQuery(probeObj){
 		return 'about:';
 	}
 }
+
 function save() {
 
 	
@@ -676,8 +689,6 @@ function save() {
 
 		$(this).addClass('loader');
 		$(' > span#btnRefresh',this).addClass('reloading');
-
-		
 		
 		port.postMessage({probeTagChanged: tagProbe});
 		
@@ -692,6 +703,34 @@ function save() {
 
 	
 	//chrome.extension.getBackgroundPage().init();
+}
+
+function update(probeID) {
+		/*
+		 * validate search term
+		 */
+		 var tagObj = $('#f_' + probeID + ' input.tag');
+	
+		 if (!tagObj.val()){
+			 $(tagObj).addClass('warn');
+			 /*
+			  * TODO: add warning message
+			  */
+			 return false;
+		 }
+		 
+		 var currentProbe = probeManager.getProbeById(probeID);
+
+		 if(currentProbe != undefined) {
+			 currentProbe.query = tagObj.val();
+			 probeManager.setProbe(currentProbe);
+		 }
+		$(this).addClass('loader');
+		$('#f_' + probeID + ' span#btnRefresh').addClass('reloading');
+		$('#f_' + probeID + ' span#tag').text(tagObj.val());
+		$('#f_' + probeID + ' span#tag').removeClass("hd");
+		tagObj.addClass("hd");
+		port.postMessage({probeTagChanged: currentProbe});
 }
 
 function refreshAll() {
