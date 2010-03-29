@@ -21,6 +21,7 @@ var currentProbe;
 var currentProbeDiv;
 var currentSelectedService = "twitter";
 var currentLocation = undefined;
+var currentValueToEdit = null;
 
 var map, probes, template, serviceIcon, inputTag, spanTag, spanLocation, inputAvgWeek, inputAvgDay, btnOptions, btnRefresh, btnSave;
 
@@ -530,14 +531,11 @@ function addButtonListeners(){
 	);
 
     $("input#tag_input").keypress(function (e) {  
+        /*
+         * action on key enter
+         */
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
-        	var parent = $(this).parent();
-    		var strDivId = parent.attr('id');
-    		strDivId = strDivId.substring(2);
-    		if(strDivId != 'f' && strDivId.length > 0)
-        		update(strDivId);
-    		else 
-				save();
+        	onBeforeSaving(this,true);
         	return false;  
         } else {
             return true;  
@@ -545,20 +543,62 @@ function addButtonListeners(){
     }).keyup(function (e) {
         var parent = $(this).parent();
     	if($(this).val()){
-    		 $("> span#btnSave",parent).removeClass("disabled");
+    		$("> span#btnSave",parent).removeClass("disabled");
         }else{
         	$(">span#btnSave",parent).addClass("disabled");
         }
 
+   }).focusout(function (e){
+
+	   onBeforeSaving(this,false);
+     
    });
 
+    /*
+     * click on probe row
+     */
     $("span#tag").click(function () {  
     	var parent = $(this).parent();
+		var strDivId = parent.attr('id');
+		strDivId = strDivId.substring(2);
+      
     	var input = $("input#tag_input", parent);
+
+    	currentValueToEdit = strDivId + '_'+ input.val(); //edit value = probeId + search string
+		$(' > span#btnSave',parent).removeClass('hd');
+		$(' > span#btnRemove',parent).addClass('hd');
+      
     	$(this).addClass("hd");
     	input.removeClass("hd").css('width','140').css('margin-right','56');
 		input.focus();
     })
+}
+
+/*
+ * do if user want to save or update his entry 
+ * after he has clicked input#tag_input
+ */
+function onBeforeSaving(probeHTMLInput,bSave){
+		var probeDiv = $(probeHTMLInput).parent('.probe');
+		var strDivId = probeDiv.attr('id');
+		strDivId = strDivId.substring(2);
+      
+		if(strDivId != 'f' && strDivId.length > 0){
+			
+       		$(' > span#btnSave',probeDiv).addClass('hd');
+    		$(' > span#btnRemove',probeDiv).removeClass('hd');
+    		$(' > span#tag', probeDiv).removeClass("hd");
+    		$(probeHTMLInput).addClass('hd');
+          
+        	if(currentValueToEdit != strDivId + '_'+ $(probeHTMLInput).val()){ //edit value = probeId + search string
+  		        update(strDivId);
+		    }
+        	currentValueToEdit = null; 
+		}else{
+			if(bSave){
+               save();
+			}
+		}
 }
 
 function onLocationChanged(adress){
@@ -705,6 +745,7 @@ function save() {
 }
 
 function update(probeID) {
+
 		/*
 		 * validate search term
 		 */
