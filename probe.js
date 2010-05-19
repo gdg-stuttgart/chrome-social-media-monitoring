@@ -5,7 +5,7 @@ function Probe() {
 	this.shortTermTweetsPerMin = 0;
 	this.longTermTweetsPerMin = 0;
 	this.serviceId = 'twitter';
-	this.searchQuery = "http://search.twitter.com/search.json?&q=" + this.query;
+	this.searchQuery = "http://search.twitter.com/search.json?&q=" + escape(this.query);
 	this.latitude = undefined;
 	this.longitude = undefined;
 	this.radius = undefined;

@@ -690,9 +690,9 @@ function xpath(path, node) {
 function buildProbeQuery(probeObj){
 	if(probeObj){
 		if (probeObj.radius == undefined){
-			return 'http://search.twitter.com/search?q=' + probeObj.query + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=&units=km&since=&until=&rpp=15';
+			return 'http://search.twitter.com/search?q=' + escape(probeObj.query) + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=&units=km&since=&until=&rpp=15';
 		}else{
-			return 'http://search.twitter.com/search?q=' + probeObj.query + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=' + probeObj.radius + '&units=km&since=&until=&rpp=15' + '&geocode=' + escape(probeObj.latitude + ',' + probeObj.longitude + ',' + probeObj.radius + 'km');
+			return 'http://search.twitter.com/search?q=' + escape(probeObj.query) + '&ands=&phrase=&ors=&nots=&tag=&lang=all&from=&to=&ref=&near=&within=' + probeObj.radius + '&units=km&since=&until=&rpp=15' + '&geocode=' + escape(probeObj.latitude + ',' + probeObj.longitude + ',' + probeObj.radius + 'km');
 		}
 	}else{
 		return 'about:';
